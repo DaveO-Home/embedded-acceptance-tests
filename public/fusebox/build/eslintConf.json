@@ -1,0 +1,30 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 7,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "rules": {
+        "camelcase": 0,
+        "comma-dangle": 2,
+        "quotes": 1,
+        "strict": 0
+    },
+    "globals": {
+        "jQuery": true,
+        "$": true,
+        "require": true,
+        "System": true,
+        "testit": true,
+        "Stache": true,
+        "steal": true,
+        "rmain_container": true,
+        "FuseBox": true,
+        "process": true
+    },
+    "env": { 
+        "browser": true, "jasmine": true, "jquery": true, "amd": true
+    }
+}

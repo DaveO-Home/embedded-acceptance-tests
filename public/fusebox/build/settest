@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+export NODE_ENV=development
+export USE_KARMA=false
+export USE_HMR=false

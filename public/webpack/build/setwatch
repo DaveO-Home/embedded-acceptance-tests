@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+export NODE_ENV=development
+export USE_WATCH=true
+export USE_HMR=false
+export USE_KARMA=true
+unset USE_BROWSERS
+unset USE_BUILD

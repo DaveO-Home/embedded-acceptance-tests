@@ -1,0 +1,126 @@
+{{#if all}}
+<style>
+    span,table tbody {
+        font-size: 13px;  
+        line-height: 1.2; 
+        padding: 5px;
+    }
+    table tr td { 
+        margin:5px; padding:5px; 
+    }
+    h4,h3 {
+        text-align: center;
+    }
+    #table_info {
+        font-size: 14px;
+        color: #99bfe6;
+        cursor: pointer;
+    }
+</style>
+<h4>
+    Tools - Count
+</h4>
+<span>Select Job Type: <jobtype-selector to="jobtype-selector" /></span><br/>
+
+<!--<i id='table_info' class='fa fa-info-circle float-left' aria-hidden='true' data-toggle='modal' data-target='#table_modal'></i>-->
+<i id='table_info' class='fa fa-info-circle fa-2x float-left' aria-hidden='true' data-toggle='tooltip' title="To filter rows enter a value from the Tool column. To filter a group of rows enter one of the values that is in parentheses."></i>
+
+<table id="tools" class="tablesorter">
+    <thead>
+        <tr>
+            <th>Tool</th>
+            {{#if base}}
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+            <th>Column 4</th>
+            <th>Column 5</th>
+            <th>Column 6</th>
+            <th>Column 7</th>
+            <th>Column 8</th>
+            <th>Column 9</th>
+            {{#else}}
+            <th class="disabled">Column 1</th>
+            <th class="disabled">Column 2</th>
+            <th class="disabled">Column 3</th>
+            <th class="disabled">Column 4</th>
+            <th class="disabled">Column 5</th>
+            <th class="disabled">Column 6</th>
+            <th class="disabled">Column 7</th>
+            <th class="disabled">Column 8</th>
+            <th class="disabled">Column 9</th>
+            {{/if}}
+        </tr>
+    </thead>
+    <tbody id="main_body">
+        {{#if list.length}}
+            {{#each list}}
+            <tr>
+                <td>{{tool}}</td>
+                <td>{{Shop1}}</td>
+                <td>{{Shop2}}</td>
+                <td>{{Shop3}}</td>
+                <td>{{Shop4}}</td>
+                <td>{{Shop5}}</td>
+                <td>{{Shop6}}</td>
+                <td>{{Shop7}}</td>
+                <td>{{Shop8}}</td>
+                <td>{{Shop9}}</td>
+            </tr>
+            {{/each}}
+        {{/if}}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="10" class="ts-pager form-horizontal">
+                <button type="button" class="btn first"><i class="fa fa-step-backward glyphicon glyphicon-step-backward"></i></button>
+                <button type="button" class="btn prev"><i class="fa fa-backward"></i></button>
+                <span class="pagedisplay"></span> <!-- this can be any element, including an input -->
+                <button type="button" class="btn next"><i class="fa fa-forward glyphicon glyphicon-forward"></i></button>
+                <button type="button" class="btn last"><i class="fa fa-step-forward glyphicon glyphicon-step-forward"></i></button>
+                <select class="pagesize input-mini" title="Select page size">
+                    <option value="10">10</option>
+                    <option selected="selected" value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                    <option value="all">All Rows</option>
+                </select>
+                <select class="pagenum input-mini" title="Select page number"></select>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+<div id="table_modal" class="modal modal-wide fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <h3>Filter Hint:</h3>
+            <div class="modal-body">
+                <p>To filter rows enter a value from the Tool column. To filter a group of rows enter one of the values that is in parentheses.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#else}}
+        {{#if list.length}}
+            {{#each list}}
+                <tr>
+                    <td>{{tool}}</td>
+                    <td>{{Shop1}}</td>
+                    <td>{{Shop2}}</td>
+                    <td>{{Shop3}}</td>
+                    <td>{{Shop4}}</td>
+                    <td>{{Shop5}}</td>
+                    <td>{{Shop6}}</td>
+                    <td>{{Shop7}}</td>
+                    <td>{{Shop8}}</td>
+                    <td>{{Shop9}}</td>
+                </tr>
+            {{/each}}
+        {{/if}}
+{{/if}}

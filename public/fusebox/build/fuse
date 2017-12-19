@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+if [ "$1" = "hmr" ]
+ then 
+   export NODE_ENV=development
+   export USE_HMR=true;
+   unset USE_KARMA;
+fi
+
+cd ..
+node fuse.js

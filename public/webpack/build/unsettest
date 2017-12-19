@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+unset USE_WATCH
+unset USE_HMR
+unset USE_KARMA
+unset USE_BUILD
+

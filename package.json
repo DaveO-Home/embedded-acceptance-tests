@@ -1,0 +1,20 @@
+{
+  "name": "acceptance-test",
+  "version": "1.0.0",
+  "description": "Karma/Jasmine/StealJS Testing",
+  "scripts": {
+    "start": "node appExpress.js"
+  },
+  "keywords": [
+    "karma",
+    "jasmine",
+    "stealjs"
+  ],
+  "author": "Ace",
+  "license": "ISC",
+  "dependencies": {
+    "express": "3.21.2",
+    "jade": "1.11.0",
+    "less-middleware": "0.1.15"
+  }
+}
