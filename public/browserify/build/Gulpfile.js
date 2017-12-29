@@ -252,11 +252,12 @@ function browserifyBuild() {
         bundleExternal: true
     });
 
-    getNPMPackageIds().forEach(function (id) {
-        if (id !== 'font-awesome' && !id.startsWith("can")) {
-            browserifyInited.require(require('resolve').sync(id), {expose: id});
+    var mods = getNPMPackageIds();
+    for(var id in mods) {
+        if (mods[id] !== 'font-awesome' && !mods[id].startsWith("can")) {
+            browserifyInited.require(require('resolve').sync(mods[id]), {expose: mods[id]});
         }
-    });
+    };
 
     var stream = browserifyInited.bundle()
             .pipe(source('vendor.js'))
@@ -271,18 +272,18 @@ function browserifyBuild() {
 }
 
 function getNPMPackageIds() {
-    return Object.values({  //package.json has multiple bundlers defined
-        'aw': 'font-awesome',
-        'bo': 'bootstrap',
-        'cn': 'can',
-        'jq': 'jquery',
-        'lo': 'lodash',
-        'md': 'marked',
-        'mo': 'moment',
-        'pd': 'pdfjs-dist',
-        'po': 'popper.js',
-        'tb': 'tablesorter'});
-//    return Object.keys(require('../../package.json').dependencies) || [];
+    var ids = JSON.parse('{' +
+        '"aw": "font-awesome",' +  
+        '"bo": "bootstrap",' +
+        '"cn": "can",' + 
+        '"jq": "jquery",' +
+        '"lo": "lodash",' +
+        '"md": "marked",' +
+        '"mo": "moment",' +
+        '"pd": "pdfjs-dist",' +
+        '"po": "popper.js",' +
+        '"tb": "tablesorter"}');
+    return ids;
 }
 
 function applicationBuild() {
@@ -298,11 +299,12 @@ function applicationBuild() {
     });
 
     let modules = [];
-    getNPMPackageIds().forEach(function (id) {
-        if (id !== 'font-awesome' && !id.startsWith("can")) {
-            modules.push(id);
+    var mods = getNPMPackageIds();
+    for(var id in modules) {
+        if (mods[id] !== 'font-awesome' && !mods[id].startsWith("can")) {
+            modules.push(mods[id]);
         }
-    });
+    };
  
     if (isSplitBundle) {
         browserifyInited.external(modules);
