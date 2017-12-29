@@ -1,0 +1,115 @@
+/* General site styles */
+
+hidden { display: none; }
+
+
+.pl10 {
+    padding-left: 10px;
+}
+
+.f16 {
+    font-size: 16px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.list .span4 .thumbnail {
+    height: 350px;
+}
+
+.table label {
+    float: right;
+    font-weight: bold;
+}
+
+.modal .modal-wide .modal-dialog {
+    width: 60%;
+}
+.modal-wide .modal-body {
+    overflow-y: auto;
+}
+
+h1 {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    padding-bottom: 9px;
+}
+
+html,
+body {
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+    padding-top: 70px;
+}
+
+.nav-bar-bg {
+    background-color: #B0C4DE;
+}
+
+.nav-side-menu {
+    font-size: 18px;
+    font-weight: 200;
+    overflow: auto;
+}
+
+#main {
+    height:100%;
+    overflow:auto;
+}
+
+/* Sticky footer */
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+.footer {
+    background-color: #f5f5f5;
+    bottom: 0;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    width: 100%;
+}
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+    border-right: 1px solid #eee;
+    bottom: 0;
+    height: 85vh;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    padding: 20px;
+    position: fixed;
+    top: 30px;
+    z-index: 1000;
+}
+
+/* Sidebar navigation */
+.sidebar {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.sidebar .nav {
+    margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+    width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+    margin-left: 0;
+}
+
+.sidebar .nav-link {
+    border-radius: 0;
+}

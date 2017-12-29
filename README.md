@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of four javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify or Fusebox.
+This demo is comprised of four javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup.
 
 Note; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -60,6 +60,8 @@ To run the production application:
 You can repeat the procedure with "webpack", "browserify" or "stealjs". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
 
 Normally you can also run the test bundles(dist_test) from the node express server. However, when switching between development karma testing and running the test(dist_test) application, some resources are not found because of the "base/dist_test" URL. To fix this run `gulp rebuild` from the `<bundler>/build` directory.
+
+Warning: Production build with __Rollup__ fails because of a problem with ES6, Canjs and two-way binding.  You can do a test build to view the application.  The problem is with the options selection element on the tools page.
 
 ## Test Build
 
@@ -166,7 +168,25 @@ SUMMARY:
 
    Additionally, Fusebox likes Typescript so to run HMR the index.js script needed to be converted to index.ts.  If you want to modify the index module modify the index.ts file.  Also the entire application is dynamically transpiled to Typescript in Development.  Production is pure javascript so that the block development code removals will work.
 
-### III. **Stealjs**
+### III.  **Rollup**
+
+1\. ***Development Server Window*** -
+
+   * `cd public/rollup/build`
+   * `gulp watch`
+
+   The Rollup Development Server, Watch(auto-rebuild) and Page Reload functions are started together.  Simply use one of the following URLs in any browser; `localhost:3080/rollup/appl/testapp_dev.html` or `localhost:3080/dist_test/rollup/appl/testapp_dev.html`.
+
+  Currently Rollup an ES6 bundler has an issue with can-component, can-map and can-stache and two-way binding. Normally binding between a selection widget and a stache template is done with can/view/stache. This fails, so in-order to view the application can-stache had to be overridden with a more current version(3.14.6). This issue also persists with native ES6 code.
+
+2\. ***Test Driven Development(tdd) Window*** -
+
+   * `cd public/rollup/build`
+   * `gulp tdd`
+
+   Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+
+### IV. **Stealjs**
 
 1\. ***Development Server Window*** -
 
@@ -195,7 +215,7 @@ SUMMARY:
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### IV. **Webpack**
+### V. **Webpack**
 
 1\. ***Development HMR Server Window*** -
 
