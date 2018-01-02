@@ -1,6 +1,6 @@
 {{#if all}}
 <style>
-    span,table tbody {
+    span,table,div tbody {
         font-size: 13px;  
         line-height: 1.2; 
         padding: 5px;
@@ -16,11 +16,29 @@
         color: #99bfe6;
         cursor: pointer;
     }
+    .smallerfont {
+        font-size: 14px;
+    }
 </style>
 <h4>
     Tools - Count
 </h4>
-<span>Select Job Type: <jobtype-selector to="jobtype-selector" /></span><br/>
+<!--span>Select Job Type: <jobtype-selector to="jobtype-selector" /></span-->  
+        <section>
+            
+            <div id="dropdown1" class="dropdown">
+                <button class="dropdown-toggle smallerfont" type="button" id="dropdown0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Select Job Type
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdown0">
+                  <a class="dropdown-item smallerfont">Combined</a>
+                  <a class="dropdown-item smallerfont">Category1</a>
+                  <a class="dropdown-item smallerfont">Category2</a>
+                </div>
+              </div>
+            
+        </section>
+<br/>
 
 <!--<i id='table_info' class='fa fa-info-circle float-left' aria-hidden='true' data-toggle='modal' data-target='#table_modal'></i>-->
 <i id='table_info' class='fa fa-info-circle fa-2x float-left' aria-hidden='true' data-toggle='tooltip' title="To filter rows enter a value from the Tool column. To filter a group of rows enter one of the values that is in parentheses."></i>

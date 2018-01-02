@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of four javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup.
+This demo is comprised of five javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup.
 
 Note; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -124,6 +124,15 @@ SUMMARY:
 ```
 
 ## Development
+
+__Note__; When modifying project assets(.stache, .html, etc.) you can execute `gulp copy` from the `public/<bundler>/build` directory to preview changes. This is not required for __StealJs__.
+
+__A word on developing tests__; You can write and execute tests quicker by using the rebuild process of a given bundler and running the `acceptance` gulp task after the auto-rebuild, e.g. with __Rollup__ you can;
+
+  * `cd public/rollup/build`
+  * `gulp watch`
+  * Develop or modify a test.
+  * In another window execute `gulp acceptance` to view the modified or new test results.
 
 ### I.  **Browserify**
 

@@ -1,5 +1,5 @@
 module.exports = {
-    toolstest: function (Route, Helpers) {
+    toolstest: function (Route, Helpers, Start) {
 
         /* 
          * Test that new data are loaded when the select value changes.
@@ -9,14 +9,21 @@ module.exports = {
                     beforeValue,
                     afterValue,
                     spyToolsEvent,
-                    selectorObject;
+                    selectorObject,
+                    selectorItem,
+                    mainContainer = "#main_container",
+                    mainHtml = '<div id="main_container"><div class="loading-page"></div></div>';
 
 
             beforeAll(function (done) {
-
-                if (!$("#main_container").length) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
+                
+                $("#dropdown1").remove();
+                if (!$(mainContainer)[0]) {
+                    $("body").append(mainHtml);
                 }
+                else
+                    $(mainContainer).html(mainHtml);
+
                 //Loading Application Web Page(Treat as a Fixture)
                 Route.data.attr("base", true);
                 Route.data.attr("controller", "table");
@@ -28,7 +35,7 @@ module.exports = {
                     Helpers.isResolved(resolve, reject, "container", 0, 1);
 
                 }).catch(function (rejected) {
-
+                    
                     fail("The Tools Page did not load within limited time: " + rejected);
 
                 }).then(function (resolved) {
@@ -36,46 +43,45 @@ module.exports = {
                     tools = $("#tools");
                     beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
 
-                    selectorObject = $('.jobtype-selector');
-                    spyToolsEvent = spyOnEvent(selectorObject[0], 'change');
-
+//                    selectorObject = $('.jobtype-selector');
+                    selectorObject = $('#dropdown0');
                     /*
-                     *  The can.Component(jobtype-selector) has a change event - we want to test that.
+                     * Jasmine works best with html events not mouse events - onClick my not work here.
                      */
-                    selectorObject.val("cat1");
-                    Helpers.fireEvent(selectorObject[0], 'change');
-
+                    selectorItem = $("#dropdown1 a")[1];
+                    spyToolsEvent = spyOnEvent(selectorItem, 'select');
+                    Helpers.fireEvent(selectorItem, 'select');
                     //Note: if page does not refresh, increase the Timeout time.
                     //Using setTimeout instead of Promise.
                     setTimeout(function () {
                         afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                         done();
                     }, 100);
-
                 });
             });
 
-            it("setup and change event executed.", function () {
+            it("setup and click events executed.", function () {
 
                 //jasmine-jquery matchers
-                expect('change').toHaveBeenTriggeredOn(selectorObject[0]);
+                expect('select').toHaveBeenTriggeredOn(selectorItem);
                 expect(spyToolsEvent).toHaveBeenTriggered();
-
+//
                 expect(tools[0]).toBeInDOM();
                 expect('.disabled').toBeDisabled();  //Because of can-event warning, removed all disabled classes for testing
-                expect('.jobtype-selector > option').toHaveLength(4);
+                expect('#dropdown1 a').toHaveLength(3);
                 //Required for Firefox
                 selectorObject[0] = document.activeElement;
                 expect(selectorObject).toBeFocused();
+
             });
 
             it("new page loaded on change.", function () {
 
                 //Verify that new page was loaded.
                 expect(beforeValue).not.toBe(afterValue);
-
             });
 
         });
+        return;
     }
 };

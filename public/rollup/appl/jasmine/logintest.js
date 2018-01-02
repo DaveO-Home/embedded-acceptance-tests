@@ -1,3 +1,4 @@
+
 module.exports = {
     logintest: function (Start) {
         /* 
@@ -9,7 +10,7 @@ module.exports = {
                 mainContainer = "#main_container";
 
             beforeAll(function (done) {
-
+                $(mainContainer).remove();
                 if (!$(mainContainer)[0]) {
                     $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
                 }
@@ -17,20 +18,20 @@ module.exports = {
 
                 Start.initMenu();
                 Start.base = true;
-                var loginObject = $("div .login");
+                Start["div .login click"]();
 
-                loginObject.click();
+                var loginObject = $("div .login");
 
                 //Not bothering with a promise.
                 setTimeout(function () {
                     done();
-                }, 500);
+                }, 100);
             });
 
             it("Login form - verify modal with login loaded", function (done) {
 
                 modal = $("#modalTemplate");
-                nameObject = $("#inputUsername");
+                var nameObject = $("#inputUsername");
 
                 expect(modal[0]).toBeInDOM();
                 expect(nameObject[0]).toExist();

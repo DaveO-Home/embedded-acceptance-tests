@@ -58,6 +58,15 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
         $(id).trigger("pageAndSize", defaultPage);
 
     },
-    base: false
+    base: false,
+    "#dropdown1 a click": function(sender, e) {
+        e.preventDefault();
+        this.dropdownEvent(sender);
+    },
+    "#dropdown1 a select": function(sender, e) {
+        e.preventDefault();
+        this.dropdownEvent(sender);
+    },
+    dropdownEvent: function(sender) {}
 
 }))("#main_container"));

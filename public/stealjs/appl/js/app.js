@@ -10,6 +10,7 @@ steal("helpers",
         "tablepager",
         "tablewidgets",
         function (Helpers, Component, Map, _) {
+
             if(typeof window !== undefined) {
                 window._bundler = "stealjs";
             }

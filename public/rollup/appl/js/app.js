@@ -4,7 +4,7 @@
 
 var Helpers = require("./utils/helpers");
 var Component = require("can/component/component");
-var MapMap = require("can/map/map");
+var CanMap = require("can/map/map");
 var _ = require("lodash");
 
 //require("can/util/util");
@@ -139,10 +139,11 @@ module.exports = {
         }
     },
     renderTools: function (options, render) {
-
+        
         var currentController = this.controllers[_.capitalize(options.controller)],
                 template,
-                jsonUrl = baseUrl + "templates/tools_ful.json";
+                jsonUrl = baseUrl + "templates/tools_ful.json",
+                me = this;
 
         //fixture({url: "/listools"}, "templates/tools_ful.json");
         $.get(options.templateUrl + options.template, function (source) {
@@ -150,15 +151,40 @@ module.exports = {
             template = Stache(source);
 
             $.get(jsonUrl, function (data) {
-
-                var osKeys = ["Combined", "Category1", "Category2"];
-                var values = ["ful", "cat1", "cat2"];
-
-                Helpers.setJobTypeSelector(Component, MapMap, osKeys, values, template, baseUrl);
+                //The can.Component/viewModel not working with ES6 - Using normal can.Control event handling on Table controller.
+//                var osKeys = ["Combined", "Category1", "Category2"];
+//                var values = ["ful", "cat1", "cat2"];
+//                Helpers.setJobTypeSelector(Component, CanMap, osKeys, values, template, baseUrl);
 
                 render(template(data));
 
                 currentController.decorateTable(options.template.split(".")[0]);
+    
+                var updateTable = function(sender) {
+                    var osKeys = ["Combined", "Category1", "Category2"];
+                    var values = ["ful", "cat1", "cat2"];
+                    var tbodyTemplate = template;
+                    var toolsUrl = baseUrl + "templates/tools_";
+                    let selectedJobType = getValue(sender.text, osKeys, values);
+                    $.get(toolsUrl + selectedJobType  + ".json", function (data) {
+                        if (selectedJobType == "ful") {
+                            data.all = false;
+                        }
+                        var tbody = tbodyTemplate(data);
+                        $(".tablesorter tbody").html(tbody).trigger("update");
+
+                    }, "json").fail(function (data, err) {
+
+                        console.error("Error fetching fixture data: " + err);
+
+                    });
+                    function getValue (item, keys, values) {
+                        for (let idx = 0; idx < keys.length; idx++) {
+                            if (keys[idx] === item) return values[idx];
+                        }
+                    }
+                }
+                currentController.dropdownEvent=updateTable;
 
             }, "json").fail(function (data, err) {
 
@@ -172,5 +198,10 @@ module.exports = {
                     console.warn(data);
 
                 });
+    },
+    getValue: function(item, keys, values) {
+        for (let idx = 0; idx < keys.length; idx++) {
+            if (keys[idx] === item) return values[idx];
+        }
     }
 };

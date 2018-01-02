@@ -33,8 +33,9 @@ module.exports = App.controllers.Start ||
             },
             'div .login click': function (sender, e) {
 
-                e.preventDefault();
-
+                if(e) {
+                    e.preventDefault();
+                }
                 var loginUrl = "views/prod/login.html";
 
                 this.modal({
@@ -135,7 +136,7 @@ module.exports = App.controllers.Start ||
                 $('form.form-horizontal').append(me.alert);
             },
             finish: function (options) {
-                var marked = require("marked");
+                var marked = require("../utils/marked");
                 var mdFunction = function (data) {
                     $(".markdown").append(marked(data));
                 }

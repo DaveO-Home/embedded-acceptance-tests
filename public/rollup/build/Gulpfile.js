@@ -25,8 +25,10 @@ const alias = require('rollup-plugin-alias');
 const resolve = require('rollup-plugin-node-resolve');
 const postcss = require('rollup-plugin-postcss');
 const rollupBabel = require('rollup-plugin-babel');
+const progress = require('rollup-plugin-progress');
 const rename = require('gulp-rename');
 const babel = require('gulp-babel');
+const externalHelpers = require("babel-plugin-external-helpers");
 
 const startComment = "steal-remove-start",
         endComment = "steal-remove-end",
@@ -65,7 +67,7 @@ gulp.task('build', ['copyprod'], function () {
  */
 gulp.task('pat', ['build-development'], function (done) {
     if (!browsers) {
-        global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
+        global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
     }
     
     runKarma(done);
@@ -178,7 +180,7 @@ gulp.task('copy_fonts', function () {
  */
 gulp.task('r-test', function (done) {
     if (!browsers) {
-        global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
+        global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
     }
     
     runKarma();  
@@ -190,7 +192,7 @@ gulp.task('r-test', function (done) {
 gulp.task('tdd-rollup', ['build-development'], function (done) {
 
     if (!browsers) {
-        global.whichBrowsers = ["Chrome", "Firefox"];
+        global.whichBrowsers = [/*"Chrome",*/ "Firefox"];
     }
     new Server({
         configFile: __dirname + '/karma_conf.js',
@@ -220,8 +222,12 @@ gulp.task('rollup-watch', function () {
             alias(aliases()),
             resolve(),
             postcss(),
-//            rollupBabel({  //Not needed when code is not using "import".  Currently app is written in pre-es6 syntax.
-//                presets: [["env", {targets: {"uglify":false}, modules: false}]]
+            progress({
+                clearLine: true // default: true
+            }),
+//            rollupBabel({
+//                presets: [["env", {targets: {"uglify":false}, modules: false}]],
+//                plugins: ["external-helpers"]
 //            }),
             serve({
               open: false,
@@ -232,14 +238,14 @@ gulp.task('rollup-watch', function () {
               port: 3080
             }),
             livereload({
-              watch: "../../" + dist + "/rollup/bundle.js",
+              watch: "../../" + dist + "/bundle.js",
               verbose: true,
             })
         ],
         output: {
             name: "acceptance",
-            file: '../../' + dist + '/rollup/bundle.js', 
-            format: "umd",
+            file: '../../' + dist + '/bundle.js', 
+            format: "iife",
             sourcemap: true
         }
     };
@@ -249,17 +255,16 @@ gulp.task('rollup-watch', function () {
         switch(event.code) {
             case "START": util.log("Starting..."); starting = true; break;
             case "BUNDLE_START": util.log(event.code,"\nInput=",event.input,"\nOutput=",event.output); break;
-            case "BUNDLE_END": util.log("Waiting for code change."); break;
+            case "BUNDLE_END": util.log("Waiting for code change. Build Time:", millisToMinutesAndSeconds(event.duration)); break;
             case "END": if(!starting) util.log("Watch Shutdown Normally"); starting=false; break;
             case "ERROR": util.log("Unexpected Error", event); break;
             case "FATAL": util.log("Rollup Watch interrupted by Fatal Error", event); break;
             default: break;
-        }     
+        }
     });
 });
 
-
-gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint'/*, 'build'*/]);
+gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('acceptance', ['r-test']);
 gulp.task('tdd', ['tdd-rollup']);
 gulp.task('test', ['pat']);
@@ -277,12 +282,16 @@ function rollupBuild() {
                 commonjs(),
                 alias(aliases()),
                 resolve(),
-                postcss()
+                postcss(),
+                progress({
+                    clearLine: isProduction? false: true // default: true
+                }),
+                rollupBabel({
+                    presets: [["env", {targets: {"uglify":true}, modules: false}]],
+                    plugins: ["external-helpers"]
+                })
             ],
         }))
-//        .pipe(babel({ //Not needed when code is not using "import".  Currently app is written in pre-es6 syntax.
-//            presets: [["env", {targets: {"uglify":false}, modules: false}]]
-//        }))
         .on('error', util.log)
         .pipe(rename('bundle.js'))
         .pipe(removeCode({ production: isProduction }))
@@ -364,6 +373,13 @@ function runKarma(done) {
         }
     }).start();
     
+}
+//per stackoverflow - Converting milliseconds to minutes and seconds with Javascript
+function millisToMinutesAndSeconds(millis) {
+  var minutes = Math.floor(millis / 60000);
+  var seconds = ((millis % 60000) / 1000).toFixed(0);
+  return ( (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds) + (minutes === 0? " seconds": "minutes"));
+
 }
 
 /*

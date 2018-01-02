@@ -12,8 +12,7 @@ require("bootstrap");
 require("tablesorter");
 
 
-
-//Specs can be inserted anywhere in the application.           
+//Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
 
 if (testit) {

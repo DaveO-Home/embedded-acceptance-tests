@@ -10,8 +10,11 @@ const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
 const gutil = require("gulp-util");
 const env = require("gulp-env");
+const copy = require('gulp-copy');
 
-var lintCount = 0;
+var lintCount = 0,
+    dist = "dist_test/fusebox",
+    isProduction = false;
 let browsers = process.env.USE_BROWSERS;
 if (browsers) {
     global.whichBrowser = browsers.split(",");
@@ -204,11 +207,33 @@ gulp.task('tddo', function (done) {
     }, done).start();
 });
 
+/**
+ * Resources and content copied to dist_test directory - for development
+ */
+gulp.task('copy', ['copy_images'], function () {
+    return copySrc();
+});
+gulp.task('copy_images', function () {
+    return copyImages();
+});
+
 gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
 gulp.task('test', ['pat']);
 gulp.task('tdd', ['fusebox-tdd']);
 gulp.task('hmr', ['fusebox-hmr']);
 gulp.task('rebuild', ['fusebox-rebuild']);   //remove karma config to run node express
+
+function copySrc() {
+    return gulp
+            .src(['../appl/views/**/*', '../appl/templates/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
+            .pipe(copy('../../' + dist + '/appl'));
+}
+
+function copyImages() {
+    return gulp
+            .src(['../images/*', '../../README.md'])
+            .pipe(copy('../../' + dist + '/appl'));
+}
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == 'true') {

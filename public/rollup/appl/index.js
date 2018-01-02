@@ -1,17 +1,16 @@
 
-require("./js/utils/set.globals");
-
+require("./js/utils/set.globals"); 
 var App = require("./js/app"),
         Router = require("./js/router"),
         Default = require("./js/utils/default"), 
         Setup = require("./js/utils/setup"), 
         Helpers = require("./js/utils/helpers"),
-        Config = require("./js/config");
+        Config = require("./js/config")
 
 require("pager"); 
 
 App.init(Default);
-
+ 
 var Route = Router.init();
 
 Setup.init();

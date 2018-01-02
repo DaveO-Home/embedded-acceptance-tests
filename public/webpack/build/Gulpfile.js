@@ -283,3 +283,30 @@ gulp.task('test', ['acceptance-tests']);
 gulp.task('watch', ['webpack-watch']);
 gulp.task('hmr', ['webpack-server']);
 gulp.task('rebuild', ['webpack-rebuild']);   //removes karma config for node express.
+
+//From Stack Overflow - Node (Gulp) process.stdout.write to file
+if (process.env.USE_LOGFILE == 'true') {
+    var fs = require('fs');
+    var proc = require('process');
+    var origstdout = process.stdout.write,
+            origstderr = process.stderr.write,
+            outfile = 'node_output.log',
+            errfile = 'node_error.log';
+
+    if (fs.exists(outfile)) {
+        fs.unlink(outfile);
+    }
+    if (fs.exists(errfile)) {
+        fs.unlink(errfile);
+    }
+
+    process.stdout.write = function (chunk) {
+        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        origstdout.apply(this, arguments);
+    };
+
+    process.stderr.write = function (chunk) {
+        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        origstderr.apply(this, arguments);
+    };
+}

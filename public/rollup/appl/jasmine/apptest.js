@@ -140,12 +140,12 @@ exports.apptest = function (Route, Helpers, App) {
 
         //Executing here makes sure the tests are run in sequence.
         //Spec to test if page data changes on select change event.
-        toolsTest(Route, Helpers);
+        toolsTest(Route, Helpers, Start);
 
-                //Form Validation
-                contactTest(Route, Helpers);
-                //Verify modal form
-                loginTest(Start);
+        //Form Validation
+        contactTest(Route, Helpers);
+        //Verify modal form
+        loginTest(Start);
                 
         if (testOnly) {
             it("Testing only", function () {
