@@ -41,6 +41,17 @@ module.exports = {
         options = options || {};
         this.initPage(options);
 
+        $.fn.fa = function( options ) {
+            options = $.extend({
+                    icon: "check"
+            }, options);
+            return this.each(function() {
+                    var $element = $( this );
+                    var icon = "<i class='fa fa-" + options.icon + "'> </i>";
+                    $(icon).appendTo($element);
+            });
+        };
+
     },
     initPage: function () {
 
@@ -172,7 +183,8 @@ module.exports = {
                         }
                         var tbody = tbodyTemplate(data);
                         $(".tablesorter tbody").html(tbody).trigger("update");
-
+                        $("#dropdown1 a i").each(function() { this.remove() });
+                        $(sender).fa({icon: "check"});
                     }, "json").fail(function (data, err) {
 
                         console.error("Error fetching fixture data: " + err);

@@ -186,7 +186,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    The Rollup Development Server, Watch(auto-rebuild) and Page Reload functions are started together.  Simply use one of the following URLs in any browser; `localhost:3080/rollup/appl/testapp_dev.html` or `localhost:3080/dist_test/rollup/appl/testapp_dev.html`.
 
-  Currently Rollup an ES6 bundler has an issue with can-component, can-map and can-stache and two-way binding. Normally binding between a selection widget and a stache template is done with can/view/stache. This fails, so in-order to view the application can-stache had to be overridden with a more current version(3.14.6). This issue also persists with native ES6 code.
+  Currently Rollup an ES6 bundler has an issue with  can-view-stache and can-component. The dropdown component on the table view page was changed to a Bootstrap component. The event handling is done with can-control. See app.js and table.js. With a modification to the toolstest.js module tests are satisfied and the production build should finish.
 
 2\. ***Test Driven Development(tdd) Window*** -
 

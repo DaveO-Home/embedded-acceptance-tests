@@ -56,7 +56,7 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
         }).tablesorterPager(pageSorter);
 
         $(id).trigger("pageAndSize", defaultPage);
-
+        $($("#dropdown1 a")[0]).fa({icon: "check"});
     },
     base: false,
     "#dropdown1 a click": function(sender, e) {
