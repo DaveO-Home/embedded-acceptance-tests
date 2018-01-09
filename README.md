@@ -8,7 +8,7 @@ Note; the demo was not developed to compare software, rather simply to demonstra
 
 **Desktop:**
 
-  clone the repository
+  clone the repository or download the .zip
 
 **Install Assumptions:**
 
@@ -57,11 +57,11 @@ To run the production application:
   1. `npm start`  -  This should start a Node Server with port 3080.
   1. Start a browser and enter `localhost:3080/dist/<bundler>/appl/testapp.html`
 
-You can repeat the procedure with "webpack", "browserify" or "stealjs". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
+You can repeat the procedure with "webpack", "browserify", "stealjs" or "rollup". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
 
 Normally you can also run the test bundles(dist_test) from the node express server. However, when switching between development karma testing and running the test(dist_test) application, some resources are not found because of the "base/dist_test" URL. To fix this run `gulp rebuild` from the `<bundler>/build` directory.
 
-Warning: Production build with __Rollup__ fails because of a problem with ES6, Canjs and two-way binding.  You can do a test build to view the application.  The problem is with the options selection element on the tools page.
+Note; There was a Production build problem with __Rollup__, ES6, can-component and two-way binding.  The problem was fixed by re-coding the tools page selection element with a Bootstrap Dropdown Component.  Therefore, the toolstest.js specs were also modified.
 
 ## Test Build
 
@@ -132,7 +132,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
   * `cd public/rollup/build`
   * `gulp watch`
   * Develop or modify a test.
-  * In another window execute `gulp acceptance` to view the modified or new test results.
+  * In another window execute `gulp acceptance` from the `build` directory to view the modified or new test results.
 
 ### I.  **Browserify**
 
@@ -166,7 +166,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    At this point you can start a browser and enter `localhost:3080/fusebox/appl/testapp_dev.html` or `localhost:3080/dist_test/fusebox/appl/testapp_dev.html`.  Any changes to the source code(*.js files) should be reflected in the browser auto reload.
 
-   Alternatively you can start up the HMR server with the gulp command `gulp hmr`, however you will not see any output.
+   Alternatively, you can start up the HMR server with the gulp command `gulp hmr`, however, you will not see any output.
 
 2\. ***Test Driven Development(tdd) Window*** -
 
@@ -175,7 +175,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    The HMR Server must be running if you want tests to rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`. A warning is issued under `tdd`(404: /dist_test/fusebox/resources) since `hmr` requires a non-karma build, this can be ignored.
 
-   Additionally, Fusebox likes Typescript so to run HMR the index.js script needed to be converted to index.ts.  If you want to modify the index module modify the index.ts file.  Also the entire application is dynamically transpiled to Typescript in Development.  Production is pure javascript so that the block development code removals will work.
+   Additionally, Fusebox likes Typescript, so to run HMR, the index.js script needed to be converted to index.ts.  If you want to modify the index module modify the index.ts file.  Also, the entire application is dynamically transpiled to Typescript in Development.  Production is pure javascript so that the block development code removals will work.
 
 ### III.  **Rollup**
 
@@ -212,7 +212,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    Stealjs does not require a dist_test build. It runs development directly from the source(nice!). However, when starting `hmr` a vendor bundle is produced at public/dev-bundle.js for `hmr` performance. The bundle is accessed from the `testapp_dev.html` page, via a `deps-bundle` attribute.
 
-   Finally, because there are four bundlers using the package.json file, a main is not specified.  Stealjs `hmr` dependency bundler needs to know the application entry point.  Since main is not available it looks for `index.js` in the root directory. So a soft link was made to `index.js`.  If not included in the git clone, you must execute the link, e.g.
+   Finally, because there are five bundlers using the package.json file, a main is not specified.  Stealjs `hmr` dependency bundler needs to know the application entry point.  Since main is not available it looks for `index.js` in the root directory. So a soft link was made to `index.js`.  If not included in the git clone or zip download, you must execute the link, e.g.
 
 * `cd application-tests/public`
 * `ln -s stealjs/appl/js/index.js index.js`
