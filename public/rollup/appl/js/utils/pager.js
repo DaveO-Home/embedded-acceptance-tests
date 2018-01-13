@@ -1,1 +1,0 @@
-../../../../node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js

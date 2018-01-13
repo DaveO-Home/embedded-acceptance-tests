@@ -19,7 +19,7 @@ let browsers = process.env.USE_BROWSERS;
 if (browsers) {
     global.whichBrowser = browsers.split(",");
 }
-
+var isWindows = /^win/.test(process.platform);
 var initialTask;
 /**
  * Default: Production Acceptance Tests 
@@ -93,8 +93,13 @@ gulp.task('csslint', ['pat'], function () {
  * Build the application to run karma acceptance tests
  */
 gulp.task('accept', function (cb) {
+    var osCommands = 'cd ..; export NODE_ENV=development; export USE_KARMA=true; export USE_HMR=false; ';
+
+    if (isWindows) {
+	osCommands = 'cd ..\\ & set NODE_ENV=development & set USE_KARMA=true & set USE_HMR=false & ';
+    }
     
-    exec('cd ..; export NODE_ENV=development; export USE_KARMA=true; export USE_HMR=false; node fuse.js', function (err, stdout, stderr) {
+    exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);
@@ -110,8 +115,13 @@ gulp.task('accept', function (cb) {
  * Build the application to the production distribution 
  */
 gulp.task('build', ['boot'], function (cb) { // ['boot'],
+    var osCommands = 'cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ';
 
-    exec('cd ..; export NODE_ENV=production; unset USE_KARMA; node fuse.js', function (err, stdout, stderr) {
+    if (isWindows) {
+	osCommands = 'cd ..\\ & set NODE_ENV=production & set USE_KARMA=false & set USE_HMR=false & ';
+    }
+    
+    exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);
@@ -137,8 +147,12 @@ gulp.task('boot', ['eslint', 'csslint'], function (cb) {
  * Build the application to run karma acceptance tests with hmr
  */
 gulp.task('fusebox-hmr', function (cb) {
+    var osCommands = 'cd ..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=true; ';
 
-    exec('cd ..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=true; node fuse.js', function (err, stdout, stderr) {
+    if (isWindows) {
+	osCommands = 'cd ..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=true & ';
+    }
+    exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);
@@ -151,8 +165,13 @@ gulp.task('fusebox-hmr', function (cb) {
  * Build the application to run node express so font-awesome is resolved
  */
 gulp.task('fusebox-rebuild', function (cb) {
+    var osCommands = 'cd ..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=false; ';
 
-    exec('cd ..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=false; node fuse.js', function (err, stdout, stderr) {
+    if (isWindows) {
+	osCommands = 'cd ..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=false & ';
+    }
+    
+    exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);
@@ -222,6 +241,7 @@ gulp.task('test', ['pat']);
 gulp.task('tdd', ['fusebox-tdd']);
 gulp.task('hmr', ['fusebox-hmr']);
 gulp.task('rebuild', ['fusebox-rebuild']);   //remove karma config to run node express
+gulp.task('acceptance', ['accept']);
 
 function copySrc() {
     return gulp

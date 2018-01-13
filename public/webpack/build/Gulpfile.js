@@ -24,6 +24,7 @@ let browsers = process.env.USE_BROWSERS;
 if (browsers) {
     global.whichBrowser = browsers.split(",");
 }
+var isWindows = /^win/.test(process.platform);
 /**
  * Default: Production Acceptance Tests 
  */
@@ -79,8 +80,12 @@ gulp.task('csslint', ['pat'], function () {
  */
 gulp.task('build', ['boot'], function (cb) {
     dist = 'dist';
-
-    exec('npm run webpackprod', function (err, stdout, stderr) {
+    let win="";
+    if(isWindows) {
+	win="win";
+    }
+    
+    exec('npm run webpackprod' + win, function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);

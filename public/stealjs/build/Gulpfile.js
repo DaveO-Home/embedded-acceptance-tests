@@ -17,6 +17,7 @@ let browsers = process.env.USE_BROWSERS;
 if (browsers) {
     global.whichBrowsers = browsers.split(",");
 }
+var isWindows = /^win/.test(process.platform);
 /**
  * Default: Production Acceptance Tests 
  */
@@ -165,8 +166,12 @@ gulp.task('steal-tdd', function (done) {
  * Startup live reload monitor. 
  */
 gulp.task('live-reload', ["vendor"], function (cb) {
-
-    exec('cd ../..; node_modules/.bin/steal-tools live-reload', function (err, stdout, stderr) {
+    var osCommands = 'cd ../..; node_modules/.bin/steal-tools live-reload';
+    if(isWindows) {
+	osCommands = 'cd ..\\.. & .\\node_modules\\.bin\\steal-tools live-reload'
+    }
+    
+    exec(osCommands, function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);
@@ -197,8 +202,12 @@ gulp.task('vendor', function (cb) {
  * Startup live reload monitor. 
  */
 gulp.task('web-server', function (cb) {
-
-    exec('cd ../../..; npm start', function (err, stdout, stderr) {
+    var osCommand = 'cd ../../..; ';
+    if(isWindows) {
+	osCommand = 'cd ..\\..\\.. & ';
+    }
+    
+    exec(osCommand + 'npm start', function (err, stdout, stderr) {
 
         gutil.log(stdout);
         gutil.log(stderr);

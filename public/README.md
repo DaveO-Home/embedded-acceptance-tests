@@ -12,7 +12,7 @@ Note; the demo was not developed to compare software, rather simply to demonstra
 
 **Install Assumptions:**
 
-  1. Linux OS.
+  1. OS Linux and Windows(Tested on Windows10)
   1. Node and npm
   1. Gulp
   1. Google Chrome

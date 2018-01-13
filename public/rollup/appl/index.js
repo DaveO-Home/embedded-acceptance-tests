@@ -7,7 +7,7 @@ var App = require("./js/app"),
         Helpers = require("./js/utils/helpers"),
         Config = require("./js/config")
 
-require("pager"); 
+require("../../node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js"); 
 
 App.init(Default);
  
