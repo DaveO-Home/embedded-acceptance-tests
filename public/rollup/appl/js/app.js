@@ -2,10 +2,11 @@
 /*eslint no-undef: "error"*/
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
-var Helpers = require("./utils/helpers");
-var Component = require("can/component/component");
-var CanMap = require("can/map/map");
-var _ = require("lodash");
+//var Helpers = require("./utils/helpers");
+//var Component = require("can/component/component");
+//var CanMap = require("can/map/map");
+var startsWith = require("lodash/startsWith");
+var capitalize = require("lodash/capitalize");
 
 //require("can/util/util");
 require("bootstrap");
@@ -64,7 +65,7 @@ module.exports = {
     toUrl: function (url) {
 
         //Node Express exception
-        if (_.startsWith(baseUrl, "/appl/")) {
+        if (startsWith(baseUrl, "/appl/")) {
             baseUrl = "/appl";
         }
 
@@ -82,7 +83,7 @@ module.exports = {
     },
     toViewsUrl: function (url) {
 
-        return _.startsWith(url, "views/") ? this.toScriptsUrl(url) : this.toUrl(url);
+        return startsWith(url, "views/") ? this.toScriptsUrl(url) : this.toUrl(url);
 
     },
     loadController: function (controllerName, controller, fnLoad, fnError) {
@@ -106,7 +107,7 @@ module.exports = {
                 }
 //endRemoveIf(production)
 
-                me.controllers[_.capitalize(controllerName)] = appController;
+                me.controllers[capitalize(controllerName)] = appController;
 
                 fnLoad(me.controllers[controllerName]);
 
@@ -122,7 +123,7 @@ module.exports = {
         if (options && fnLoad) {
             var resolvedUrl = this.toViewsUrl(options.url);
 
-            var currentController = this.controllers[_.capitalize(options.controller)];
+            var currentController = this.controllers[capitalize(options.controller)];
 
             if (options.url) {
 
@@ -151,7 +152,7 @@ module.exports = {
     },
     renderTools: function (options, render) {
         
-        var currentController = this.controllers[_.capitalize(options.controller)],
+        var currentController = this.controllers[capitalize(options.controller)],
                 template,
                 jsonUrl = baseUrl + "templates/tools_ful.json",
                 me = this;

@@ -5,7 +5,8 @@
 var App = require("./app");
 var Map = require("can/map/map");
 var Route = require("can/route/route");
-var _ = require("lodash");
+var capitalize = require("lodash/capitalize");
+var camelCase = require("lodash/camelCase");
 var Start = require("start");
 
 var ApplViewModel = Map.extend({
@@ -28,9 +29,9 @@ var ApplViewModel = Map.extend({
     dispatch: function () {
 
         var me = this,
-                controllerName = _.capitalize(this.controller),
+                controllerName = capitalize(this.controller),
                 actionName = this.action
-                ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index",
+                ? this.action.charAt(0).toLowerCase() + camelCase(this.action.slice(1)) : "index",
                 failMsg = "Load problem with: \"" + controllerName + "/" + actionName + "\".";
 
         //The controller will initiate the view. ---> calls basecontrol.view ---> app.loadView

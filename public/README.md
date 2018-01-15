@@ -2,7 +2,7 @@
 
 This demo is comprised of five javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup.
 
-Note; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
+__Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
 ## Installation
 
@@ -61,7 +61,7 @@ You can repeat the procedure with "webpack", "browserify", "stealjs" or "rollup"
 
 Normally you can also run the test bundles(dist_test) from the node express server. However, when switching between development karma testing and running the test(dist_test) application, some resources are not found because of the "base/dist_test" URL. To fix this run `gulp rebuild` from the `<bundler>/build` directory.
 
-Note; There was a Production build problem with __Rollup__, ES6, can-component and two-way binding.  The problem was fixed by re-coding the tools page selection element with a Bootstrap Dropdown Component.  Therefore, the toolstest.js specs were also modified.
+__Note__; There was a Production build problem with __Rollup__, ES6, can-component and two-way binding.  The problem was fixed by re-coding the tools page selection element with a Bootstrap Dropdown Component.  Therefore, the toolstest.js specs were also modified.
 
 ## Test Build
 
@@ -176,6 +176,8 @@ __A word on developing tests__; You can write and execute tests quicker by using
    The HMR Server must be running if you want tests to rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`. A warning is issued under `tdd`(404: /dist_test/fusebox/resources) since `hmr` requires a non-karma build, this can be ignored.
 
    Additionally, Fusebox likes Typescript, so to run HMR, the index.js script needed to be converted to index.ts.  If you want to modify the index module modify the index.ts file.  Also, the entire application is dynamically transpiled to Typescript in Development.  Production is pure javascript so that the block development code removals will work.
+
+   __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+.
 
 ### III.  **Rollup**
 

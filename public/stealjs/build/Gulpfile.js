@@ -10,7 +10,7 @@ const Server = require('karma').Server;
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
-const gutil = require("gulp-util");
+const log = require("fancy-log");
 
 var lintCount = 0;
 let browsers = process.env.USE_BROWSERS;
@@ -56,7 +56,7 @@ gulp.task('eslint', ['pat'], () => {
             .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
-        gutil.log("# javascript files linted: " + lintCount);
+        log("# javascript files linted: " + lintCount);
     });
     stream.on('error', function () {
         process.exit(1);
@@ -113,8 +113,8 @@ gulp.task('build', ['boot'], function () {
 gulp.task('boot', ['eslint', 'csslint'], function (cb) {
 
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 });
@@ -173,8 +173,8 @@ gulp.task('live-reload', ["vendor"], function (cb) {
     
     exec(osCommands, function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 });
@@ -209,8 +209,8 @@ gulp.task('web-server', function (cb) {
     
     exec(osCommand + 'npm start', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 });

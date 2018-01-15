@@ -14,7 +14,8 @@ const removeCode = require('gulp-remove-code');
 const stripCode = require("gulp-strip-code");
 const uglify = require('gulp-uglify');
 const del = require('del');
-const util = require('gulp-util');
+const noop = require('gulp-noop');
+const log = require('fancy-log');
 
 const rollup = require('rollup');
 const gulpRollup = require('gulp-rollup');
@@ -29,6 +30,7 @@ const progress = require('rollup-plugin-progress');
 const rename = require('gulp-rename');
 const babel = require('gulp-babel');
 const externalHelpers = require("babel-plugin-external-helpers");
+const replace = require("rollup-plugin-re");
 
 const startComment = "steal-remove-start",
         endComment = "steal-remove-end",
@@ -90,7 +92,7 @@ gulp.task('eslint', ['pat'], () => {
             .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
-        util.log("# javascript files linted: " + lintCount);
+        log("# javascript files linted: " + lintCount);
     });
 
     stream.on('error', function () {
@@ -118,8 +120,8 @@ gulp.task('csslint', ['pat'], function () {
 gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
 
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
-        util.log(stdout);
-        util.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 });
@@ -223,7 +225,7 @@ gulp.task('rollup-watch', function () {
             resolve(),
             postcss(),
             progress({
-                clearLine: true // default: true
+                clearLine: true
             }),
 //            rollupBabel({
 //                presets: [["env", {targets: {"uglify":false}, modules: false}]],
@@ -253,12 +255,12 @@ gulp.task('rollup-watch', function () {
     let starting = false;
     watcher.on('event', event => {
         switch(event.code) {
-            case "START": util.log("Starting..."); starting = true; break;
-            case "BUNDLE_START": util.log(event.code,"\nInput=",event.input,"\nOutput=",event.output); break;
-            case "BUNDLE_END": util.log("Waiting for code change. Build Time:", millisToMinutesAndSeconds(event.duration)); break;
-            case "END": if(!starting) util.log("Watch Shutdown Normally"); starting=false; break;
-            case "ERROR": util.log("Unexpected Error", event); break;
-            case "FATAL": util.log("Rollup Watch interrupted by Fatal Error", event); break;
+            case "START": log("Starting..."); starting = true; break;
+            case "BUNDLE_START": log(event.code,"\nInput=",event.input,"\nOutput=",event.output); break;
+            case "BUNDLE_END": log("Waiting for code change. Build Time:", millisToMinutesAndSeconds(event.duration)); break;
+            case "END": if(!starting) log("Watch Shutdown Normally"); starting=false; break;
+            case "ERROR": log("Unexpected Error", event); break;
+            case "FATAL": log("Rollup Watch interrupted by Fatal Error", event); break;
             default: break;
         }
     });
@@ -284,7 +286,7 @@ function rollupBuild() {
                 resolve(),
                 postcss(),
                 progress({
-                    clearLine: isProduction? false: true // default: true
+                    clearLine: isProduction? false: true
                 }),
                 rollupBabel({
                     presets: [["env", {targets: {"uglify":true}, modules: false}]],
@@ -292,11 +294,11 @@ function rollupBuild() {
                 })
             ],
         }))
-        .on('error', util.log)
+        .on('error', log)
         .pipe(rename('bundle.js'))
         .pipe(removeCode({ production: isProduction }))
-        .pipe(isProduction ? stripCode({ pattern: regexPattern }) : util.noop())
-        .pipe(isProduction ? uglify() : util.noop())
+        .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
+        .pipe(isProduction ? uglify() : noop())
         // .pipe(sourcemaps.init({ loadMaps: !isProduction }))
         // .pipe(sourcemaps.write('../dist_test/rollup/maps'))
         .pipe(gulp.dest('../../' + dist));

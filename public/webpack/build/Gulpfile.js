@@ -12,7 +12,7 @@ const gulp = require('gulp'),
         eslint = require('gulp-eslint'),
         csslint = require('gulp-csslint'),
         exec = require('child_process').exec,
-        gutil = require("gulp-util"),
+        log = require("fancy-log"),
         env = require("gulp-env"),
         webpack = require('webpack'),
         webpackStream = require("webpack-stream"),
@@ -50,11 +50,11 @@ gulp.task('eslint', ['pat'], function (cb) {
             .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
-        gutil.log("# javascript files linted: " + lintCount);
+        log("# javascript files linted: " + lintCount);
     });
 
     stream.on('error', function (err) {
-        gutil.log(err);
+        log(err);
         process.exit(1);
     });
 
@@ -70,7 +70,7 @@ gulp.task('csslint', ['pat'], function () {
             .pipe(csslint.formatter());
 
     stream.on('error', function (err) {
-        gutil.log(err);
+        log(err);
         process.exit(1);
     });
 });
@@ -87,8 +87,8 @@ gulp.task('build', ['boot'], function (cb) {
     
     exec('npm run webpackprod' + win, function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
 
         cb(err);
     });
@@ -98,11 +98,11 @@ gulp.task('build', ['boot'], function (cb) {
  * Bootstrap html linter 
  */
 gulp.task('boot', ['eslint', 'csslint'], function (cb) {
-    gutil.log("Starting Gulpboot.js")
+    log("Starting Gulpboot.js")
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
 
         cb(err);
     });
@@ -274,9 +274,9 @@ gulp.task("webpack-server", function () {
     const server = new WebpackDevServer(compiler, options);
 
     server.listen(3080, 'localhost', function (err) {
-        gutil.log('[webpack-server]', 'http://localhost:3080/webpack/appl/testapp_dev.html');
+        log('[webpack-server]', 'http://localhost:3080/webpack/appl/testapp_dev.html');
         if (err) {
-            gutil.log(err);
+            log(err);
         }
     });
 

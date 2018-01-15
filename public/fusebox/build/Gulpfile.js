@@ -8,7 +8,7 @@ const Server = require('karma').Server;
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
-const gutil = require("gulp-util");
+const log = require("fancy-log");
 const env = require("gulp-env");
 const copy = require('gulp-copy');
 
@@ -64,7 +64,7 @@ gulp.task('eslint', ['pat'], () => {
             .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
-        gutil.log("# javascript files linted: " + lintCount);
+        log("# javascript files linted: " + lintCount);
     });
 
     stream.on('error', function () {
@@ -101,10 +101,10 @@ gulp.task('accept', function (cb) {
     
     exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         if(err) {
-            gutil.log("ERROR", err);
+            log("ERROR", err);
         }
         cb();
 
@@ -123,8 +123,8 @@ gulp.task('build', ['boot'], function (cb) { // ['boot'],
     
     exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 
@@ -137,8 +137,8 @@ gulp.task('boot', ['eslint', 'csslint'], function (cb) {
 
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
 
         cb(err);
     });
@@ -154,9 +154,9 @@ gulp.task('fusebox-hmr', function (cb) {
     }
     exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
-        gutil.log("ERROR", err)
+        log(stdout);
+        log(stderr);
+        log("ERROR", err)
         cb();
 
     });
@@ -173,9 +173,9 @@ gulp.task('fusebox-rebuild', function (cb) {
     
     exec(osCommands + 'node fuse.js', function (err, stdout, stderr) {
 
-        gutil.log(stdout);
-        gutil.log(stderr);
-        gutil.log("ERROR", err)
+        log(stdout);
+        log(stderr);
+        log("ERROR", err)
         cb();
 
     });

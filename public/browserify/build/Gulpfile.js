@@ -8,7 +8,8 @@ const Server = require('karma').Server;
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
-const gutil = require("gulp-util");
+const noop = require("gulp-noop");
+const log = require("fancy-log");
 const browserify = require('browserify');
 const copy = require("gulp-copy");
 const source = require('vinyl-source-stream');
@@ -55,7 +56,7 @@ gulp.task('build', ['application'], function () {
  */
 gulp.task('build-development', ['application-development'], function () {
     
-    return isSplitBundle ? browserifyBuild() : gutil.noop();
+    return isSplitBundle ? browserifyBuild() : noop();
 });
 /**
  * Production Browserify 
@@ -104,7 +105,7 @@ gulp.task('eslint', ['pat'], () => {
             .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
-        gutil.log("# javascript files linted: " + lintCount);
+        log("# javascript files linted: " + lintCount);
     });
 
     stream.on('error', function () {
@@ -135,8 +136,8 @@ gulp.task('setdevelopment', function () {
 gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
 
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
-        gutil.log(stdout);
-        gutil.log(stderr);
+        log(stdout);
+        log(stderr);
         cb(err);
     });
 });
@@ -262,8 +263,8 @@ function browserifyBuild() {
     var stream = browserifyInited.bundle()
             .pipe(source('vendor.js'))
             .pipe(buffer())
-            .pipe(isProduction ? stripCode({pattern: regexPattern}) : gutil.noop())
-            .pipe(isProduction ? uglify() : gutil.noop());
+            .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())
+            .pipe(isProduction ? uglify() : noop());
 
     stream = stream.pipe(sourcemaps.init({loadMaps: !isProduction}))
             .pipe(sourcemaps.write('../../' + dist + '/maps', {addComment: !isProduction}));
@@ -324,11 +325,11 @@ function browserifyApp() {
             .pipe(source('index.js'))
             .pipe(removeCode({production: isProduction}))
             .pipe(buffer())
-            .pipe(isProduction ? stripCode({pattern: regexPattern}) : gutil.noop())  //Strip out Canjs warnings if production.
+            .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())  //Strip out Canjs warnings if production.
 //            .pipe(babel({
 //                presets: [['es2015', {"modules": false}]]
 //            }))
-            .pipe(isProduction ? uglify().on('error', gutil.log) : gutil.noop());
+            .pipe(isProduction ? uglify().on('error', log) : noop());
 
     stream = stream.pipe(sourcemaps.init({loadMaps: !isProduction}))
             .pipe(sourcemaps.write('../../' + dist + '/maps', {addComment: !isProduction}));
@@ -341,7 +342,7 @@ function enableWatchify() {
     if (isWatchify) {
         browserifyInited.plugin(watchify);
         browserifyInited.on('update', applicationBuild);
-        browserifyInited.on('log', gutil.log);
+        browserifyInited.on('log', log);
     }
 }
 

@@ -1,5 +1,6 @@
 /*global module:true*/
-var _ = require("lodash");
+
+var trimStart = require("lodash/trimStart");
 
 module.exports = {
     //Bootstrap activation
@@ -11,8 +12,8 @@ module.exports = {
         el.each(function () {
 
             var href = $("a", this).attr("href");
-            var url = href ? _.trimStart(href, "#!") : "none";
-            var hash = _.trimStart(window.location.hash, "#!");
+            var url = href ? trimStart(href, "#!") : "none";
+            var hash = trimStart(window.location.hash, "#!");
 
             if (hash === url) {
                 window.location.hash = "";
