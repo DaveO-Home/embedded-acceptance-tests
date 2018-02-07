@@ -22,7 +22,7 @@
   "author": "Dave O",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "4.0.0-beta.3",
+    "bootstrap": "^4.0.0",
     "can": "3.12.1",
     "can-define": "1.5.4",
     "can-stache": "^3.14.8",
