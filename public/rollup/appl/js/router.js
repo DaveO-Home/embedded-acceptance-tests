@@ -3,8 +3,8 @@
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var App = require("./app");
-var Map = require("can/map/map");
-var Route = require("can/route/route");
+var Map = require("can-map");
+var Route = require("can-route");
 var capitalize = require("lodash/capitalize");
 var camelCase = require("lodash/camelCase");
 var Start = require("start");
@@ -146,12 +146,12 @@ module.exports = {
                 }
             });
 
-            Route("{controller}/{action}/{id}");
-            Route("{controller}/{action}");
-            Route("{controller}");
-            Route("", {home: "#!"});
+            Route.register("{controller}/{action}/{id}");
+            Route.register("{controller}/{action}");
+            Route.register("{controller}");
+            Route.register("", {home: "#!"});
 
-            Route.ready();
+            Route.start();
         });
         return Route;
     }

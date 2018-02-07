@@ -71,7 +71,7 @@ gulp.task('pat', ['build-development'], function (done) {
     if (!browsers) {
         global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
     }
-    
+
     runKarma(done);
 });
 /*
@@ -129,7 +129,7 @@ gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
  * Remove previous build
  */
 gulp.task('clean', ['bootlint'], function (done) {
-    
+
     isProduction = true;
     dist = prodDist;
     return del([
@@ -184,8 +184,8 @@ gulp.task('r-test', function (done) {
     if (!browsers) {
         global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
     }
-    
-    runKarma();  
+
+    runKarma();
 });
 
 /**
@@ -232,21 +232,21 @@ gulp.task('rollup-watch', function () {
 //                plugins: ["external-helpers"]
 //            }),
             serve({
-              open: false,
-              verbose: true,
-              contentBase: "../../",
-              historyApiFallback: false,
-              host: "localhost",
-              port: 3080
+                open: false,
+                verbose: true,
+                contentBase: "../../",
+                historyApiFallback: false,
+                host: "localhost",
+                port: 3080
             }),
             livereload({
-              watch: "../../" + dist + "/bundle.js",
-              verbose: true,
+                watch: "../../" + dist + "/bundle.js",
+                verbose: true,
             })
         ],
         output: {
             name: "acceptance",
-            file: '../../' + dist + '/bundle.js', 
+            file: '../../' + dist + '/bundle.js',
             format: "iife",
             sourcemap: true
         }
@@ -254,14 +254,30 @@ gulp.task('rollup-watch', function () {
     watcher = rollup.watch(watchOptions);
     let starting = false;
     watcher.on('event', event => {
-        switch(event.code) {
-            case "START": log("Starting..."); starting = true; break;
-            case "BUNDLE_START": log(event.code,"\nInput=",event.input,"\nOutput=",event.output); break;
-            case "BUNDLE_END": log("Waiting for code change. Build Time:", millisToMinutesAndSeconds(event.duration)); break;
-            case "END": if(!starting) log("Watch Shutdown Normally"); starting=false; break;
-            case "ERROR": log("Unexpected Error", event); break;
-            case "FATAL": log("Rollup Watch interrupted by Fatal Error", event); break;
-            default: break;
+        switch (event.code) {
+            case "START":
+                log("Starting...");
+                starting = true;
+                break;
+            case "BUNDLE_START":
+                log(event.code, "\nInput=", event.input, "\nOutput=", event.output);
+                break;
+            case "BUNDLE_END":
+                log("Waiting for code change. Build Time:", millisToMinutesAndSeconds(event.duration));
+                break;
+            case "END":
+                if (!starting)
+                    log("Watch Shutdown Normally");
+                starting = false;
+                break;
+            case "ERROR":
+                log("Unexpected Error", event);
+                break;
+            case "FATAL":
+                log("Rollup Watch interrupted by Fatal Error", event);
+                break;
+            default:
+                break;
         }
     });
 });
@@ -275,33 +291,35 @@ gulp.task('rebuild', ['build-development']);  //remove karma config for node exp
 
 function rollupBuild() {
     return gulp.src(['../appl/index.js'])
-        .pipe(gulpRollup({
-            allowRealFiles: true,
-            input: '../appl/index.js',
-            format: "iife",
-            name: "acceptance",
-            plugins: [
-                commonjs(),
-                alias(aliases()),
-                resolve(),
-                postcss(),
-                progress({
-                    clearLine: isProduction? false: true
-                }),
-                rollupBabel({
-                    presets: [["env", {targets: {"uglify":true}, modules: false}]],
-                    plugins: ["external-helpers"]
-                })
-            ],
-        }))
-        .on('error', log)
-        .pipe(rename('bundle.js'))
-        .pipe(removeCode({ production: isProduction }))
-        .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
-        .pipe(isProduction ? uglify() : noop())
-        // .pipe(sourcemaps.init({ loadMaps: !isProduction }))
-        // .pipe(sourcemaps.write('../dist_test/rollup/maps'))
-        .pipe(gulp.dest('../../' + dist));
+            .pipe(removeCode({production: isProduction}))
+            .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())
+            .pipe(gulpRollup({
+                allowRealFiles: true,
+                input: '../appl/index.js',
+                output: {
+                    format: "iife",
+                    name: "acceptance",
+                },
+                plugins: [
+                    commonjs(),
+                    alias(aliases()),
+                    resolve(),
+                    postcss(),
+                    progress({
+                        clearLine: isProduction ? false : true
+                    }),
+                    rollupBabel({
+                        presets: [["env", {/*targets: {"uglify":true},*/ modules: false}]],
+                        plugins: ["external-helpers"]
+                    })
+                ],
+            }))
+            .on('error', log)
+            .pipe(rename('bundle.js'))
+            .pipe(isProduction ? uglify() : noop())
+            // .pipe(sourcemaps.init({ loadMaps: !isProduction }))
+            // .pipe(sourcemaps.write('../dist_test/rollup/maps'))
+            .pipe(gulp.dest('../../' + dist));
 }
 
 function aliases() {
@@ -349,7 +367,7 @@ function copyCss() {
 function copyNodeCss() {
     return gulp
             .src(['../../node_modules/bootstrap/dist/css/bootstrap.min.css', "../../node_modules/font-awesome/css/font-awesome.css",
-                    "../../node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", "../../node_modules/tablesorter/dist/css/theme.blue.min.css"])
+                "../../node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", "../../node_modules/tablesorter/dist/css/theme.blue.min.css"])
             .pipe(copy('../../' + dist + '/appl'));
 }
 
@@ -361,26 +379,26 @@ function copyFonts() {
 }
 
 function runKarma(done) {
-    
+
     new Server({
         configFile: __dirname + '/karma_conf.js',
         singleRun: true
     }, function (result) {
         var exitCode = !result ? 0 : result;
-        if(typeof done === "function") {
+        if (typeof done === "function") {
             done();
         }
         if (exitCode > 0) {
             process.exit(exitCode);
         }
     }).start();
-    
+
 }
 //per stackoverflow - Converting milliseconds to minutes and seconds with Javascript
 function millisToMinutesAndSeconds(millis) {
-  var minutes = Math.floor(millis / 60000);
-  var seconds = ((millis % 60000) / 1000).toFixed(0);
-  return ( (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds) + (minutes === 0? " seconds": "minutes"));
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return ((seconds == 60 ? (minutes + 1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds) + (minutes === 0 ? " seconds" : "minutes"));
 
 }
 

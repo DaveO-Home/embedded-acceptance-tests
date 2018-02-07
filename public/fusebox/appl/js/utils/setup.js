@@ -1,6 +1,7 @@
 /*global module:true*/
 
-window.Stache = require("can/view/stache/stache");
+window.Stache = require("can-stache");
+require("can-stache-bindings");
 
 module.exports = {
     init: function () {

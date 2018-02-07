@@ -45,7 +45,7 @@ steal(function () {
                      */
                     selectorObject.val("cat1");
                     Helpers.fireEvent(selectorObject[0], 'change');
-
+  
                     //Note: if page does not refresh, increase the Timeout time.
                     //Using setTimeout instead of Promise.
                     setTimeout(function () {

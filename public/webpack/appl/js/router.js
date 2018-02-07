@@ -1,6 +1,6 @@
 define("router", ["app",
-        "can/map/map",
-        "can/route/route",
+        "can-map",
+        "can-route",
         "start"],
         function (App, Map, Route, Start) {
 
@@ -129,12 +129,12 @@ define("router", ["app",
                             }
                         });
 
-                        Route("{controller}/{action}/{id}");
-                        Route("{controller}/{action}");
-                        Route("{controller}");
-                        Route("", {home: "#!"});
+                        Route.register("{controller}/{action}/{id}");
+                        Route.register("{controller}/{action}");
+                        Route.register("{controller}");
+                        Route.register("", {home: "#!"});
 
-                        Route.ready();
+                        Route.start();
                     });
 
                     return Route;

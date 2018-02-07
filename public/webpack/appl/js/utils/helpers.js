@@ -1,5 +1,8 @@
-define("helpers", ["moment", "can-view-callbacks", "can/component/component", "can/map/map"],
-        function (moment, callbacks, Component, Map) {
+define("helpers", [
+    "moment",
+    "can-view-callbacks",
+    "can-component",
+    "can-map"], function (moment, callbacks, Component, Map) {
 
             return {
                 scrollTop: function () {

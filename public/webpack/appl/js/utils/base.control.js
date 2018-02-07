@@ -1,6 +1,6 @@
 define("basecontrol", ["app",
     "helpers",
-    "can/control/control"],
+    "can-control"],
         function (App, Helpers, Control) {
             var base = false;
 /* develblock:start */

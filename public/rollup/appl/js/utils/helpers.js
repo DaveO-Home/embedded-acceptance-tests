@@ -12,7 +12,6 @@ module.exports = {
         }, "slow");
     },
     convertToBoolean: function (value) {
-
         if (!this.isNullOrEmpty(value)) {
             return false;
         }
@@ -29,34 +28,27 @@ module.exports = {
                     return false;
             }
         }
-
         return Boolean(value);
     },
     parseJson: function (json) {
-
         return JSON && JSON.parse(json) || $.parseJSON(json);
     },
     isNullOrEmpty: function (value) {
-
         return typeof value === "undefined" || value === null || value.length === 0;
     },
     getValueOrDefault: function (value, defaultValue) {
-
         return !this.isNullOrEmpty(value) ? value : defaultValue;
     },
     endsWith: function (str, endswith) {
-
         if (typeof String.prototype.endsWith !== "function") {
 
             String.prototype.endsWith = function (suffix) {
                 return this.indexOf(suffix, this.length - suffix.length) !== -1;
             };
-
         }
         return str.endsWith(endswith);
     },
     getWeekKeys: function () {
-
         var nthWeek = moment().format("w"),
                 year = moment().format("TYYYY"),
                 weekKeys = [];
@@ -65,18 +57,16 @@ module.exports = {
 
             var week = ("0" + i).slice(-2);
             weekKeys.push(year + week);
-
         }
         return weekKeys;
     },
-    setJobTypeSelector: function (Component, CapMap, osKeys, values, template, baseUrl) {
-
+    setJobTypeSelector: function (Component, CanMap, osKeys, values, template, baseUrl) {
         var current = osKeys[0];
         if (values) {
             current = values[0];
         }
 
-        //Eliminate the warning that tag is already defined.
+        // Eliminate the warning that tag is already defined.
         if (!callbacks._tags["jobtype-selector"]) {
             Component.extend({
                 tag: "jobtype-selector",
@@ -85,7 +75,7 @@ module.exports = {
                         "</select>"),
                 ViewModel: function () {
                     var selectedJobType = {selectedJobType: current};
-                    return new CapMap(selectedJobType);
+                    return new CanMap(selectedJobType);
                 },
                 events: {
                     ".jobtype-selector change": function () {
@@ -104,11 +94,8 @@ module.exports = {
 
                             var tbody = tbodyTemplate(data);
                             $(".tablesorter tbody").html(tbody).trigger("update");
-
                         }, "json").fail(function (data, err) {
-
                             console.error("Error fetching fixture data: " + err);
-
                         });
                     }
                 }
@@ -116,7 +103,6 @@ module.exports = {
         }
     },
     getOptions: function (keys, values) {
-
         if (!values || values.length !== keys.length) {
             values = keys;
         }
@@ -130,11 +116,9 @@ module.exports = {
     },
     //Insert loaded html into main_container or specified element
     renderer: function (controller, options) {
-
         var helper = this;
 
         return function (frag) {
-
             var selector = controller.options.selector ? controller.options.selector : "#main_container";
 
             /* This code is for loading content into an element other than main_container - not implemented */            
@@ -142,12 +126,11 @@ module.exports = {
             var el = containerElement ? containerElement : $(selector);
 
             el = $(selector);
-
             el.empty();
 
             var fade = helper.getValueOrDefault(controller.options.fade, controller.options.fade);
 
-            //If loading(long running load from backend) don't fade-in).
+            // If loading(long running load from backend) don't fade-in).
             if (fade && !controller.loading) {
                 el.hide().html(frag).fadeIn(fade);
             } else {
@@ -164,7 +147,6 @@ module.exports = {
             }
 
             controller.on();
-
             helper.scrollTop();
         };
     }
@@ -173,7 +155,6 @@ module.exports = {
     // Custom promise for async call for a resource.  
     // If the DOM (#main_container) is populated then the promise is complete.
     isResolved: function isResolved(resolve, reject, selectorId, counter, length) {
-
         var container = document.querySelector("#main_" + selectorId);
 
         if (!container) {
@@ -184,7 +165,6 @@ module.exports = {
         if (container && container.children.length > length) {
             resolve("loaded - with counter/length: " + counter + " - " + container.children.length);
         } else {
-
             counter++;
             if (counter > 5) {
                 reject("failed");
@@ -196,10 +176,9 @@ module.exports = {
                 }, time);
             }
         }
-
         return true;
     },
-    //Per Stack Overflow - Fire a click event in raw javascript
+    // Per Stack Overflow - Fire a click event in raw javascript
     fireEvent: function () {
         var eventType = null, i, j, k, l, event,
                 einstellungen = {

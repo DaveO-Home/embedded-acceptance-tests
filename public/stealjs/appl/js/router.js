@@ -1,7 +1,7 @@
 
 steal("app",
-        "can/map",
-        "can/route",
+        "can-map",
+        "can-route",
         "start",
         function (App, Map, Route, Start) {
 
@@ -26,8 +26,8 @@ steal("app",
 
                     var me = this,
                             controllerName = _.capitalize(this.controller),
-                            actionName = this.action
-                            ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index",
+                            actionName = this.action ?
+                            this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index",
                             failMsg = "Load problem with: \"" + controllerName + "/" + actionName + "\".";
 
                     //The controller will initiate the view. ---> calls basecontrol.view ---> app.loadView
@@ -129,12 +129,12 @@ steal("app",
                             }
                         });
 
-                        Route("{controller}/{action}/{id}");
-                        Route("{controller}/{action}");
-                        Route("{controller}");
-                        Route("", {home: "#!"});
+                        Route.register("{controller}/{action}/{id}");
+                        Route.register("{controller}/{action}");
+                        Route.register("{controller}");
+                        Route.register("", {home: "#!"});
 
-                        Route.ready();
+                        Route.start();
                     });
 
                     return Route;

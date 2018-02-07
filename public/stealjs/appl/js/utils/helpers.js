@@ -158,7 +158,7 @@ steal("moment", "can-view-callbacks",
                         controller.on();
 
                         helper.scrollTop();
-                    }
+                    };
                 }
 //!steal-remove-start
                 ,
@@ -221,7 +221,7 @@ steal("moment", "can-view-callbacks",
 
                     if (arguments.length > 2) {
                         if ((typeof arguments[2]) === "object") {
-                            change(einstellungen, arguments[2]);
+                            this.change(einstellungen, arguments[2]);
                         }
                     }
 

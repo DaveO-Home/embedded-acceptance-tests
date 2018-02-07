@@ -4,7 +4,7 @@
 
 var App = require("../app");
 var Helpers = require("helpers");
-var Control = require("can/control/control");
+var Control = require("can-control");
 
 var base = false;
 //removeIf(production)

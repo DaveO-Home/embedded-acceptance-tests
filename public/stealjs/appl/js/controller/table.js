@@ -5,15 +5,12 @@
 steal("app",
         "basecontrol",
         function (App, Base) {
-
             return App.controllers.Table || (App.controllers.Table = new (Base.extend({
                 defaults: {
                 }
             }, {
                 tools: function (data) {
-
                     var toolsUrl = "templates/stache/";
-
                     this.view({
                         data: data,
                         templateUrl: this.baseUrl + toolsUrl,
@@ -24,7 +21,6 @@ steal("app",
                     });
                 },
                 decorateTable: function (elementId) {
-
                     var id = "#" + elementId,
                             headers,
                             pageSorter = {
@@ -36,7 +32,7 @@ steal("app",
                                 page: 0,
                                 size: 10
                             },
-                    defaultPage = [1, 10];
+                            defaultPage = [1, 10];
 
                     if (elementId === "tools") {
                         headers = {".disabled": {sorter: false, filter: false}};
@@ -57,10 +53,8 @@ steal("app",
                     }).tablesorterPager(pageSorter);
 
                     $(id).trigger("pageAndSize", defaultPage);
-
                 },
                 base: false
-
             }))("#main_container"));
 
         });

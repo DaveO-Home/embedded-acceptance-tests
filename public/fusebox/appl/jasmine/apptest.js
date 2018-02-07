@@ -1,17 +1,14 @@
 
-var routerTest = require("routertest").routertest,
-        domTest = require("domtest").domtest,
-        contactTest = require("contacttest").contacttest,
-        loginTest = require("logintest").logintest,
-        toolsTest = require("toolstest").toolstest,
-        Start = require("start");
+var routerTest = require("routertest").routertest;
+var domTest = require("domtest").domtest;
+var contactTest = require("contacttest").contacttest;
+var loginTest = require("logintest").logintest;
+var toolsTest = require("toolstest").toolstest;
 
 exports.apptest = function (Route, Helpers, App) {
-
     var mainContainer = "#main_container";
 
     describe("Application Unit test suite - AppTest", function () {
-
         beforeAll(function () {
             /* Important!
              * Make sure the div container is added to the Karma page
@@ -22,7 +19,6 @@ exports.apptest = function (Route, Helpers, App) {
 
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-
         }, 10000);
 
         afterEach(function () {
@@ -31,13 +27,10 @@ exports.apptest = function (Route, Helpers, App) {
                 this.disabled = false;
             });
             $(mainContainer).empty();
-
         });
 
         afterAll(function () {
-
             $(mainContainer).remove();
-
         }, 5000);
 
         it("Is Welcome Page Loaded", function (done) {
@@ -51,78 +44,54 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("home", "#!");
             //Waiting for page to load.
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 1);
-
             }).catch(function (rejected) {
-
                 fail("The Welcome Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
                     expect(Route.data.index).toHaveBeenCalled();
                     expect(Route.data.index.calls.count()).toEqual(1);
                     expect(App.controllers["Start"]).not.toBeUndefined();
                     expect($(mainContainer).children().length > 1).toBe(true);
-
                     domTest("index");
                 }
-
                 done();
-
             });
-
         });
 
         it("Is Tools Table Loaded", function (done) {
             /* Letting the Router load the appropriate page.
              * The hash change event should load the resource.
              */
-
             Route.data.attr("controller", "table");
             Route.data.attr("action", "tools");
 
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 1);
-
             }).catch(function (rejected) {
-
                 fail("The Tools Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
                     expect(App.controllers["Table"]).not.toBeUndefined();
                     expect($(mainContainer).children().length > 1).toBe(true);
 
                     domTest("tools");
                 }
-
                 done();
-
             });
-
         });
 
         routerTest(Route, "table", "tools", null);
 
         it("Is Pdf Loaded", function (done) {
-
             Route.data.attr("controller", "pdf");
             Route.data.attr("action", "test");
 
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 0);
-
             }).catch(function (rejected) {
-
                 fail("The Pdf Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
                     expect(Route.data.dispatch.calls.count()).toEqual(2);
                     expect(App.controllers["Pdf"]).not.toBeUndefined();
@@ -130,9 +99,7 @@ exports.apptest = function (Route, Helpers, App) {
 
                     domTest("pdf");
                 }
-
                 done();
-
             });
         });
 
@@ -145,13 +112,11 @@ exports.apptest = function (Route, Helpers, App) {
         //Form Validation
         contactTest(Route, Helpers);
         //Verify modal form
-        loginTest(Start);
+        loginTest();
 
         if (testOnly) {
             it("Testing only", function () {
-
                 fail("Testing only, build will not proceed");
-
             });
         }
     });

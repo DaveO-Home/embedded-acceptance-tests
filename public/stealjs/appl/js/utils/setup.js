@@ -1,5 +1,5 @@
 
-steal("can/view/stache", function (stache) {
+steal("can-stache","can-stache-bindings", function (stache) {
 
     window.Stache = stache;
 
