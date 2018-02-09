@@ -22,9 +22,13 @@
         "steal": true,
         "rmain_container": true,
         "FuseBox": true,
-        "process": true
+        "process": true,
+        "module": true
     },
     "env": { 
-        "browser": true, "jasmine": true, "jquery": true, "amd": true
+        "browser": true,
+        "jasmine": true,
+        "jquery": true,
+        "amd": true
     }
 }

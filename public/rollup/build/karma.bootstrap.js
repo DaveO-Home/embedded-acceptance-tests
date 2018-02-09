@@ -24,5 +24,6 @@ window.__karma__.loaded = function () {
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     jasmine.getEnv().addReporter(statusReporter);
+    jasmine.getEnv().randomizeTests(false);
 
 };

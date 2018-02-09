@@ -1,10 +1,13 @@
+/.*/**/*
 build.xml
 /nbproject/*
 /build/**/*
 /public/**/build/*.log
+/public/*list*.dat
 /dist/*
 /public/dist/*
 /public/dist_test/*
+/public/package-lock.json
 /dist_test/maps
 /public/.fusebox/*
 /public/dev-bundle.js
@@ -13,6 +16,7 @@ build.xml
 /public/bower_components
 /public/site/*
 /public/lib/*
+/public/dropdown/*
 /public/*.lst
 /public/jars/*
 /public/WEB-INF/lib/*
@@ -23,4 +27,5 @@ public/classes/*
 public/scripts/*
 public/sendMail
 public/sendmail.js
+GenCopy
 npm-*

@@ -1,17 +1,15 @@
 
-var routerTest = require("routertest").routertest,
-        domTest = require("domtest").domtest,
-        toolsTest = require("toolstest").toolstest,
-        contactTest = require("contacttest").contacttest,
-        loginTest = require("logintest").logintest,
-        mainContainer = "#main_container",
-        mainHtml = '<div id="main_container"><div class="loading-page"></div></div>',
-        Start = require("../js/controller/start");
+var routerTest = require("routertest").routertest;
+var domTest = require("domtest").domtest;
+var toolsTest = require("toolstest").toolstest;
+var contactTest = require("contacttest").contacttest;
+var loginTest = require("logintest").logintest;
+var mainContainer = "#main_container";
+var mainHtml = '<div id="main_container"><div class="loading-page"></div></div>';
+var Start = require("../js/controller/start");
 
 exports.apptest = function (Route, Helpers, App) {
-
     describe("Application Unit test suite - AppTest", function () {
-
         beforeAll(function () {
             /* Important!
              * Make sure the div container is added to the Karma page
@@ -22,7 +20,6 @@ exports.apptest = function (Route, Helpers, App) {
 
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-
         }, 10000);
 
         afterEach(function () {
@@ -31,35 +28,26 @@ exports.apptest = function (Route, Helpers, App) {
                 this.disabled = false;
             });
             $(mainContainer).empty();
-
         });
 
         afterAll(function () {
-
             $(mainContainer).remove();
-
         }, 5000);
 
         it("Is Welcome Page Loaded", function (done) {
             /*  
              * Loading Welcome page.
              */
-
             Route.data.attr("base", "true");
             Route.data.attr("selector", mainContainer);
             Route.data.attr("home", "");
             Route.data.attr("home", "#!");
             //Waiting for page to load.
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 1);
-
             }).catch(function (rejected) {
-
                 fail("The Welcome Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
                     expect(Route.data.index).toHaveBeenCalled();
                     expect(Route.data.index.calls.count()).toEqual(1);
@@ -70,29 +58,21 @@ exports.apptest = function (Route, Helpers, App) {
                 }
 
                 done();
-
             });
-
         });
 
         it("Is Tools Table Loaded", function (done) {
             /* Letting the Router load the appropriate page.
              * The hash change event should load the resource.
              */
-
             Route.data.attr("controller", "table");
             Route.data.attr("action", "tools");
 
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 1);
-
             }).catch(function (rejected) {
-
                 fail("The Tools Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
                     expect(App.controllers["Table"]).not.toBeUndefined();
                     expect($(mainContainer).children().length > 1).toBe(true);
@@ -101,30 +81,23 @@ exports.apptest = function (Route, Helpers, App) {
                 }
 
                 done();
-
             });
-
         });
 
         routerTest(Route, "table", "tools", null);
 
         it("Is Pdf Loaded", function (done) {
-
+            var count = Route.data.dispatch.calls.count();
             Route.data.attr("controller", "pdf");
             Route.data.attr("action", "test");
 
             new Promise(function (resolve, reject) {
-
                 Helpers.isResolved(resolve, reject, "container", 0, 0);
-
             }).catch(function (rejected) {
-
                 fail("The Pdf Page did not load within limited time: " + rejected);
-
             }).then(function (resolved) {
-
                 if (resolved) {
-                    expect(Route.data.dispatch.calls.count()).toEqual(2);
+                    expect(Route.data.dispatch.calls.count()).not.toEqual(count);
                     expect(App.controllers["Pdf"]).not.toBeUndefined();
                     expect($(mainContainer).children().length > 0).toBe(true);
 
@@ -132,7 +105,6 @@ exports.apptest = function (Route, Helpers, App) {
                 }
 
                 done();
-
             });
         });
 
@@ -149,9 +121,7 @@ exports.apptest = function (Route, Helpers, App) {
                 
         if (testOnly) {
             it("Testing only", function () {
-
                 fail("Testing only, build will not proceed");
-
             });
         }
     });

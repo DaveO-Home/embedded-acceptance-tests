@@ -1,4 +1,3 @@
-/*global rmain_container:true module:true*/
 /*eslint no-unused-vars: ["error", { "args": "none" }]*/
 var App = require("b/app");
 var Base = require("b/basecontrol");
@@ -8,18 +7,15 @@ var me, location;
 module.exports = App.controllers.Start ||
         (App.controllers.Start = new (Base.extend({
             initMenu: function () {
-
                 me = this;
                 var hash = window.location.hash;
                 location = hash === "#!contact" ? location : hash;
                 Menu.activate("#top-nav div ul li");
                 Menu.activate("#side-nav nav ul li");
-
             },
             index: function (options) {
-
-                var indexUrl = "views/prod/index.html",
-                        markdownUrl = this.base ? "base/README.md" : typeof testit !== "undefined"? "/README.md": "../../README.md";
+                var indexUrl = "views/prod/index.html";
+                var markdownUrl = this.base ? "base/README.md" : typeof testit !== "undefined"? "/README.md": "../../README.md";
 
                 this.view({
                     url: me.baseUrl + indexUrl,
@@ -29,10 +25,8 @@ module.exports = App.controllers.Start ||
                     fnLoad: function (el) {
                     }
                 });
-
             },
             'div .login click': function (sender, e) {
-
                 e.preventDefault();
 
                 var loginUrl = "views/prod/login.html";
@@ -49,20 +43,15 @@ module.exports = App.controllers.Start ||
                     close: "Close",
                     contactFooter: me.contactFooter
                 });
-
             },
             '.modal .submit-login click': function (sender, e) {
-
                 e.preventDefault();
 
                 alert('Not implemented');
                 $(sender).closest('.modal').modal('hide');
-
             },
             'div .modal-footer .contact click': function (sender, e) {
-
                 $(sender).closest('.modal').modal('hide');
-
             },
             contact: function (ev) {
                 this.view({
@@ -116,11 +105,10 @@ module.exports = App.controllers.Start ||
                         };
 
                         form.find("input[type=submit]", el).click(formFunction);
-
                     }
                 });
             },
-            footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised {{submitCss}}">{{submit}}</button> \
+            footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button> \
                      <button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>',
             contactFooter: '<div class="modal-footer"> \
                             <div class="mr-auto contact" > \

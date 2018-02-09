@@ -1,8 +1,6 @@
 
 steal(function () {
-
     return function (Route, Helpers, App) {
-
         steal.import("routertest",
                 "domtest",
                 "toolstest",
@@ -93,6 +91,7 @@ steal(function () {
                 routerTest(Route, "table", "tools", null);
 
                 it("Is Pdf Loaded", function (done) {
+                    var count = Route.data.dispatch.calls.count();
                     Route.data.attr("controller", "pdf");
                     Route.data.attr("action", "test");
 
@@ -104,7 +103,7 @@ steal(function () {
                         fail("The Pdf Page did not load within limited time: " + rejected);
                     }).then(function (resolved) {
                         if (resolved) {
-                            expect(Route.data.dispatch.calls.count()).toEqual(2);
+                            expect(Route.data.dispatch.calls.count()).not.toEqual(count);
                             expect(App.controllers["Pdf"]).not.toBeUndefined();
                             expect($(mainContainer).children().length > 0).toBe(true);
 
@@ -119,7 +118,6 @@ steal(function () {
 
                 //Spec to test if page data changes on select change event.
                 toolsTest(Route, Helpers);
-
                 //Form Validation
                 contacttest(Route, Helpers);
                 //Verify modal form

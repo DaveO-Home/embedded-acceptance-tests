@@ -6,7 +6,6 @@ steal("app",
         "helpers",
         "config",
         function (App, Router, Default, Setup, Helpers) {
-
             App.init(Default);
 
             var Route = Router.init();
@@ -21,10 +20,8 @@ steal("app",
             if (typeof testit !== "undefined" && testit) {
                 //Run acceptance tests.
                 steal.loader.import("apptest").then(function (apptest) {
-
                     apptest(Route, Helpers, App);
-                    setTimeout(()=>{window.tests()}, 500);     //See include-all-tests.js                    
-                    
+                    setTimeout(function() { window.tests() }, 500);     //See include-all-tests.js                                       
                 });
             }
 //!steal-remove-end

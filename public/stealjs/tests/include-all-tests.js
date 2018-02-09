@@ -1,6 +1,5 @@
 var tests = [];
 for (var file in window.__karma__.files) {
-
     if (window.__karma__.files.hasOwnProperty(file)) {
         if (/base\/stealjs\/tests\/steal_unit.*\.js$/.test(file)) {
             tests.push(file.substr(6));
@@ -9,11 +8,7 @@ for (var file in window.__karma__.files) {
 }
 
 tests[tests.length] = function () {
-    if (window.__karma__) {
-        setTimeout(function () {
-            window.__karma__.start();
-        }, 500);
-    }
+    window.__karma__.start();
 };
 
 window.tests = function() {

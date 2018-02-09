@@ -108,7 +108,7 @@ steal("app",
                                 }
                             });
                         },
-                        footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised {{submitCss}}">{{submit}}</button>' +
+                        footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button>' +
                                 '<button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>',
                         contactFooter: '<div class="modal-footer">' +
                                 '<div class="mr-auto contact" >' +
