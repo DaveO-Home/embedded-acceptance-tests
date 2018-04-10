@@ -4,6 +4,7 @@ build.xml
 /build/**/*
 /public/**/build/*.log
 /public/*list*.dat
+/public/outdated.dat
 /dist/*
 /public/dist/*
 /public/dist_test/*

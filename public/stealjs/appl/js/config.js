@@ -1,4 +1,5 @@
 require("package.json!npm");
+var steal = require("@steal");
 /*
  * During the production build you can ignore the "Unable to load CSS in an environment without a document." exception.
  */
@@ -23,6 +24,5 @@ steal.import("live-reload").then(reload => {
 
         });
     }
-    ;
 });
 //!steal-remove-end

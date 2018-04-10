@@ -20,7 +20,8 @@
     },
     "exclude": [
       "loader/**/*",
-      "modules/**/*"
+      "modules/**/*",
+      "node_modules"
     ],
     "compileOnSave": true,
     "buildOnSave": false,

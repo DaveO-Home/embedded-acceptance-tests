@@ -326,9 +326,6 @@ function browserifyApp() {
             .pipe(removeCode({production: isProduction}))
             .pipe(buffer())
             .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())  //Strip out Canjs warnings if production.
-//            .pipe(babel({
-//                presets: [['es2015', {"modules": false}]]
-//            }))
             .pipe(isProduction ? uglify().on('error', log) : noop());
 
     stream = stream.pipe(sourcemaps.init({loadMaps: !isProduction}))
