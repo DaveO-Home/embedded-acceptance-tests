@@ -2,22 +2,22 @@
 
 hidden { display: none; }
 
-.btn-primary.raised {
-    box-shadow: 0 3px 0 0 #007299;
+.btn-primary .raised {
+   box-shadow: 0 3px 0 0 #007299;
 }
 
-.btn.raised {
+.btn .raised {
     box-shadow: 0 3px 0 0 #7c8082;
 }
 
-.btn.raised:active {
+.btn .raised:active {
     background: #979EA0;
     box-shadow: none;
     margin-bottom: -3px;
     margin-top: 3px;
 }
 
-.btn-primary.raised:active, .btn-primary.raised.active {
+.btn-primary .raised:active, .btn-primary .raised .active {
     background: #33a6cc;
     box-shadow: none;
     margin-bottom: -3px;
@@ -28,7 +28,7 @@ hidden { display: none; }
     text-align: center;
     width: 100%;
 }
-.control-group.required .control-label:after {
+.control-group .required .control-label:after {
     color:red;
     content:"*";
 }
@@ -107,7 +107,7 @@ html {
     width: 100%;
 }
 
-a.login:hover {
+a .login:hover {
     text-decoration: none;
 }
 
@@ -133,6 +133,7 @@ a.login:hover {
 }
 
 /* Sidebar navigation */
+
 .sidebar {
     padding-left: 0;
     padding-right: 0;
@@ -157,3 +158,4 @@ a.login:hover {
 .sidebar-nav {
     padding: 9px 0;
 }
+
