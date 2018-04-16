@@ -27,7 +27,7 @@ module.exports = {
                     modal = $("#modalTemplate");
                     nameObject = $("#inputUsername");
                     done();
-                }, 100);
+                }, 500);
             });
 
             it("Login form - verify modal with login loaded", function (done) {
@@ -35,25 +35,26 @@ module.exports = {
                 expect(nameObject[0]).toExist();
 
                 closeButton = $(".close-modal");
-
-                closeButton.click(function () {
-                    setTimeout(function () {
-                        expect(modal[0]).not.toBeInDOM();
-                        expect(modal[0]).not.toExist();
-                    }, 100);
+                closeButton.submit(function (ev) {
+                    ev.preventDefault();
+                    modal.modal("toggle");
+                    return false;
                 });
 
                 done();
             });
 
-            it("Login form - verify cancel and removed from DOM", function () {
+            it("Login form - verify cancel and removed from DOM", function (done) {
                 expect(modal[0]).toExist();
+
                 closeButton.click();
 
                 setTimeout(function () {
-                    closeButton.click();
                     $("div .login").remove();
-                }, 10);
+                    expect(modal[0]).not.toBeVisible();
+                    expect(modal[0]).not.toBeInDOM();
+                    done()
+                }, 750);
             });
         });
     }
