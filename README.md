@@ -269,8 +269,8 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
 * Execute `npm list webpack`, the output should look like this;
 
-```node
-      ├── webpack@4.6.0  <===== if this is missing it won't work
+```npm
+      ├── webpack@4.6.0 <===== if this is missing it won't work
       └─┬ webpack-stream@4.0.3
         └── webpack@3.11.0
 ```
