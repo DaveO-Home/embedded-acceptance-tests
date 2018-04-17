@@ -31,6 +31,7 @@
     "lodash": "^4.17.5",
     "marked": "^0.3.19",
     "moment": "^2.22.1",
+    "pdfjs-dist": "^2.0.489",
     "popper.js": "^1.14.3",
     "promise-polyfill": "^7.1.2",
     "tablesorter": "^2.30.1"
@@ -42,7 +43,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "browser-sync": "^2.23.6",
-    "browserify": "^15.2.0",
+    "browserify": "^16.2.0",
     "browserify-css": "^0.14.0",
     "browserify-shim": "^3.8.14",
     "buffer": "^5.1.0",

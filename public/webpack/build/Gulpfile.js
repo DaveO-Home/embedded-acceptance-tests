@@ -81,7 +81,7 @@ gulp.task('csslint', ['pat'], function () {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', [/*'boot',*/ 'setVersion'], function (cb) {
+gulp.task('build', ['boot', 'setVersion'], function (cb) {
     dist = 'dist';
     let win="";
     if(isWindows) {
