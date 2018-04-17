@@ -1,30 +1,34 @@
 /**
+ *         
+ * Production build using karma/jasmine acceptance test approval and Development environment with Webpack
+ *
  * Successful acceptance tests & lints start the production build.
  * Tasks are run serially, 'pat' -> ('eslint', 'csslint') -> 'boot' -> 'build'
  */
+let version;
+const { spawn } = require('child_process');
+const webpackVersion = spawn('npm', ['list', '--depth=0', 'webpack']);
 
-const gulp = require('gulp'),
-        /* 
-         * Production build using karma/jasmine acceptance test approval and Development environment with Webpack
-         */
-        path = require('path'),
-        Server = require('karma').Server,
-        eslint = require('gulp-eslint'),
-        csslint = require('gulp-csslint'),
-        exec = require('child_process').exec,
-        log = require("fancy-log"),
-        env = require("gulp-env"),
-        webpack = require('webpack'),
-        webpackStream = require("webpack-stream"),
-        WebpackDevServer = require('webpack-dev-server'),
-        ReloadPlugin = require('reload-html-webpack-plugin');
+const gulp = require('gulp');
+const path = require('path');
+const Server = require('karma').Server;
+const eslint = require('gulp-eslint');
+const csslint = require('gulp-csslint');
+const exec = require('child_process').exec;
+const log = require("fancy-log");
+const env = require("gulp-env");
+const webpack = require('webpack');
+const webpackStream = require("webpack-stream");
+const WebpackDevServer = require('webpack-dev-server');
+const ReloadPlugin = require('reload-html-webpack-plugin');
 
-var lintCount = 0, dist = "dist_test";
+let lintCount = 0, dist = "dist_test";
 let browsers = process.env.USE_BROWSERS;
+let isWindows = /^win/.test(process.platform);
 if (browsers) {
     global.whichBrowser = browsers.split(",");
 }
-var isWindows = /^win/.test(process.platform);
+
 /**
  * Default: Production Acceptance Tests 
  */
@@ -36,7 +40,6 @@ gulp.task('pat', ["acceptance-tests"], function (done) {
  * javascript linter
  */
 gulp.task('eslint', ['pat'], function (cb) {
-
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
                 configFile: './eslintConf.json',
@@ -78,15 +81,14 @@ gulp.task('csslint', ['pat'], function () {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['boot'], function (cb) {
+gulp.task('build', [/*'boot',*/ 'setVersion'], function (cb) {
     dist = 'dist';
     let win="";
     if(isWindows) {
 	win="win";
     }
     
-    exec('npm run webpackprod' + win, function (err, stdout, stderr) {
-
+    exec('export W_VERSION="' + version + '"; npm run webpackprod' + win, function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
 
@@ -135,9 +137,10 @@ gulp.task('acceptance-tests', ['test-build'], function (done) {
 /*
  * Build Test without Karma settings for npm Express server (npm start)
  */
-gulp.task("webpack-rebuild", function () {
+gulp.task("webpack-rebuild", ["setVersion"], function () {
 
     var envs = env.set({
+        W_VERSION: version,
         NODE_ENV: "development",
         USE_WATCH: "false",
         USE_KARMA: "false",
@@ -157,9 +160,10 @@ gulp.task("webpack-rebuild", function () {
 /*
  * Build the test bundle
  */
-gulp.task("test-build", function () {
+gulp.task("test-build", ["setVersion"], function () {
     var useBuild = process.env.USE_BUILD == "false"? "false": "true";
     var envs = env.set({
+        W_VERSION: version,
         NODE_ENV: "development",
         USE_WATCH: "false",
         USE_KARMA: "true",
@@ -173,12 +177,25 @@ gulp.task("test-build", function () {
         return gulp.src("../appl/index.js")
                 .pipe(envs);
     };
-
+    
     return gulp.src("../appl/index.js")
             .pipe(envs)
             .pipe(webpackStream(require('../webpack.config.js')))
             .pipe(envs.reset)
             .pipe(gulp.dest("../../dist_test/webpack"));
+});
+
+/*
+ * Extract Current Webpack Version
+ */
+gulp.task("setVersion", function () {
+    return webpackVersion.stdout.on('data', (data) => {
+        const listed = `${data}`.split(' ')[2]
+        version = listed.substr(listed.indexOf('@')+1)
+        if(version.indexOf('(empty)') >- 1) {
+            version='4.6.0'
+        }
+    });
 });
 
 /**
@@ -198,9 +215,10 @@ gulp.task('webpack-tdd', ["test-build"], function (done) {
  * Webpack recompile to 'dist_test' on code change
  * run watch in separate window. Used with karma tdd.
  */
-gulp.task("webpack-watch", function () {
+gulp.task("webpack-watch", ["setVersion"], function () {
 
     env.set({
+        W_VERSION: version,
         NODE_ENV: "development",
         USE_WATCH: "true",
         USE_KARMA: "false",
@@ -239,9 +257,10 @@ gulp.task('set-watch-env', function () {
  * - hot module recompile/replace
  * - reload served web page.
  */
-gulp.task("webpack-server", function () {
+gulp.task("webpack-server", ["setVersion"], function () {
 
     env.set({
+        W_VERSION: version,
         NODE_ENV: "development",
         USE_WATCH: "true",
         USE_KARMA: "false",
@@ -263,10 +282,15 @@ gulp.task("webpack-server", function () {
     webpackConfig.devtool = 'eval';
     webpackConfig.output.path = path.resolve('../../dist_test/webpack');
     webpackConfig.plugins.concat([
-        new ReloadPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]);
+
+    if(Number(version.substring(0, version.lastIndexOf('.'))) < 4) {
+        webpackConfig.plugins.concat([
+            new ReloadPlugin()
+        ])
+    }
 
     WebpackDevServer.addDevServerEntrypoints(webpackConfig, options);
 

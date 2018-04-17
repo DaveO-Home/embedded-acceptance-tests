@@ -3,7 +3,7 @@ if (!window.__karma__) {
 }
 window._bundler = "webpack";
 
-var App = require("app"), 
+var App = require("app"),
         Router = require("router"),
         Default = require("default"),
         Setup = require("setup"),
@@ -23,24 +23,19 @@ if (typeof steal !== "undefined") {
 /* develblock:start */
 //Code between the ..start and ..end tags will be removed by webpack during the production build.
 //testit is true if running under Karma - see testapp_dev.html
-if (typeof testit !== "undefined" && testit) {
-
-    Promise.all([System.import("routertests"),
-        System.import("domtests"),
-        System.import("toolstests"),
-        System.import("contacttests"),
-        System.import("logintests")]).then(function (modules) {
-
-        if (typeof testit !== "undefined" && testit) {
-            //Run acceptance tests.
-            Route.data.attr("base", true)
-            System.import("apptests").then(function (apptest) {
-             
-                apptest(Route, Helpers, App, modules);
-                __karma__.start();  //<===== Very Important - executed here!!
-
-            });
-        }
-    });
-}
+new Promise((resolve, reject) => {
+    setTimeout(function () {
+        resolve(0)
+    }, 500)
+}).catch(rejected => {
+    fail(`Error ${rejected}`)
+}).then(resolved => {
+    if (typeof testit !== "undefined" && testit) {
+        var apptest = require("apptests")
+        // Run acceptance tests. - To run only unit tests, comment the apptest call.
+        apptest(Route, Helpers, App)
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
+        __karma__.start()
+    }
+})
 /* develblock:end */

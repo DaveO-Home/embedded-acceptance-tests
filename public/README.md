@@ -36,6 +36,8 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
   To install all required dependencies.
 
+__\*\*\*__ __See__ the Webpack section for Webpack Version 4.x.x support.
+
 **Client:**
 
 Test builds will generate bundles in 'dist_test' and production in the 'dist' directory at the root level, 'public'.
@@ -246,4 +248,32 @@ __A word on developing tests__; You can write and execute tests quicker by using
    * `cd public/webpack/build`
    * `gulp tdd`
 
-   Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+   Tests will rerun as source code(*.js) are changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+
+***Webpack 4.6.0***
+
+  The default Webpack version is 3.x. Webpack 4.x is not default because the `webpack-stream` module used in Gulp still has Webpack version 3.x as a depenancy. `Gulpfile.js` and `webpack.conf.js` configuration files are coded to support both versions. The upgrade procedure to Webpack 4.x follows;
+
+* It might be a good idea to run `npm dedupe` and `npm cache verify` after the upgrade
+  * in public/package.json make the following changes;
+    * "extract-text-webpack-plugin": "^3.0.2" to "extract-text-webpack-plugin": "^4.0.0-beta.0"
+    * "html-webpack-plugin": "^2.30.1" to "html-webpack-plugin": "^3.2.0"
+    * "karma-webpack": "^2.0.13" to "karma-webpack": "4.0.0-beta.0"
+    * "webpack": "^3.11.0" to "webpack": "^4.6.0"
+    * "webpack-dev-server": "^2.11.2" to "webpack-dev-server": "^3.1.3"
+    * add "webpack-cli": "^2.0.14" <===== this is important
+  * in the public directory, execute `rm -rf node_modules`
+  * execute `npm cache verify`
+  * execute `npm install`
+  * execute `npm dedupe` and `npm cache verify` (optional)
+
+* Execute `npm list webpack`, the output should look like this;
+
+```node
+      ├── webpack@4.6.0  <===== if this is missing it won't work
+      └─┬ webpack-stream@4.0.3
+        └── webpack@3.11.0
+```
+
+   __Note:__ Change versions as needed. Tested with node 8.9.4 and npm 5.8.0.
+
