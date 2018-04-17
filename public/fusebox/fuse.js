@@ -98,7 +98,7 @@ if (!isProduction) {
 
     var acceptance = fuse.bundle("acceptance")  //Using .ts and useTypescriptCompiler=true so that HMR reloads properly
             .target("browser")
-            .instructions(`> [index.ts]`);
+            .instructions(`> [index.js]`);
 
     if (useHMR === true) {
         acceptance.hmr({reload: true})

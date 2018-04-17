@@ -177,9 +177,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    The HMR Server must be running if you want tests to rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`. A warning is issued under `tdd`(404: /dist_test/fusebox/resources) since `hmr` requires a non-karma build, this can be ignored.
 
-   Additionally, Fusebox likes Typescript, so to run HMR, the index.js script needed to be converted to index.ts.  If you want to modify the index module modify the index.ts file.  Also, the entire application is dynamically transpiled to Typescript in Development.  Production is pure javascript so that the block development code removals will work.
-
-   __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+.
+   __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+. Verified fuse-box 3.2.2.
 
 ### III.  **Rollup**
 
