@@ -2,6 +2,7 @@
   "name": "embedded-acceptance-tests",
   "version": "0.0.5",
   "description": "Karma Jasmine Browserify, Fusebox, Rollup, StealJS, Webpack, CanJS Testing",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "reload": "node_modules/.bin/steal-tools live-reload",
