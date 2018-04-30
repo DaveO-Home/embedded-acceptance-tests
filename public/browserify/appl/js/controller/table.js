@@ -12,7 +12,6 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
     tools: function (data) {
 
         var toolsUrl = "templates/stache/";
-
         this.view({
             data: data,
             templateUrl: this.baseUrl + toolsUrl,
@@ -23,7 +22,6 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
         });
     },
     decorateTable: function (elementId) {
-
         var id = "#" + elementId,
                 headers,
                 pageSorter = {
@@ -56,7 +54,6 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
         }).tablesorterPager(pageSorter);
 
         $(id).trigger("pageAndSize", defaultPage);
-
     },
     base: false
 

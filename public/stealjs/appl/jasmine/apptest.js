@@ -14,14 +14,18 @@ steal(function () {
             var mainContainer = "#main_container";
 
             describe("Application test suite - AppTest", function () {
-                beforeAll(function () {
+                beforeAll(function (done) {
                     /* Important!
-                     * Make sure the div container is added to the Karma page
+                     * Make sure the spa main bootstrap layout is added to the Karma page
+                     * For steal we are using ajax because a bundle is not being used
                      */
-                    if (!$(mainContainer).length) {
-                        $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
-                    }
-
+                    $.get("base/stealjs/appl/app_bootstrap.html", function (data) {
+                        $("body").append(data)
+                        done()
+                    }, "html").fail(function (data, err) {
+                        console.warn("Error fetching fixture data: " + err);
+                        done()
+                    });
                     spyOn(Route.data, 'index').and.callThrough();
                     spyOn(Route.data, 'dispatch').and.callThrough();
                 }, 10000);
@@ -32,7 +36,8 @@ steal(function () {
                 });
 
                 afterAll(function () {
-                    $(mainContainer).remove();
+                    $(".remove").remove();
+                    window.scrollTo(0, 0);
                 }, 5000);
 
                 it("Is Welcome Page Loaded", function (done) {

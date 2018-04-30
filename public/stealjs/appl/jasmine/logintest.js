@@ -13,7 +13,6 @@ steal("start", function (Start) {
                 if (!$(mainContainer)[0]) {
                     $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
                 }
-                $("body").append('<div class="nav-login"><a href="#" class="login">Log in</a></div>');
 
                 Start.initMenu();
                 Start.base = true;

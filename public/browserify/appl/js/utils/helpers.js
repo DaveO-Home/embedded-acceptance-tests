@@ -12,7 +12,6 @@ module.exports = {
         }, "slow");
     },
     convertToBoolean: function (value) {
-
         if (!this.isNullOrEmpty(value)) {
             return false;
         }
@@ -29,7 +28,6 @@ module.exports = {
                     return false;
             }
         }
-
         return Boolean(value);
     },
     parseJson: function (json) {
@@ -70,7 +68,6 @@ module.exports = {
         return weekKeys;
     },
     setJobTypeSelector: function (Component, MapMap, osKeys, values, template, baseUrl) {
-
         var current = osKeys[0];
         if (values) {
             current = values[0];
@@ -95,8 +92,7 @@ module.exports = {
                             return false;
                         }
                         var tbodyTemplate = template;
-                        var toolsUrl = baseUrl + "templates/tools_";
-                                 
+                        var toolsUrl = baseUrl + "templates/tools_";                                
                         $.get(toolsUrl + selectedJobType + ".json", function (data) {
                             if (selectedJobType == "ful") {
                                 data.all = false;
@@ -104,11 +100,8 @@ module.exports = {
 
                             var tbody = tbodyTemplate(data);
                             $(".tablesorter tbody").html(tbody).trigger("update");
-
                         }, "json").fail(function (data, err) {
-
                             console.error("Error fetching fixture data: " + err);
-
                         });
                     }
                 }
@@ -116,7 +109,6 @@ module.exports = {
         }
     },
     getOptions: function (keys, values) {
-
         if (!values || values.length !== keys.length) {
             values = keys;
         }
@@ -125,14 +117,11 @@ module.exports = {
         for (var i = 0; i < keys.length; i++) {
             options = options + "<option value='" + values[i] + "'>" + keys[i] + "</option>";
         }
-
         return options;
     },
     //Insert loaded html into main_container or specified element
     renderer: function (controller, options) {
-
         var helper = this;
-
         return function (frag) {
 
             var selector = controller.options.selector ? controller.options.selector : "#main_container";
@@ -173,7 +162,6 @@ module.exports = {
     // Custom promise for async call for a resource.  
     // If the DOM (#main_container) is populated then the promise is complete.
     isResolved: function isResolved(resolve, reject, selectorId, counter, length) {
-
         var container = document.querySelector("#main_" + selectorId);
 
         if (!container) {
@@ -184,7 +172,6 @@ module.exports = {
         if (container && container.children.length > length) {
             resolve("loaded - with counter/length: " + counter + " - " + container.children.length);
         } else {
-
             counter++;
             if (counter > 5) {
                 reject("failed");
@@ -196,7 +183,6 @@ module.exports = {
                 }, time);
             }
         }
-
         return true;
     },
     //Per Stack Overflow - Fire a click event in raw javascript

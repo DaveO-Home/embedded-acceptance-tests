@@ -26,9 +26,9 @@ if (testit) {
 }
 //endRemoveIf(production)
 
-var baseScriptsUrl = "~/",
-        pathName = window.location.pathname,
-        baseUrl = pathName !== "/context.html"
+var baseScriptsUrl = "~/";
+var pathName = window.location.pathname;
+var baseUrl = pathName !== "/context.html"
         ? pathName.substring(0, pathName.substring(1, pathName.length).lastIndexOf("/") + 1) + "/"
         : "/base/" + window._bundler + "/appl/";
 
@@ -118,10 +118,9 @@ module.exports = {
         var currentController = this.controllers[_.capitalize(options.controller)];
         var template;
 //!steal-remove-start
-        var baseUrl = testit ? "/base/" + window._bundler + "/appl/" : baseUrl;
+        baseUrl = testit ? "/base/" + window._bundler + "/appl/" : baseUrl;
 //!steal-remove-end
         var jsonUrl = baseUrl + "templates/tools_ful.json";
-
         //fixture({url: "/listools"}, "templates/tools_ful.json");
         $.get(options.templateUrl + options.template, function (source) {
             template = Stache(source);
