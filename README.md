@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of five javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
+This demo is comprised of six javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -34,7 +34,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
   npm install
 ```
 
-  To install all required dependencies.
+  To install all required dependencies. Also install the global package for Brunch, `npm install brunch -g`.
 
 __\*\*\*__ __See__ the Webpack section for Webpack Version 4.x.x support.
 
@@ -58,6 +58,7 @@ To run the production application:
   1. `cd <install>/acceptance_tests`
   1. `npm start`  -  This should start a Node Server with port 3080.
   1. Start a browser and enter `localhost:3080/dist/<bundler>/appl/testapp.html`
+  1. For Brunch the Production Url is `localhost:3080/dist/brunch/testapp.html` or `localhost:3080/dist/brunch`
 
 You can repeat the procedure with "webpack", "browserify", "stealjs" or "rollup". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
 
@@ -159,7 +160,43 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.  Note, you do not need `hmr` active for `tdd`. Also, `tdd` can be run with a headless browser.
 
-### II.  **Fusebox**
+### II.  **Brunch**
+
+1\. ***Watch, Recompile and Reload Window*** -
+
+  * `cd public/brunch/build`
+  * `gulp watch`
+
+At this point you can start a browser and enter `localhost:3080/`. Any changes to the source code(*.js files and other assets such as *.html) should be reflected in the browser auto reload.
+
+__Note__; The test url is `localhost:3080` since Brunch by default uses 'config.paths.public' as the server context. Also, the reload may fail at times, I've noticed that making a second code mod re-rights the ship.
+
+2\. ***Test Driven Development(tdd) Window*** -
+
+  * `cd public/brunch/build`
+  * `gulp tdd`
+
+  While the Brunch watcher is running, tests are re-run when code are changed. 
+  
+  __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+
+3\. ***Special Considerations***
+  
+  * Brunch plugin eslint-brunch uses eslint 3. The demo uses version 4.  The `gulp`(production build) command uses a gulp linter, so javascript linting is executed. However, if you wish to use the  eslint-brunch plugin, do the following;
+    * `cd <install>/public/node_modules/eslint-brunch`
+    * `npm install eslint@latest`
+    * `cd <install>/public` and edit the `brunch-config.js` file and uncomment the eslint section.
+  * Using the local custom plugin for stripping development code. The application from the production build will work with the development code embedded, however to strip the code, do the following;
+    * `cd <install>/public/brunch/appl/js/stripcode-brunch`
+    * `npm link`
+    * `cd <install>/public`
+    * `npm link stripcode-brunch`
+    * Edit `brunch-config.js` and uncomment the `stripcode` plugin section.
+    * Edit `package.json` and in devDependencies section add `"stripcode-brunch": "^0.1.1"`. Development Code will be stripped during the production build.
+
+    __Note:__ Don't forget to install Brunch using `npm install brunch -g`.
+
+### III.  **Fusebox**
 
 1\. ***Hot Module Reload(HMR) Server Window*** -
 
@@ -179,7 +216,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+. Verified fuse-box 3.2.2.
 
-### III.  **Rollup**
+### IV.  **Rollup**
 
 1\. ***Development Server Window*** -
 
@@ -197,7 +234,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### IV. **Stealjs**
+### V. **Stealjs**
 
 1\. ***Development Server Window*** -
 
@@ -226,7 +263,7 @@ __A word on developing tests__; You can write and execute tests quicker by using
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### V. **Webpack**
+### VI. **Webpack**
 
 1\. ***Development HMR Server Window*** -
 
