@@ -22,6 +22,7 @@ const stripCode = require("gulp-strip-code");
 const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create("devl");
 const del = require('del');
+const chalk = require('chalk');
 
 const startComment = "steal-remove-start",
         endComment = "steal-remove-end",
@@ -47,7 +48,6 @@ if (browsers) {
  * Build bundle from package.json 
  */
 gulp.task('build', ['application'], function () {
-
     isWatchify = false;
     return browserifyBuild();
 });
@@ -55,14 +55,12 @@ gulp.task('build', ['application'], function () {
  * Build Development bundle from package.json 
  */
 gulp.task('build-development', ['application-development'], function () {
-    
     return isSplitBundle ? browserifyBuild() : noop();
 });
 /**
  * Production Browserify 
  */
 gulp.task('application', ['copyprod'], function () {
-
     isWatchify = false;
     return applicationBuild();
 });
@@ -95,7 +93,7 @@ gulp.task('eslint', ['pat'], () => {
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
                 configFile: 'eslintConf.json',
-                quiet: 1
+                quiet: 0
             }))
             .pipe(eslint.format())
             .pipe(eslint.result(result => {
@@ -134,7 +132,6 @@ gulp.task('setdevelopment', function () {
  * Bootstrap html linter 
  */
 gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
-
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
@@ -144,8 +141,7 @@ gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
 /**
  * Remove previous build
  */
-gulp.task('clean', ['bootlint'], function (done) {
-    
+gulp.task('clean', ['bootlint'], function (done) {  
     isProduction = true;
     dist = prodDist;
     return del([
@@ -205,10 +201,9 @@ gulp.task('b-test', function (done) {
 /**
  * Run watch(HMR)
  */
-gulp.task('b-hmr', ['build-development'], function () {
-    
-    console.log("Watching, will rebuild bundle on code change.");
-
+gulp.task('b-hmr', ['build-development'], function (done) {
+    log(chalk.cyan("Watching, will rebuild bundle on code change.\n"));
+    return done();
 });
 
 /**
@@ -247,7 +242,6 @@ gulp.task('server', ['watch']);
 gulp.task('rebuild', ['build-development']);  //remove karma config for node express
 
 function browserifyBuild() {
-
     browserifyInited = browserify({
         debug: !isProduction,
         bundleExternal: true
@@ -288,7 +282,6 @@ function getNPMPackageIds() {
 }
 
 function applicationBuild() {
-
     browserifyInited = browserify({
         entries: ['../appl/index.js'],
         debug: !isProduction,
@@ -319,7 +312,6 @@ function applicationBuild() {
  * Build application bundle for production or development
  */
 function browserifyApp() {
-
     var stream = browserifyInited
             .bundle()
             .pipe(source('index.js'))
@@ -335,7 +327,6 @@ function browserifyApp() {
 }
 
 function enableWatchify() {
-
     if (isWatchify) {
         browserifyInited.plugin(watchify);
         browserifyInited.on('update', applicationBuild);
@@ -356,14 +347,12 @@ function copyImages() {
 }
 
 function copyFonts() {
-
     return gulp
             .src(['../../node_modules/font-awesome/fonts/*'])
             .pipe(copy('../../' + dist + '/appl'));
 }
 
-function runKarma(done) {
-    
+function runKarma(done) {   
     new Server({
         configFile: __dirname + '/karma_conf.js',
         singleRun: true
@@ -376,7 +365,6 @@ function runKarma(done) {
             process.exit(exitCode);
         }
     }).start();
-    
 }
 
 /*

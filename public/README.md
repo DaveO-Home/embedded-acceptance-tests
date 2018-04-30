@@ -201,11 +201,9 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 1\. ***Hot Module Reload(HMR) Server Window*** -
 
    * `cd public/fusebox/build`
-   * `fuse hmr`
+   * `gulp hmr` or `fuse hmr`
 
    At this point you can start a browser and enter `localhost:3080/fusebox/appl/testapp_dev.html` or `localhost:3080/dist_test/fusebox/appl/testapp_dev.html`.  Any changes to the source code(*.js files) should be reflected in the browser auto reload.
-
-   Alternatively, you can start up the HMR server with the gulp command `gulp hmr`, however, you will not see any output.
 
 2\. ***Test Driven Development(tdd) Window*** -
 

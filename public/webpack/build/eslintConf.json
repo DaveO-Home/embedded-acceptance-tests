@@ -9,7 +9,7 @@
     "rules": {
         "camelcase": 0,
         "comma-dangle": 2,
-        "quotes": 1,
+        "quotes": [0, "single"],
         "strict": 0
     },
     "globals": {

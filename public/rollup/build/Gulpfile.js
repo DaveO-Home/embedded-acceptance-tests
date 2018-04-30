@@ -82,7 +82,7 @@ gulp.task('eslint', ['pat'], () => {
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
                 configFile: 'eslintConf.json',
-                quiet: 1
+                quiet: 0
             }))
             .pipe(eslint.format())
             .pipe(eslint.result(result => {

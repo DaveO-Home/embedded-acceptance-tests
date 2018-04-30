@@ -46,7 +46,7 @@ gulp.task('eslint', ['pat'], () => {
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
                 configFile: 'eslintConf.json',
-                quiet: 1
+                quiet: 0
             }))
             .pipe(eslint.format())
             .pipe(eslint.result(result => {
@@ -82,7 +82,7 @@ gulp.task('csslint', ['pat'], function () {
  * Build the application to the production distribution 
  */
 gulp.task('build', ['boot'], function () {
-
+     
     stealTools.build({
         configMain: "stealjs/appl/js/config",
         main: "stealjs/appl/js/index",

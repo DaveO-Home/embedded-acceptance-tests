@@ -1,8 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/*eslint no-extra-semi: "warn"*/
-/*global exports:true*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 class BlockStripClass {
     constructor(options = {}) {
         this.options = options;
@@ -12,7 +9,6 @@ class BlockStripClass {
         this.endComment = options.options.end || 'develblock:end';
         this.regexPattern = new RegExp("[\\t ]*(\\/\\* ?|\\/\\/[\\s]*\\![\\s]*)" + this.startComment + " ?[\\*\\/]?[\\s\\S]*?(\\/\\* ?|\\/\\/[\\s]*\\![\\s]*)" + this.endComment + " ?(\\*\\/)?[\\t ]*\\n?", "g");
     }
-    ;
     transform(file) {
         file.loadContents();
         file.contents = file.contents.replace(this.regexPattern, '');

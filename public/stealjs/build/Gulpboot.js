@@ -7,7 +7,7 @@ gulp.task('bootlint', () => {
                 stoponerror: true,
                 stoponwarning: false,
                 loglevel: 'debug',
-                disabledIds: ['W009', 'E007', 'W005'],
+                disabledIds: ['E001', 'W009', 'E007', 'W005'],
                 issues: fileIssues,
                 reportFn: function (file, lint, isError, isWarning, errorLocation) {
                     var message = (isError) ? "ERROR! - " : "WARN! - ";
@@ -30,12 +30,12 @@ gulp.task('bootlint', () => {
     var stream = gulp.src(["../appl/*.html"])
             .pipe(bootlint(options));
     
-    stream.on('error', function() {
+    stream.on('error', function(err) {
+        console.log(err);
         process.exit(1);
     });
     
     return stream;
-    
 });
 
 gulp.task('default', ['bootlint']);

@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const copy = require("copy");
-/*eslint no-extra-semi: "warn"*/
-/*global exports:true*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 class CopyFsClass {
     constructor(options) {
         this.options = options;
@@ -17,7 +14,6 @@ class CopyFsClass {
             });
         });
     }
-    ;
 }
 exports.CopyFsClass = CopyFsClass;
 exports.CopyFs = (options) => {

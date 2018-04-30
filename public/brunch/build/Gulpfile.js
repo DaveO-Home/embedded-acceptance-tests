@@ -24,7 +24,7 @@ var initialTask;
 /**
  * Default: Production Acceptance Tests 
  */
-gulp.task('pat', /* ['accept'],*/ function (done) {
+gulp.task('pat', function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
@@ -141,19 +141,20 @@ gulp.task('brunch-watch', function (cb) {
     if (isWindows) {
         osCommands = 'cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=true & ';
     }
+    log(chalk.cyan('Watching for code changes....\n'));
     let cmd = exec(osCommands + 'npm run bw');
     cmd.stdout.on('data', (data) => {
         if (data && data.length > 0) {
-            console.log(data.trim());
+            log(data.trim());
         }
     });
     cmd.stderr.on('data', (data) => {
         if (data && data.length > 0)
-            console.log(data.trim())
+            log(data.trim())
     });
     return cmd.on('exit', (code) => {
+        log(chalk.green(`Watch exited with code ${code}`));
         cb()
-        console.log(`Watch exited with code ${code}`);
     });
 });
 /*
