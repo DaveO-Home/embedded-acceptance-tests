@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of six javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox or Rollup. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
+This demo is comprised of six javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup or Brunch. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 

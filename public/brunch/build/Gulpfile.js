@@ -197,7 +197,7 @@ gulp.task('brunch-tdd', function (done) { //,['accept']
     }
 
     log(chalk.cyan('Test Driven Development - please wait......'))
-    let cmd = exec(osCommands + 'npm run bt');
+    let cmd = exec(osCommands + 'brunch build --env test');
     cmd.stdout.on('data', (data) => {
         if (data && data.length > 0) {
             console.log(data.trim());

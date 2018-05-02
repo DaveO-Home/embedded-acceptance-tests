@@ -40,8 +40,7 @@ module.exports = {
         { pattern: 'dist_test/' + bundler + '/*.css', included: false, watched: false },
         { pattern: 'dist_test/' + bundler + '/*.map', included: false, watched: false },
         { pattern: 'dist_test/' + bundler + '/*.map', included: false, watched: false },
-//        { pattern: 'dist_test/' + 'fonts/*', included: false, watched: false },
-        { pattern: 'dist_test/' + bundler + '/fonts/*', included: false, watched: false },
+        { pattern: 'dist_test/' + 'fonts/*', included: false, watched: false },
         { pattern: bundler + '/images/favicon.ico', included: false, watched: false },
         //Jasmine/Loader tests and starts Karma
         bundler + '/build/karma.bootstrap.js'
@@ -76,7 +75,7 @@ module.exports = {
     port: 9876,
     colors: true,
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: 'INFO',
+    logLevel: 'WARN',
     autoWatch: true,
     // Continuous Integration mode
     singleRun: true,
