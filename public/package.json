@@ -13,8 +13,13 @@
     "bpc": "rm -rf dist/brunch",
     "btc": "rm -rf dist_test/brunch",
     "bt": "npm run btc && brunch b --env test",
-    "bp": "export LOGGY_STACKS=1; npm run bpc && brunch build --production",
-    "bw": "npm run btc && brunch watch --server"
+    "bp": "npm run bpc && brunch build --production",
+    "bw": "npm run btc && brunch watch --server",
+    "broctc": "rm -rf dist_test/broccoli",
+    "brocpc": "rm -rf dist/broccoli",
+    "broct": "npm run broctc && broccoli build dist_test/broccoli",
+    "brocp": "npm run brocpc && broccoli build dist/broccoli",
+    "brocw": "export USE_WATCH=true && broccoli serve --port 3080"
   },
   "keywords": [
     "karma",
@@ -26,7 +31,9 @@
     "rollup",
     "stealjs",
     "steal-tools",
-    "webpack"
+    "webpack",
+    "brunch",
+    "brocolli"
   ],
   "author": "Dave O",
   "license": "ISC",
@@ -50,7 +57,14 @@
     "babel-loader": "^7.1.4",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
-    "browser-sync": "^2.24.1",
+    "broccoli": "^1.1.4",
+    "broccoli-concat": "^3.2.2",
+    "broccoli-env": "0.0.1",
+    "broccoli-funnel": "^2.0.1",
+    "broccoli-merge-trees": "^3.0.0",
+    "broccoli-uglify-sourcemap": "^2.1.1",
+    "broccoli-webpack": "^1.0.0",
+    "browser-sync": "^2.23.7",
     "browserify": "^16.2.0",
     "browserify-css": "^0.14.0",
     "browserify-shim": "^3.8.14",

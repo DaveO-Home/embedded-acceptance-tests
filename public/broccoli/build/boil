@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+
+if [ "$1" = "test" ] || [ "$1" = "tdd" ]
+ then 
+   export NODE_ENV=development
+   export USE_KARMA=true;
+   export USE_HMR=false;
+   export USE_TDD=false;
+   if [ "$1" = "tdd" ]; then
+	export USE_TDD=true;
+   fi
+   npm run broct
+fi
+
+if [ "$1" = "watch" ]
+ then
+   export NODE_ENV=development
+   export USE_KARMA=false;
+   export USE_HMR=true;
+   npm run bw
+fi

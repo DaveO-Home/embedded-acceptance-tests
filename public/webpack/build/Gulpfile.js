@@ -190,10 +190,12 @@ gulp.task("test-build", ["setVersion"], function () {
  */
 gulp.task("setVersion", function () {
     return webpackVersion.stdout.on('data', (data) => {
-        const listed = `${data}`.split(' ')[2]
-        version = listed.substr(listed.indexOf('@')+1)
-        if(version.indexOf('(empty)') >- 1) {
-            version='4.6.0'
+        version='4.6.0'
+        const list = `${data}`.split(' ')
+        for(idx in list) {
+            if(list[idx].indexOf('webpack@') > -1) {
+                version = list[idx].substr(list[idx].indexOf('@')+1)
+            }
         }
     });
 });

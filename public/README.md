@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of six javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup or Brunch. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
+This demo is comprised of seven javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -34,7 +34,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
   npm install
 ```
 
-  To install all required dependencies. Also install the global package for Brunch, `npm install brunch -g`.
+  To install all required dependencies. Also install the global package for Brunch, `npm install brunch -g`, and Broccoli, `npm install broccoli -g`.
 
 __\*\*\*__ __See__ the Webpack section for Webpack Version 4.x.x support.
 
@@ -310,3 +310,20 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    __Note:__ Change versions as needed. Tested with node 8.9.4 and npm 5.8.0.
 
+### VII.  **Broccoli**
+
+Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
+
+1\. **Watch Window** -
+
+  * `cd public`
+  * `npm run brocw`
+
+At this point you can start a browser and enter `localhost:3080/appl/testapp_dev.html`. The watcher will recompile when application code are modified, however there is no auto-reload.  You have to manually reload the page. Also, the watcher recompiles into cache so Test Driven Development(`gulp tdd`) does not re-execute on code modifications since it watches the actual bundle.
+
+2\. ***Test Driven Development(tdd) Window*** -
+
+  * `cd public/broccoli/build`
+  * `gulp tdd`
+
+  __Note__; Tests will __not__ be rerun as code are modified. You can still run `gulp test` and `gulp`(for production) with expected results.
