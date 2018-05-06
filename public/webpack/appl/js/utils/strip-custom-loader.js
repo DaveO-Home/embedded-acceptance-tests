@@ -1,9 +1,9 @@
-/*jslint node:true */
+/* jslint node:true */
 "use strict";
 
 var loaderUtils = require("loader-utils");
 
-function StripCustomLoader(content) {
+function StripCustomLoader (content) {
     var options = loaderUtils.getOptions(this) || {};
     var startComment = options.start || 'steal-remove-start';
     var endComment = options.end || 'steal-remove-end';
