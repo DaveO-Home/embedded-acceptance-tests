@@ -8,7 +8,6 @@ build.xml
 /dist/*
 /public/dist/*
 /public/dist_test/*
-/public/package-lock.json
 /dist_test/maps
 /public/.fusebox/*
 /public/dev-bundle.js
