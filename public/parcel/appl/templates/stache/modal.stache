@@ -1,0 +1,19 @@
+<div id="modalTemplate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalTemplateLabel" aria-hidden="true"  data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title center">
+                    <h5 id="modal_title">{{title}}</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>﻿
+            <div class="modal-body">
+                {{{body}}}
+            </div>
+            <div class="modal-footer">
+                {{{foot}}}
+            </div>
+            {{{contactFooter}}}
+        </div>
+    </div>
+</div>

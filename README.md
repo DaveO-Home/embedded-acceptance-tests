@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of seven javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
+This demo is comprised of eight javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch, Parcel and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue.
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -12,7 +12,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
 **Install Assumptions:**
 
-  1. OS Linux and Windows(Tested on Windows10)
+  1. OS Linux or Windows(Tested on Windows10)
   1. Node and npm
   1. Gulp
   1. Google Chrome
@@ -34,7 +34,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
   npm install
 ```
 
-  To install all required dependencies. Also install the global package for Brunch, `npm install brunch -g`, and Broccoli, `npm install broccoli -g`.
+  To install all required dependencies. Also install the global cli packages for Brunch, `npm install brunch -g`, Broccoli, `npm install broccoli -g` and Parcel, `npm install parcel-bundler -g`.
 
 __\*\*\*__ __See__ the Webpack section for Webpack Version 4.x.x support.
 
@@ -59,10 +59,11 @@ To run the production application:
   1. `npm start`  -  This should start a Node Server with port 3080.
   1. Start a browser and enter `localhost:3080/dist/<bundler>/appl/testapp.html`
   1. For Brunch the Production Url is `localhost:3080/dist/brunch/testapp.html` or `localhost:3080/dist/brunch`
+  1. For Parcel the Production Url is `localhost:3080/dist/parcel/testapp.html`
 
-You can repeat the procedure with "webpack", "browserify", "stealjs" or "rollup". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
+You can repeat the procedure with "webpack", "browserify", "stealjs" or "rollup", "brunch", "parcel" or "brocolli". Output from the build can be logged by setting the environment variable `USE_LOGFILE=true`.
 
-Normally you can also run the test bundles(dist_test) from the node express server. However, when switching between development karma testing and running the test(dist_test) application, some resources are not found because of the "base/dist_test" URL. To fix this run `gulp rebuild` from the `<bundler>/build` directory.
+Normally you can also run the test bundles(dist_test) from the node express server. However, when switching between development karma testing and running the test(dist_test) application, some resources are not found because of the "base/dist_test" URL. To fix this, run `gulp rebuild` from the `<bundler>/build` directory.
 
 __Note__; There was a Production build problem with __Rollup__, ES6, can-component and two-way binding.  The problem was fixed by re-coding the tools page selection element with a Bootstrap Dropdown Component.  Therefore, the toolstest.js specs were also modified.
 
@@ -214,7 +215,34 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+. Verified fuse-box 3.2.2.
 
-### IV.  **Rollup**
+### IV.  **Parcel**
+
+1\. ***Watch, Recompile and Reload Window*** -
+
+  * `cd public/parcel/build`
+  * `gulp watch`
+
+At this point you can start a browser and enter `localhost:3080/dist_test/parcel/testapp_dev.html` (configured to auto open browser tab). Any changes to the source code(*.js and *.css files) should be reflected in the browser auto reload.
+
+2\. ***Test Driven Development(tdd) Window*** -
+
+  * `cd public/parcel/build`
+  * `gulp tdd`
+
+  While the Parcel watcher is running, tests are re-run when code are changed.
+  
+  __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+
+3\. ***Special Consideration***
+  
+  * Using the local custom plugin for stripping development code. The application from the production build will work with the development code embedded, however to strip the code, do the following;
+    * `cd <install>/public/parcel/appl/js/parcel-plugin-strip`
+    * `npm link`
+    * `cd <install>/public`
+    * `npm link parcel-plugin-strip`
+    * Edit `package.json` and in devDependencies section add `"parcel-plugin-strip": "^0.1.1"`. Development code will be stripped during the production build.
+
+### V.  **Rollup**
 
 1\. ***Development Server Window*** -
 
@@ -232,7 +260,7 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### V. **Stealjs**
+### VI. **Stealjs**
 
 1\. ***Development Server Window*** -
 
@@ -261,7 +289,7 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### VI. **Webpack**
+### VII. **Webpack**
 
 1\. ***Development HMR Server Window*** -
 
@@ -310,7 +338,7 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    __Note:__ Change versions as needed. Tested with node 8.9.4 and npm 5.8.0.
 
-### VII.  **Broccoli**
+### VIII.  **Broccoli**
 
 Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
 
