@@ -1,6 +1,5 @@
-steal("moment", "can-view-callbacks",
-        function (moment, callbacks) {
-
+steal("moment", "can-view-callbacks", /* "can-debug", */
+        function (moment, callbacks, debug) {
             return {
                 scrollTop: function () {
                     $("html, body").animate({
@@ -100,11 +99,8 @@ steal("moment", "can-view-callbacks",
 
                                         var tbody = tbodyTemplate(data);
                                         $(".tablesorter tbody").html(tbody).trigger("update");
-
                                     }, "json").fail(function (data, err) {
-
                                         console.log("Error fetching fixture data: " + err);
-
                                     });
                                 }
                             }
@@ -112,7 +108,6 @@ steal("moment", "can-view-callbacks",
                     }
                 },
                 getOptions: function (keys, values) {
-
                     if (!values || values.length !== keys.length) {
                         values = keys;
                     }
@@ -126,7 +121,6 @@ steal("moment", "can-view-callbacks",
                 },
                 //Insert loaded html into main_container or specified element
                 renderer: function (controller, options) {
-
                     var helper = this;
 
                     return function (frag) {
@@ -165,7 +159,6 @@ steal("moment", "can-view-callbacks",
                 // Custom promise for async call for a resource.  
                 // If the DOM (#main_container) is populated then the promise is complete.
                 isResolved: function isResolved(resolve, reject, selectorId, counter, length) {
-
                     var container = document.querySelector("#main_" + selectorId);
 
                     if (!container) {

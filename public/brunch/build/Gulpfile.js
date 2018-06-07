@@ -49,6 +49,9 @@ gulp.task('pat', function (done) {
     return cmd.on('exit', (code) => {
         done()
         console.log(`Child exited with code ${code}`);
+        if(code > 0) {
+            process.exit(code)
+        }
     });
 });
 /*

@@ -49,9 +49,9 @@ define(["../appl/js/controller/start.js"], function (Start) {
                 closeButton.click();
 
                 setTimeout(function () {
-                    $("div .login").remove();
                     expect(modal[0]).not.toBeVisible();
                     expect(modal[0]).not.toBeInDOM();
+                    $("div .login").remove(); // Just cleaning up page for tdd
                     done()
                 }, 750);
             });

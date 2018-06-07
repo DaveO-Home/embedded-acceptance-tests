@@ -1,10 +1,14 @@
 /.*/**/*
+public/parcel/build/.cache/*
+public/.cache/*
 build.xml
 /nbproject/*
 /build/**/*
 /public/**/build/*.log
-/public/*list*.dat
-/public/outdated.dat
+/public/*.dat
+/public/outdated
+/public/*.diff
+/public/*webpack45*
 /dist/*
 /public/dist/*
 /public/dist_test/*

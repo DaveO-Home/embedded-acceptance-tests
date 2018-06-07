@@ -19,11 +19,12 @@ module.exports = function (config) {
             //Module loader - so we can run steal unit tests - see include-all-tests.js
             'node_modules/steal/steal.js',
             {pattern: 'node_modules/steal/**/*.js', watched: false, included: false},
+            // {pattern: 'node_modules/**/*', watched: false, included: false},
             {pattern: 'node_modules/steal-css/css.js', watched: false, included: false},
-            {pattern: 'node_modules/**/*.map', watched: false, included: false, served: false},
+            {pattern: 'node_modules/**/*.map', watched: false, included: false, served: true},
             {pattern: 'node_modules/bootstrap/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/popper.js/dist/umd/*', watched: false, included: false},
-            {pattern: 'node_modules/can/**/*.js', watched: false, included: false},
+            // {pattern: 'node_modules/can/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/can-*/**/*.js', watched: false, included: false},
             {pattern: bundler + '/appl/js/**/*.js', included: false},
             {pattern: 'node_modules/**/package.json', watched: false, included: false},
@@ -53,7 +54,7 @@ module.exports = function (config) {
             {pattern: 'node_modules/steal-css/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/font-awesome/css/font-awesome.css', watched: false, included: false},
             {pattern: 'node_modules/font-awesome/fonts/fontawesome-webfont.woff2', watched: false, included: false},
-            //Jasmine/Steal tests and starts Karma
+            // Jasmine/Steal tests and starts Karma
             bundler + '/build/karma.bootstrap.js'
         ],
         bowerPackages: [
@@ -72,6 +73,11 @@ module.exports = function (config) {
          */
         browsers: global.whichBrowsers,
         customLaunchers: {
+            ChromeCustom: {
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security', '--disable-translate', '--disable-extensions'],
+                debug: false
+            },
             FirefoxHeadless: {
                 base: 'Firefox',
                 flags: ['--headless']
@@ -80,14 +86,14 @@ module.exports = function (config) {
         browserNoActivityTimeout: 0,
         exclude: [
         ],
-        preprocessors: {
-            '*/**/*.html': []
-        },
+        // preprocessors: {
+        //     '*/**/*.html': []
+        // },
         reporters: ['mocha'],
         port: 9876,
         colors: true,
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_WARN,
         autoWatch: true,
         singleRun: false,
         loggers: [{
@@ -98,6 +104,6 @@ module.exports = function (config) {
             captureConsole: true,
             clearContext: true
         },
-        concurrency: 5 //Infinity
+        concurrency: 5, //Infinity
     });
 };
