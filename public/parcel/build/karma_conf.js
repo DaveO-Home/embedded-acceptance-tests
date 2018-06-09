@@ -21,8 +21,7 @@ module.exports = function (config) {
             {pattern: bundler + '/appl/**/*.*', included: false, watched: false},
             {pattern: 'package.json', watched: false, included: false},
             {pattern: 'README.md', included: false},
-            {pattern: 'dist_test/' + bundler + '/appl.adbacdbb.css', included: false, watched: true, served: true},
-            {pattern: 'dist_test/' + bundler + '/appl.adbacdbb.js', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
+            {pattern: 'dist_test/' + bundler + '/appl.*.*', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: 'dist_test/' + bundler + '/**/*.*', included: false, watched: false},
             {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
             //Karma/Jasmine/Loader

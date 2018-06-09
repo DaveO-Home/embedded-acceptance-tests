@@ -44,7 +44,7 @@ gulp.task('build-development', ['copy'], () => {
     return parcelBuild(false); // setting watch = false
 });
 /**
- * Production Rollup 
+ * Production Parcel 
  */
 gulp.task('build', ['copyprod'], () => {
     return parcelBuild(false);
@@ -252,7 +252,8 @@ function parcelBuild(watch, cb) {
             log(chalk.green("Build Successful"))
         }
         else {
-            cb(new Error(chalk.red("Build Failed")), bundler)
+            log(chalk.red("Build Failed"))
+            process.exit(1)
         }
     })
     // Run the bundler, this returns the main bundle
