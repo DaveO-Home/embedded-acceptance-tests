@@ -231,9 +231,11 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
   While the Parcel watcher is running, tests are re-run when code are changed.
   
+  * Using `export USE_BUNDLER=false` - When using `gulp watch & gulp tdd` together, you can set USE_BUNDLER to false to startup TDD without building first, `gulp watch` does the test build.  Also, by settting `USE_BUNDLER=false` before `gulp`(production build), only testing and linting will execute.
+
   __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-3\. ***Special Consideration***
+3\. ***Special Considerations***
   
   * Using the local custom plugin for stripping development code. The application from the production build will work with the development code embedded, however to strip the code, do the following;
     * `cd <install>/public/parcel/appl/js/parcel-plugin-strip`
@@ -241,6 +243,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
     * `cd <install>/public`
     * `npm link parcel-plugin-strip`
     * Edit `package.json` and in devDependencies section add `"parcel-plugin-strip": "^0.1.1"`. Development code will be stripped during the production build.
+  * As of parcel 1.8.1, there is a compatibility issue with bootstrap 4.1. This demo is using a CDN to link bootstrap css on the main pages, testapp_dev.html and testapp.html. Another solution is to upgrade cssnano to @next under parcel-bundler.
 
 ### V.  **Rollup**
 

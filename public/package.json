@@ -33,6 +33,7 @@
     "steal-tools",
     "webpack",
     "brunch",
+    "parcel",
     "brocolli"
   ],
   "author": "Dave O",

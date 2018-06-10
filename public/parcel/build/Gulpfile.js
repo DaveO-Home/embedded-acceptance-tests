@@ -40,14 +40,14 @@ if (browsers) {
 /**
  * Build Development bundle from package.json 
  */
-gulp.task('build-development', ['copy'], () => {
-    return parcelBuild(false); // setting watch = false
+gulp.task('build-development', ['copy'], (cb) => {
+    return parcelBuild(false, cb); // setting watch = false
 });
 /**
  * Production Parcel 
  */
-gulp.task('build', ['copyprod'], () => {
-    return parcelBuild(false);
+gulp.task('build', ['copyprod'], (cb) => {
+    return parcelBuild(false, cb);
 });
 
 /**
@@ -218,7 +218,7 @@ gulp.task('rebuild', ['build-development']);  //remove karma config for node exp
 
 function parcelBuild(watch, cb) {
     if (bundleTest && bundleTest === "false") {
-        return
+        return cb()
     }
     const file = isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'
     // Bundler options
