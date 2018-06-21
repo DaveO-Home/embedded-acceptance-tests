@@ -47,7 +47,10 @@ gulp.task('build-development', ['copy'], (cb) => {
  * Production Parcel 
  */
 gulp.task('build', ['copyprod'], (cb) => {
-    return parcelBuild(false, cb);
+    // return parcelBuild(false, cb);
+    parcelBuild(false, cb).then(function () {
+        cb()
+    });
 });
 
 /**
@@ -275,10 +278,10 @@ function copyImages() {
 
 function runKarma(done) {
 
-    return new Server({
+    new Server({
         configFile: __dirname + '/karma_conf.js',
         singleRun: true
-    }, function (result) {
+    }, result => {
         var exitCode = !result ? 0 : result;
         if (typeof done === "function") {
             done();

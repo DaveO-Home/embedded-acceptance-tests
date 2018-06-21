@@ -41,7 +41,7 @@ scriptTree = isProduction ? uglify(scriptTree, {
     exclude: ["node_modules/**/*min*.js"], // array of globs, to not minify
     uglify: {
         mangle: isProduction, // defaults to true
-        compress: isProduction, // defaults to true
+        compress: false, // defaults to true
         sourceMap: !isProduction, // defaults to true
     },
     async: true, // run uglify in parallel, defaults to false
