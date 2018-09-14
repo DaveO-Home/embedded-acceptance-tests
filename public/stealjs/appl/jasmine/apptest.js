@@ -74,7 +74,6 @@ steal(function () {
                     /* Letting the Router load the appropriate page.
                      * The hash change event should load the resource.
                      */
-
                     Route.data.attr("controller", "table");
                     Route.data.attr("action", "tools");
 
@@ -121,12 +120,14 @@ steal(function () {
 
                 routerTest(Route, "pdf", "test", null);
 
-                //Spec to test if page data changes on select change event.
+                // Spec to test if page data changes on select change event.
                 toolsTest(Route, Helpers);
-                //Form Validation
+                // Form Validation
                 contacttest(Route, Helpers);
-                //Verify modal form
+                // Verify modal form
                 logintest();
+                // Start the tests
+                window.tests()
 
                 if (testOnly) {
                     it("Testing only", function () {

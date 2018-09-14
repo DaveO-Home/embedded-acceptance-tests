@@ -7,11 +7,8 @@ steal("app",
         "config",
         function (App, Router, Default, Setup, Helpers) {
             App.init(Default);
-
             var Route = Router.init();
-
             Setup.init();
-
             steal.dev.log("App Started");
 
 //Code between the ..start and ..end tags will be removed by steal-tools during the production build.
@@ -20,8 +17,8 @@ steal("app",
             if (typeof testit !== "undefined" && testit) {
                 //Run acceptance tests.
                 steal.loader.import("apptest").then(function (apptest) {
+                    // See apptest.js (window.tests()) to start testing
                     apptest(Route, Helpers, App);
-                    setTimeout(function() { window.tests() }, 500);     //See include-all-tests.js                                       
                 });
             }
 //!steal-remove-end
