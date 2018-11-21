@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of eight javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch, Parcel and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue and a React version at https://github.com/DaveO-Home/embedded-acceptance-tests-react.
+This demo is comprised of eight javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch, Parcel and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue, a React version at https://github.com/DaveO-Home/embedded-acceptance-tests-react and an Angular version at https://github.com/DaveO-Home/embedded-acceptance-tests-ng.
 
 Currently the Canjs framework is at version 4.2.0 which is supported by all of the bundlers and browsers. However, the application will build and test with Canjs 5.9.1 and its latest dependencies expect for rollup, fuse-box and firefox.
 
