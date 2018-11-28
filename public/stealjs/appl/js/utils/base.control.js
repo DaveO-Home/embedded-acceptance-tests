@@ -1,21 +1,26 @@
-steal("app",
-        "helpers",
-        "can-control",
-        function (App, Helpers, Control) { 
-            var base = false;
-//!steal-remove-start
-            if (typeof testit !== "undefined" && testit) {
-                base = true;
-            }
-//!steal-remove-end
+// import App from "app"
+// import Helpers from "helpers"
+// import Control from "can-control"
 
-            var baseUrl = base ? "base/" + window._bundler + "/appl/" : "";
-     
-            return Control.extend({
-                defaults: {
-                    base: base
-                }
-            }, {
+steal("app",
+    "helpers",
+    "can-control",
+    function (App, Helpers, Control) {
+        var base = false;
+        //!steal-remove-start
+        if (typeof testit !== "undefined" && testit) {
+            base = true;
+        }
+        //!steal-remove-end
+
+        var baseUrl = base ? "base/" + window._bundler + "/appl/" : "";
+
+        return Control.extend({
+            // export default Control.extend({
+            defaults: {
+                base: base
+            }
+        }, {
                 baseUrl: baseUrl,
                 init: function (element, options) {
                 },
@@ -48,7 +53,7 @@ steal("app",
 
                     App.loadView({
                         url: options.baseUrl + 'templates/stache/modal.stache'
-                    }, function (modalFrag) {                       
+                    }, function (modalFrag) {
                         template = Stache(modalFrag);
 
                         App.loadView(options, function (frag) {
@@ -58,9 +63,9 @@ steal("app",
                             var css = {};
                             if (options.width) {
                                 css["width"] = typeof css.width === 'number' ?
-                                        options.width + '%' : options.width;
-                                var width = css.width.substring(0,css.width.length-1);
-                                css['margin-left'] = (100 - width) / 2 + '%'; 
+                                    options.width + '%' : options.width;
+                                var width = css.width.substring(0, css.width.length - 1);
+                                css['margin-left'] = (100 - width) / 2 + '%';
                             }
 
                             $(el).on('show.bs.modal', function () {
@@ -72,8 +77,8 @@ steal("app",
                                 if (options.fnHide)
                                     options.fnHide(el);
                             }).on('hidden.bs.modal', function () {
-                                $(this).remove();                               
-                            }).modal('show').css(css).find("> .modal-dialog").addClass(options.widthClass);                          
+                                $(this).remove();
+                            }).modal('show').css(css).find("> .modal-dialog").addClass(options.widthClass);
                         });
                     });
                 },
@@ -83,4 +88,4 @@ steal("app",
                 },
                 base: base
             });
-        });
+    });

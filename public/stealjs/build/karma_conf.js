@@ -8,6 +8,17 @@ module.exports = function (config) {
     config.set({
         basePath: '../../',
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            // "/views": "/base/dist_test/" + bundler + "/appl/views",
+            // "/templates": "/base/dist_test/" + bundler + "/appl/templates",
+            // "/css": "/base/dist_test/" + bundler + "/appl/css",
+            // "/node_modules/font-awesome": "/base/node_modules/font-awesome",
+            // "/app_bootstrap.html": "/base/dist_test/" + bundler + "/appl/app_bootstrap.html",
+            // "/README.md": "/base/dist_test/README.md",
+
+            "can-map/": "/base/node_modules/can-map/",
+            "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
+        },
         // list of files / patterns to load in the browser
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.

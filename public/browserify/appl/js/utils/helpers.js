@@ -67,7 +67,7 @@ module.exports = {
         }
         return weekKeys;
     },
-    setJobTypeSelector: function (Component, MapMap, osKeys, values, template, baseUrl) {
+    setJobTypeSelector: function (Component, DefineMap, osKeys, values, template, baseUrl) {
         var current = osKeys[0];
         if (values) {
             current = values[0];
@@ -82,7 +82,7 @@ module.exports = {
                         "</select>"),
                 ViewModel: function () {
                     var selectedJobType = {selectedJobType: current};
-                    return new MapMap(selectedJobType);
+                    return new DefineMap(selectedJobType);
                 },
                 events: {
                     ".jobtype-selector change": function () {

@@ -42,7 +42,7 @@
     </thead>
     <tbody id="main_body">
         {{#if list.length}}
-            {{#each list}}
+            {{#each(list)}}
             <tr>
                 <td>{{tool}}</td>
                 <td>{{Shop1}}</td>
@@ -96,7 +96,7 @@
 </div>
 {{#else}}
         {{#if list.length}}
-            {{#each list}}
+            {{#each(list)}}
                 <tr>
                     <td>{{tool}}</td>
                     <td>{{Shop1}}</td>

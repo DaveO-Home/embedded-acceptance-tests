@@ -4,7 +4,7 @@
 
 var Helpers = require("./utils/helpers");
 var Component = require("can-component");
-var CanMap = require("can-map");
+var DefineMap = require("can-define/map/map") // require("can-map");
 var _ = require("lodash");
 
 require("b/popper");
@@ -129,7 +129,7 @@ module.exports = {
                 var osKeys = ["Combined", "Category1", "Category2"];
                 var values = ["ful", "cat1", "cat2"];
 
-                Helpers.setJobTypeSelector(Component, CanMap, osKeys, values, template, baseUrl);
+                Helpers.setJobTypeSelector(Component, DefineMap, osKeys, values, template, baseUrl);
 
                 render(template(data));
 

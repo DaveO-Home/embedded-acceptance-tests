@@ -7,10 +7,13 @@ for (var file in window.__karma__.files) {
     }
 }
 
+window.stealTests = tests
+
 tests[tests.length] = function () {
     window.__karma__.start();
 };
 
 window.tests = function() {
+    console.log("Apply Steal Unit tests")
     steal.apply(null, tests, "");
 }

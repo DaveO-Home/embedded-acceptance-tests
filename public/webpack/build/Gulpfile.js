@@ -138,7 +138,6 @@ gulp.task('acceptance-tests', ['test-build'], function (done) {
  * Build Test without Karma settings for npm Express server (npm start)
  */
 gulp.task("webpack-rebuild", ["setVersion"], function () {
-
     var envs = env.set({
         W_VERSION: version,
         NODE_ENV: "development",
@@ -186,18 +185,19 @@ gulp.task("test-build", ["setVersion"], function () {
 });
 
 /*
- * Extract Current Webpack Version
+ * Extract Current Webpack Version - Now defaults to Webpack 4
  */
 gulp.task("setVersion", function () {
-    return webpackVersion.stdout.on('data', (data) => {
-        version='4.6.0'
-        const list = `${data}`.split(' ')
-        for(idx in list) {
-            if(list[idx].indexOf('webpack@') > -1) {
-                version = list[idx].substr(list[idx].indexOf('@')+1)
-            }
-        }
-    });
+    // webpackVersion.stdout.on('data', (data) => {
+    //     version='4.6.0'
+    //     const list = `${data}`.split(' ')
+    //     for(idx in list) {
+    //         if(list[idx].indexOf('webpack@') > -1) {
+    //             version = list[idx].substr(list[idx].indexOf('@')+1)
+    //         }
+    //     }
+    // });
+    return version = "4.26.0"
 });
 
 /**

@@ -29,6 +29,7 @@ const rollupBabel = require('rollup-plugin-babel');
 const progress = require('rollup-plugin-progress');
 const rename = require('gulp-rename');
 const babel = require('gulp-babel');
+const buble = require('rollup-plugin-buble')
 const externalHelpers = require("babel-plugin-external-helpers");
 const replace = require("rollup-plugin-re");
 
@@ -39,11 +40,12 @@ const startComment = "steal-remove-start",
                 endComment + " ?(\\*\\/)?[\\t ]*\\n?", "g");
 
 let lintCount = 0,
-        isProduction = process.env.NODE_ENV == 'production',
+        isProduction = process.env.NODE_ENV === 'production',
         browsers = process.env.USE_BROWSERS,
         testDist = "dist_test/rollup",
         prodDist = "dist/rollup",
-        dist = isProduction ? prodDist : testDist;
+        dist = isProduction ? prodDist : testDist,
+        env = process.env.NODE_ENV;
 
 if (browsers) {
     global.whichBrowsers = browsers.split(",");
@@ -299,6 +301,7 @@ function rollupBuild() {
                 output: {
                     format: "iife",
                     name: "acceptance",
+                    intro: 'window.process = {env:{NODE_ENV: "' + env + '"}}'
                 },
                 plugins: [
                     commonjs(),
@@ -308,6 +311,7 @@ function rollupBuild() {
                     progress({
                         clearLine: isProduction ? false : true
                     }),
+                    buble(),
                     rollupBabel({
                         presets: [["env", {/*targets: {"uglify":true},*/ modules: false}]],
                         plugins: ["external-helpers"]

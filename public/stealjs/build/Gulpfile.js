@@ -6,11 +6,13 @@
 const gulp = require('gulp');
 
 const stealTools = require('steal-tools');
+const stealStream = require('steal-tools').streams;
 const Server = require('karma').Server;
 const eslint = require('gulp-eslint');
 const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
 const log = require("fancy-log");
+const del = require("del");
 
 var lintCount = 0;
 let browsers = process.env.USE_BROWSERS;
@@ -44,16 +46,16 @@ gulp.task('pat', function (done) {
  */
 gulp.task('eslint', ['pat'], () => {
     var stream = gulp.src(["../appl/js/**/*.js"])
-            .pipe(eslint({
-                configFile: 'eslintConf.json',
-                quiet: 0
-            }))
-            .pipe(eslint.format())
-            .pipe(eslint.result(result => {
-                //Keeping track of # of javascript files linted.
-                lintCount++;
-            }))
-            .pipe(eslint.failAfterError());
+        .pipe(eslint({
+            configFile: 'eslintConf.json',
+            quiet: 0
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.result(result => {
+            //Keeping track of # of javascript files linted.
+            lintCount++;
+        }))
+        .pipe(eslint.failAfterError());
 
     stream.on('end', function () {
         log("# javascript files linted: " + lintCount);
@@ -61,7 +63,7 @@ gulp.task('eslint', ['pat'], () => {
     stream.on('error', function () {
         process.exit(1);
     });
-    
+
     return stream;
 });
 /*
@@ -70,8 +72,8 @@ gulp.task('eslint', ['pat'], () => {
 gulp.task('csslint', ['pat'], function () {
     var stream = gulp.src(['../appl/css/site.css',
         '../appl/css/main.css'])
-            .pipe(csslint())
-            .pipe(csslint.formatter());
+        .pipe(csslint())
+        .pipe(csslint.formatter());
 
     stream.on('error', function () {
         process.exit(1);
@@ -79,38 +81,60 @@ gulp.task('csslint', ['pat'], function () {
 });
 
 /*
- * Build the application to the production distribution 
+ *  Build the application to the production distribution using Steal/Steal-Tools v2
  */
-gulp.task('build', ['boot'], function () {
-     
-    stealTools.build({
+gulp.task('build2', ['clean', 'bootlint'], function () {
+    return stealTools.build({
         configMain: "stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
         baseURL: "../../"
     }, {
-        sourceMaps: false,
-        bundleAssets: {
-            infer: true,
-            glob: [
-                '../images/favicon.ico',
-                '../appl/testapp.html',
-                '../appl/views/**/*',
-                '../appl/templates/**/*',
-                '../../README.md'
-            ]
-        },
-        bundleSteal: false,
-        dest: "dist",
-        removeDevelopmentCode: true,
-        minify: true,
-        maxBundleRequests: 5,
-        maxMainRequests: 5
-    });
+            sourceMaps: false,
+            bundleAssets: {
+                infer: true,
+                glob: [
+                    '../images/favicon.ico',
+                    '../appl/testapp.html',
+                    '../appl/views/**/*',
+                    '../appl/templates/**/*',
+                    '../../README.md'
+                ]
+            },
+            bundleSteal: false,
+            dest: "dist",
+            removeDevelopmentCode: true,
+            minify: true,
+            maxBundleRequests: 5,
+            maxMainRequests: 5
+        });
+});
+/*
+ * Using Steams also to build the css bundle. Bug in steal/steal-tools v2
+ */
+gulp.task('build', ['build2', 'bootlint'], function () {
+    const graphStream = stealStream.graph({
+        configMain: "stealjs/appl/js/config",
+        main: "stealjs/appl/js/index",
+        baseURL: "../../"
+    }, {
+            dest: "dist",
+            removeDevelopmentCode: true,
+            minify: true,
+            maxBundleRequests: 5,
+            maxMainRequests: 5
+        });
+
+    return graphStream
+        .pipe(stealStream.transpile())
+        .pipe(stealStream.minify())
+        .pipe(stealStream.bundle())
+        .pipe(stealStream.concat())
+        .pipe(stealStream.write());
 });
 /*
  * Bootstrap html linter 
  */
-gulp.task('boot', ['eslint', 'csslint'], function (cb) {
+gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
 
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
         log(stdout);
@@ -118,7 +142,18 @@ gulp.task('boot', ['eslint', 'csslint'], function (cb) {
         cb(err);
     });
 });
-
+/**
+ * Remove previous build
+ */
+gulp.task('clean', ['bootlint'], done => {
+    isProduction = true;
+    dist = '../../dist/';
+    return del([
+        dist + 'stealjs/**/*',
+        dist + 'bundles/**/*',
+        dist + '../../dist/steal.production.js'
+    ], { dryRun: false, force: true }, done);
+});
 /**
  * Run karma/jasmine tests using FirefoxHeadless 
  */
@@ -167,10 +202,10 @@ gulp.task('steal-tdd', function (done) {
  */
 gulp.task('live-reload', ["vendor"], function (cb) {
     var osCommands = 'cd ../..; node_modules/.bin/steal-tools live-reload';
-    if(isWindows) {
-	osCommands = 'cd ..\\.. & .\\node_modules\\.bin\\steal-tools live-reload'
+    if (isWindows) {
+        osCommands = 'cd ..\\.. & .\\node_modules\\.bin\\steal-tools live-reload'
     }
-    
+
     exec(osCommands, function (err, stdout, stderr) {
 
         log(stdout);
@@ -192,21 +227,21 @@ gulp.task('vendor', function (cb) {
     stealTools.bundle({
         config: "../../package.json!npm"
     }, {
-        filter: ["node_modules/**/*", "package.json"],
-        //dest: __dirname + "/../dist_test"
-    }).then(() => {
-        cb();
-    });
+            filter: ["node_modules/**/*", "package.json"],
+            //dest: __dirname + "/../dist_test"
+        }).then(() => {
+            cb();
+        });
 });
 /*
  * Startup live reload monitor. 
  */
 gulp.task('web-server', function (cb) {
     var osCommand = 'cd ../../..; ';
-    if(isWindows) {
-	osCommand = 'cd ..\\..\\.. & ';
+    if (isWindows) {
+        osCommand = 'cd ..\\..\\.. & ';
     }
-    
+
     exec(osCommand + 'npm start', function (err, stdout, stderr) {
 
         log(stdout);
@@ -215,7 +250,7 @@ gulp.task('web-server', function (cb) {
     });
 });
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
+gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('tdd', ['steal-tdd']);
 gulp.task('test', ['steal-test']);
 gulp.task('firefox', ['steal-firefox']);
@@ -238,9 +273,9 @@ if (process.env.USE_LOGFILE == 'true') {
     var fs = require('fs');
     var proc = require('process');
     var origstdout = process.stdout.write,
-            origstderr = process.stderr.write,
-            outfile = 'production_build.log',
-            errfile = 'production_error.log';
+        origstderr = process.stderr.write,
+        outfile = 'production_build.log',
+        errfile = 'production_error.log';
 
     if (fs.exists(outfile)) {
         fs.unlink(outfile);

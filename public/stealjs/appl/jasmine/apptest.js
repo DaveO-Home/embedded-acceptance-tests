@@ -12,7 +12,7 @@ steal(function () {
             var contacttest = modules[3];
             var logintest = modules[4];
             var mainContainer = "#main_container";
-
+ 
             describe("Application test suite - AppTest", function () {
                 beforeAll(function (done) {
                     /* Important!
@@ -126,9 +126,11 @@ steal(function () {
                 contacttest(Route, Helpers);
                 // Verify modal form
                 logintest();
-                // Start the tests
-                window.tests()
-
+                // Start the tests - Running Steal based tests not working with Steal 2
+                // window.tests()
+                // Somehow this allows the normal tests to work
+                steal.apply(null, stealTests, "");
+                __karma__.start()
                 if (testOnly) {
                     it("Testing only", function () {
                         fail("Testing only, build will not proceed");

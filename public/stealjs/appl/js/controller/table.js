@@ -1,14 +1,16 @@
 /**
  * Controller to manage tablesorter
  */
-
+// import App from "app"
+// import Base from "basecontrol"
 steal("app",
-        "basecontrol",
-        function (App, Base) {
-            return App.controllers.Table || (App.controllers.Table = new (Base.extend({
-                defaults: {
-                }
-            }, {
+      "basecontrol",
+    function (App, Base) {
+        return App.controllers.Table || (App.controllers.Table = new (Base.extend({
+            // module.exports = App.controllers.Table || (App.controllers.Table = new (Base.extend({
+            defaults: {
+            }
+        }, {
                 tools: function (data) {
                     var toolsUrl = "templates/stache/";
                     this.view({
@@ -22,20 +24,20 @@ steal("app",
                 },
                 decorateTable: function (elementId) {
                     var id = "#" + elementId,
-                            headers,
-                            pageSorter = {
-                                container: $(".ts-pager"),
-                                cssGoto: ".pagenum",
-                                removeRows: false,
-                                output: "{startRow} - {endRow} / {filteredRows} ({totalRows})",
-                                updateArrows: true,
-                                page: 0,
-                                size: 10
-                            },
-                            defaultPage = [1, 10];
+                        headers,
+                        pageSorter = {
+                            container: $(".ts-pager"),
+                            cssGoto: ".pagenum",
+                            removeRows: false,
+                            output: "{startRow} - {endRow} / {filteredRows} ({totalRows})",
+                            updateArrows: true,
+                            page: 0,
+                            size: 10
+                        },
+                        defaultPage = [1, 10];
 
                     if (elementId === "tools") {
-                        headers = {".disabled": {sorter: false, filter: false}};
+                        headers = { ".disabled": { sorter: false, filter: false } };
                         defaultPage = [1, 20];
                     }
 
@@ -57,4 +59,4 @@ steal("app",
                 base: false
             }))("#main_container"));
 
-        });
+    });
