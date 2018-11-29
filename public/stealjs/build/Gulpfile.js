@@ -85,7 +85,7 @@ gulp.task('csslint', ['pat'], function () {
  */
 gulp.task('build', ['clean' , 'bootlint'], function () {
     return stealTools.build({
-        configMain: "stealjs/appl/js/config",
+        configMain:"stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
         baseURL: "../../"
     }, {
@@ -109,14 +109,26 @@ gulp.task('build', ['clean' , 'bootlint'], function () {
         });
 });
 /*
- * Tools Streams example steal/steal-tools v2 - not used
+ * Tools Streams will concatenate the node_module css scripts
  */
-gulp.task('buildX', ['build2', 'bootlint'], function () {
+gulp.task('buildX', [/*'build2', 'bootlint'*/], function () {
     const graphStream = stealStream.graph({
-        configMain: "stealjs/appl/js/config",
+        configMain:"stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
         baseURL: "../../"
     }, {
+            // sourceMaps: false,
+            // bundleAssets: {
+            //     infer: true,
+            //     glob: [
+            //         '../images/favicon.ico',
+            //         '../appl/testapp.html',
+            //         '../appl/views/**/*',
+            //         '../appl/templates/**/*',
+            //         '../../README.md'
+            //     ]
+            // },
+            bundleSteal: false,
             dest: "dist",
             removeDevelopmentCode: true,
             minify: true,

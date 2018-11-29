@@ -126,11 +126,9 @@ steal(function () {
                 contacttest(Route, Helpers);
                 // Verify modal form
                 logintest();
-                // Start the tests - Running Steal based tests not working with Steal 2
-                // window.tests()
-                // Somehow this allows the normal tests to work
-                steal.apply(null, stealTests, "");
-                __karma__.start()
+                // Start the tests - includes steal based unit tests
+                window.tests()
+
                 if (testOnly) {
                     it("Testing only", function () {
                         fail("Testing only, build will not proceed");

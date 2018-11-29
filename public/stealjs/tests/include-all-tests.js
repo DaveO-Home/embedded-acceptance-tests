@@ -15,5 +15,5 @@ tests[tests.length] = function () {
 
 window.tests = function() {
     console.log("Apply Steal Unit tests")
-    steal.apply(null, tests, "");
+    steal.apply(this, tests, "");
 }
