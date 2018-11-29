@@ -83,7 +83,7 @@ gulp.task('csslint', ['pat'], function () {
 /*
  *  Build the application to the production distribution using Steal/Steal-Tools v2
  */
-gulp.task('build2', ['clean', 'bootlint'], function () {
+gulp.task('build', ['clean' , 'bootlint'], function () {
     return stealTools.build({
         configMain: "stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
@@ -109,9 +109,9 @@ gulp.task('build2', ['clean', 'bootlint'], function () {
         });
 });
 /*
- * Using Steams also to build the css bundle. Bug in steal/steal-tools v2
+ * Tools Streams example steal/steal-tools v2 - not used
  */
-gulp.task('build', ['build2', 'bootlint'], function () {
+gulp.task('buildX', ['build2', 'bootlint'], function () {
     const graphStream = stealStream.graph({
         configMain: "stealjs/appl/js/config",
         main: "stealjs/appl/js/index",

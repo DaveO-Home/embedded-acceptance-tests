@@ -38,6 +38,7 @@ module.exports = function (config) {
             // {pattern: 'node_modules/can/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/can-*/**/*.js', watched: false, included: false},
             {pattern: bundler + '/appl/js/**/*.js', included: false},
+            {pattern: bundler + '/appl/css/**/*.js', included: false},
             {pattern: 'node_modules/**/package.json', watched: false, included: false},
             {pattern: 'node_modules/jquery/**/*.js', watched: false, served: true, included: false},
             {pattern: 'node_modules/jasmine-jquery/lib/jasmine-jquery.js', watched: false, served: true, included: false},

@@ -1,18 +1,13 @@
-// import moment from "moment"
-// import callbacks from "can-view-callbacks"
-// import debug from "can-debug"
 
 steal("moment", "can-view-callbacks", /* "can-debug", */
     function (moment, callbacks, debug) {
         return {
-            // export default {
             scrollTop: function () {
                 $("html, body").animate({
                     scrollTop: 0
                 }, "slow");
             },
             convertToBoolean: function (value) {
-
                 if (!this.isNullOrEmpty(value)) {
                     return false;
                 }
@@ -33,44 +28,34 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 return Boolean(value);
             },
             parseJson: function (json) {
-
                 return JSON && JSON.parse(json) || $.parseJSON(json);
             },
             isNullOrEmpty: function (value) {
-
                 return typeof value === "undefined" || value === null || value.length === 0;
             },
             getValueOrDefault: function (value, defaultValue) {
-
                 return !this.isNullOrEmpty(value) ? value : defaultValue;
             },
             endsWith: function (str, endswith) {
-
                 if (typeof String.prototype.endsWith !== "function") {
-
                     String.prototype.endsWith = function (suffix) {
                         return this.indexOf(suffix, this.length - suffix.length) !== -1;
                     };
-
                 }
                 return str.endsWith(endswith);
             },
             getWeekKeys: function () {
-
                 var nthWeek = moment().format("w"),
                     year = moment().format("TYYYY"),
                     weekKeys = [];
 
                 for (var i = 1; i <= nthWeek; i++) {
-
                     var week = ("0" + i).slice(-2);
                     weekKeys.push(year + week);
-
                 }
                 return weekKeys;
             },
             setJobTypeSelector: function (Component, Map, osKeys, values, template, baseUrl) {
-
                 var current = osKeys[0];
                 if (values) {
                     current = values[0];
@@ -129,7 +114,6 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 var helper = this;
 
                 return function (frag) {
-
                     var selector = options.selector ? options.selector : "#main_container";
                     var containerElement = controller.element.documentElement ? $(controller.element).find(selector) : null;
                     var el = containerElement ? containerElement : $(selector);
@@ -174,7 +158,6 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 if (container && container.children.length > (length == 0 ? length : 1)) {
                     resolve("loaded - with counter/length: " + counter + " - " + container.children.length);
                 } else {
-
                     counter++;
                     if (counter > 5) {
                         reject("failed");
@@ -184,7 +167,6 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                         setTimeout(function () {
                             isResolved(resolve, reject, selectorId, counter, length);
                         }, time);
-
                     }
                 }
                 //This works because the promise in the jasmine spec is active until done() is executed.

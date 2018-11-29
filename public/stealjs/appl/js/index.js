@@ -1,16 +1,12 @@
-// import "config"
-// import App from "app"
-// import Router from "router"
-// import Default from "default"
-// import Setup from "setup"
-// import Helpers from "helpers"
+
 steal("app",
     "router",
     "default",
-    "setup",
     "helpers",
+    "setup",
     "config",
-    function (App, Router,  Default, Setup, Helpers) {
+    "css",
+    function (App, Router,  Default, Helpers, Setup) {
         App.init(Default);
         var Route = Router.init();
         Setup.init();

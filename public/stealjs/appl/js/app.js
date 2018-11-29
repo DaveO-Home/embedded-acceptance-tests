@@ -1,8 +1,4 @@
 
-// import Helpers from "helpers"
-// import Component from 'can-component'
-// import Map from 'can-map'
-
 steal("helpers",
     "can-component",
     "can-map",
@@ -20,7 +16,6 @@ steal("helpers",
         //!steal-remove-start
         if (testit) {
             describe("Popper Defined - required for Bootstrap", function () {
-
                 it("is JQuery defined", function () {
                     expect(typeof $ === "function").toBe(true);
                 });
@@ -28,7 +23,6 @@ steal("helpers",
                 it("is Popper defined", function () {
                     expect(typeof Popper === "function").toBe(true);
                 });
-
             });
         }
         //!steal-remove-end   
@@ -39,7 +33,6 @@ steal("helpers",
                 : "/base/" + window._bundler + "/appl/";
 
         return {
-            // export default {
             controllers: [],
             init: function (options) {
                 options = options || {};

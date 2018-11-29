@@ -1,9 +1,7 @@
 
-// import _ from "lodash"
 steal("lodash",
     function (_) {
         return {
-            // export default {
             //PASS IN AN HTML LIST ELEMENT
             activate: function (selector) {
                 var activated = false;

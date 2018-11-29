@@ -1,7 +1,3 @@
-// import App from "app"
-// import Map from "can-map"
-// import Route from "can-route"
-// import Start from "start"
 
 steal("app",
     "can-map",
@@ -46,7 +42,6 @@ steal("app",
             }
         });
         return {
-            // export default {
             init: function () {
                 $(function () {
                     var viewModel = new ApplViewModel();
