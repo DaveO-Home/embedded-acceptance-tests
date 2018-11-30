@@ -67,7 +67,7 @@ module.exports = {
         }
         return weekKeys;
     },
-    setJobTypeSelector: function (Component, DefineMap, osKeys, values, template, baseUrl) {
+    setJobTypeSelector: function (Component, DefineMap, osKeys, values, template) {
         var current = osKeys[0];
         if (values) {
             current = values[0];
@@ -92,7 +92,7 @@ module.exports = {
                             return false;
                         }
                         var tbodyTemplate = template;
-                        var toolsUrl = baseUrl + "templates/tools_";                                
+                        var toolsUrl = "templates/tools_";                                
                         $.get(toolsUrl + selectedJobType + ".json", function (data) {
                             if (selectedJobType == "ful") {
                                 data.all = false;

@@ -14,7 +14,7 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
         var toolsUrl = "templates/stache/";
         this.view({
             data: data,
-            templateUrl: this.baseUrl + toolsUrl,
+            templateUrl: toolsUrl,
             template: "tools.stache",
             list: true,
             loading: true,

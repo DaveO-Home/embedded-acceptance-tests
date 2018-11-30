@@ -139,6 +139,7 @@
     "karma-webpack": "^3.0.5",
     "loader-utils": "^1.1.0",
     "parcel-bundler": "^1.10.3",
+    "pump": "^3.0.0",
     "raw-loader": "^0.5.1",
     "reload-html-webpack-plugin": "^0.1.2",
     "rollup": "^0.67.3",

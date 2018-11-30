@@ -7,12 +7,8 @@ var Helpers = require("b/helpers");
 var Control = require("can-control");
 
 var base = false;
-//removeIf(production)
-if (typeof testit !== "undefined" && testit) {
-    base = true;
-}
-//endRemoveIf(production)
-var baseUrl = base ? "base/" + window._bundler + "/appl/" : "";
+var baseUrl = "";
+
 module.exports = Control.extend({
     defaults: {
         base: base
@@ -49,7 +45,7 @@ module.exports = Control.extend({
                 template;
 
         App.loadView({
-            url: options.baseUrl + 'templates/stache/modal.stache'
+            url: 'templates/stache/modal.stache'
         }, function (modalFrag) {
             template = Stache(modalFrag);
 

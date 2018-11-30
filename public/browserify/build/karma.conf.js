@@ -2,7 +2,6 @@ let startupHtml = "/appl/testapp_karma.html";
 let bundler = "browserify";
 // Karma configuration
 module.exports = function (config) {
-
     if (!global.whichBrowsers) {
         global.whichBrowsers = ["ChromeHeadless, FirefoxHeadless"];
     }
@@ -10,6 +9,15 @@ module.exports = function (config) {
     config.set({
         basePath: '../../',
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "stealjs/appl/": "/base/stealjs/appl/",
+            "can-map/": "/base/node_modules/can-map/",
+            "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
+        },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
             {pattern: bundler + "/appl/jasmine/webcomponents-hi-sd-ce.js", watched: false},

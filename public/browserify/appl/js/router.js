@@ -2,56 +2,43 @@
 /*eslint no-undef: "error"*/
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
-var App = require("b/app");
-var Map = require("can-map");
-var Route = require("can-route");
-var _ = require("lodash");
-var Start = require("b/start");
+const App = require("b/app");
+const Map = require("can-map");
+const Route = require("can-route");
+const _ = require("lodash");
+const Start = require("b/start");
 
-var ApplViewModel = Map.extend({
+const ApplViewModel = Map.extend({
     init: function () {
-
         Start.initMenu();
-
     },
     index: function (options) {
-
         options.fade = false;
         Start.index(options);
-
     },
     contact: function (ev) {
-
         Start.contact(ev);
-
     },
     dispatch: function () {
-
-        var me = this,
-                controllerName = _.capitalize(this.controller),
-                actionName = this.action
-                ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index",
-                failMsg = "Load problem with: \"" + controllerName + "/" + actionName + "\".";
+        const me = this
+        const controllerName = _.capitalize(this.controller)
+        const actionName = this.action
+                ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index"
+        const failMsg = "Load problem with: \"" + controllerName + "/" + actionName + "\".";
 
         //The controller will initiate the view. ---> calls basecontrol.view ---> app.loadView
         App.loadController(controllerName, getController(controllerName), function (controller) {
-
             if (controller &&
                     controller[actionName] &&
                     controller.isValid ? controller.isValid(me) : true) {
-
                 //Execute the controller's action
                 controller[actionName](me);
 
             } else {
-
                 console.error(failMsg);
-
             }
         }, function (err) {
-
             console.error(failMsg + " - " + err);
-
         });
     },
     login: function () {
@@ -60,7 +47,6 @@ var ApplViewModel = Map.extend({
 });
 
 function getController(controllerName) {
-
     switch (controllerName.toLowerCase()) {
         case "table":
             return require("b/table");
@@ -74,29 +60,23 @@ function getController(controllerName) {
 module.exports = {
     init: function () {
         $(function () {
-
             var viewModel = new ApplViewModel();
 
             Route.data = viewModel;
 
             Route.on("change", function (ev, attr, how, newVal, oldVal) {
-
                 if (how === "set") {
                     Start.initMenu();
                 }
-
             });
 
             Route.on("id", function (ev, attr, oldVal) {
-
                 if (attr) {
                     this.dispatch();
                 }
-
             });
 
             Route.on("action", function (ev, attr, oldVal) {
-
                 if (attr) {
 //removeIf(production)
                     //Note: we are already in a spec at this time.
@@ -107,22 +87,17 @@ module.exports = {
 //endRemoveIf(production)                           
                     this.dispatch();
                 }
-
             });
             /*eslint no-unused-vars: "warn"*/
             Route.on("home", function (ev, attr, oldVal) {
-
                 var options = {};
 
                 if (attr) {
 //removeIf(production)
                     //Note: we are already in a spec at this time.
                     if (testit) {
-
                         if (Route.data.attr("base")) {
-
                             expect(attr === "#!").toBe(true);
-
                         } else {
                             return;  //Just in case Karma loads the index page.
                         }
@@ -131,17 +106,12 @@ module.exports = {
                     }
 //endRemoveIf(production)
                     this.index(options);
-
                 }
-
             });
 
             Route.on("controller", function (ev, attr, oldVal) {
-
                 if (attr && typeof this[attr] === "function") {
-
                     this[attr](ev);
-
                 }
             });
 

@@ -19,7 +19,6 @@ const assign = require('lodash.assign');
 const watchify = require('watchify');
 const removeCode = require('gulp-remove-code');
 const stripCode = require("gulp-strip-code");
-const uglify = require('gulp-uglify');
 const browserSync = require('browser-sync').create("devl");
 const del = require('del');
 const chalk = require('chalk');
@@ -30,16 +29,17 @@ const startComment = "steal-remove-start",
                 startComment + " ?[\\*\\/]?[\\s\\S]*?(\\/\\* ?|\\/\\/[\\s]*\\![\\s]*)" +
                 endComment + " ?(\\*\\/)?[\\t ]*\\n?", "g");
 
-let lintCount = 0,
-        vendors = [],
-        browserifyInited,
-        isProduction = process.env.NODE_ENV == 'production',
-        isWatchify = process.env.USE_WATCH == 'true',
-        browsers = process.env.USE_BROWSERS,
-        testDist = "dist_test/browserify",
-        prodDist = "dist/browserify",
-        dist = isProduction ? prodDist : testDist,
-        isSplitBundle = true;
+let lintCount = 0;
+let vendors = [];
+let browserifyInited;
+let isProduction = process.env.NODE_ENV == 'production';
+let isWatchify = process.env.USE_WATCH == 'true';
+let browsers = process.env.USE_BROWSERS;
+let testDist = "dist_test/browserify";
+let prodDist = "dist/browserify";
+let dist = isProduction ? prodDist : testDist;
+let isSplitBundle = true;
+let minify;
 
 if (browsers) {
     global.whichBrowsers = browsers.split(",");
@@ -215,7 +215,7 @@ gulp.task('tdd-browserify', ['build-development'], function (done) {
         global.whichBrowsers = ["Chrome", "Firefox"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 
 });
@@ -228,12 +228,13 @@ gulp.task('tddo', function (done) {
         global.whichBrowsers = ["Opera"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 
 });
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('acceptance', ['b-test']);
 gulp.task('tdd', ['tdd-browserify']);
 gulp.task('test', ['pat']);
@@ -254,11 +255,19 @@ function browserifyBuild() {
         }
     };
 
+    if (isProduction) {
+        const uglifyes = require('uglify-es');
+        const composer = require('gulp-uglify/composer');
+        const pump = require('pump');
+    
+        minify = composer(uglifyes, console);
+    }
+
     var stream = browserifyInited.bundle()
             .pipe(source('vendor.js'))
             .pipe(buffer())
             .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())
-            .pipe(isProduction ? uglify() : noop());
+            .pipe(isProduction ? minify() : noop());
 
     stream = stream.pipe(sourcemaps.init({loadMaps: !isProduction}))
             .pipe(sourcemaps.write('../../' + dist + '/maps', {addComment: !isProduction}));
@@ -312,13 +321,20 @@ function applicationBuild() {
  * Build application bundle for production or development
  */
 function browserifyApp() {
+    if (isProduction && !minify) {
+        const uglifyes = require('uglify-es');
+        const composer = require('gulp-uglify/composer');
+        const pump = require('pump');
+    
+        minify = composer(uglifyes, console);
+    }
     var stream = browserifyInited
             .bundle()
             .pipe(source('index.js'))
             .pipe(removeCode({production: isProduction}))
             .pipe(buffer())
             .pipe(isProduction ? stripCode({pattern: regexPattern}) : noop())  //Strip out Canjs warnings if production.
-            .pipe(isProduction ? uglify().on('error', log) : noop());
+            .pipe(isProduction ? minify().on('error', log) : noop());
 
     stream = stream.pipe(sourcemaps.init({loadMaps: !isProduction}))
             .pipe(sourcemaps.write('../../' + dist + '/maps', {addComment: !isProduction}));
@@ -354,7 +370,7 @@ function copyFonts() {
 
 function runKarma(done) {   
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, function (result) {
         var exitCode = !result ? 0 : result;
