@@ -1,6 +1,5 @@
 steal(function () {
     return function (Route, Helpers) {
-
         /* 
          * Test Form validation and submission.
          */
@@ -13,7 +12,6 @@ steal(function () {
                     mainContainer = "#main_container";
 
             beforeAll(function (done) {
-
                 if (!$(mainContainer)[0]) {
                     $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
                 }
@@ -26,17 +24,10 @@ steal(function () {
             });
 
             it("Contact form - verify required fields", function (done) {
-
-                new Promise(function (resolve, reject) {
-
-                    Helpers.isResolved(resolve, reject, "container", 0);
-
-                }).catch(function (rejected) {
-
+                Helpers.getResource("container", 0)
+                .catch(function (rejected) {
                     fail("Contact Page did not load within limited time: " + rejected);
-
                 }).then(function (resolved) {
-
                     contact = $(mainContainer + " form");
                     nameObject = $("#inputName");
                     emailObject = $("#inputEmail");
@@ -52,7 +43,6 @@ steal(function () {
             });
 
             it("Contact form - validate populated fields, email mismatch.", function (done) {
-
                 submitObject = contact.find("input[type=submit]");
                 
                 nameObject.val("me");
@@ -75,8 +65,7 @@ steal(function () {
                 done();
             });
 
-            it("Contact form - validate email with valid email address.", function (done) {
-                
+            it("Contact form - validate email with valid email address.", function (done) {       
                 emailObject.val("ace@ventura.com");
 
                 expect(emailObject[0].validity.typeMismatch).toBe(false);
@@ -86,7 +75,6 @@ steal(function () {
             });
 
             it("Contact form - validate form submission.", function (done) {
-
                 submitObject.click();
                 
                 setTimeout(function () {
@@ -94,7 +82,6 @@ steal(function () {
                     expect($(mainContainer + " form")[0]).not.toExist();
                     done();
                 }, 100);
-
             });
         });
     };

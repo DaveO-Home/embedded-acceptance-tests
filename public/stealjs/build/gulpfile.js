@@ -29,7 +29,7 @@ gulp.task('pat', function (done) {
     }
 
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, function (result) {
         var exitCode = !result ? 0 : result;
@@ -109,7 +109,7 @@ gulp.task('build', ['clean' , 'bootlint'], function () {
         });
 });
 /*
- * Tools Streams will concatenate the node_module css scripts
+ * Tools Streams example - not used
  */
 gulp.task('buildX', [/*'build2', 'bootlint'*/], function () {
     const graphStream = stealStream.graph({
@@ -144,6 +144,34 @@ gulp.task('buildX', [/*'build2', 'bootlint'*/], function () {
         .pipe(stealStream.write());
 });
 /*
+ *  Build the application to the production distribution using Steal/Steal-Tools v2
+ */
+gulp.task('build-only', ['clean-only'], function () {
+    return stealTools.build({
+        configMain:"stealjs/appl/js/config",
+        main: "stealjs/appl/js/index",
+        baseURL: "../../"
+    }, {
+            sourceMaps: false,
+            bundleAssets: {
+                infer: true,
+                glob: [
+                    '../images/favicon.ico',
+                    '../appl/testapp.html',
+                    '../appl/views/**/*',
+                    '../appl/templates/**/*',
+                    '../../README.md'
+                ]
+            },
+            bundleSteal: false,
+            dest: "dist",
+            removeDevelopmentCode: true,
+            minify: true,
+            maxBundleRequests: 5,
+            maxMainRequests: 5
+        });
+});
+/*
  * Bootstrap html linter 
  */
 gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
@@ -158,6 +186,18 @@ gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
  * Remove previous build
  */
 gulp.task('clean', ['bootlint'], done => {
+    isProduction = true;
+    dist = '../../dist/';
+    return del([
+        dist + 'stealjs/**/*',
+        dist + 'bundles/**/*',
+        dist + '../../dist/steal.production.js'
+    ], { dryRun: false, force: true }, done);
+});
+/**
+ * Remove previous build
+ */
+gulp.task('clean-only', done => {
     isProduction = true;
     dist = '../../dist/';
     return del([
@@ -263,6 +303,8 @@ gulp.task('web-server', function (cb) {
 });
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prd', ['build-only'])
 gulp.task('tdd', ['steal-tdd']);
 gulp.task('test', ['steal-test']);
 gulp.task('firefox', ['steal-firefox']);
@@ -273,7 +315,7 @@ gulp.task('server', ['web-server']);
 function runKarma(done, singleRun, watch) {
 
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: singleRun,
         watch: typeof watch === "undefined" || !watch ? false : true
     }, done()).start();

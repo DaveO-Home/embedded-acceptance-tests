@@ -20,9 +20,8 @@ steal(function () {
                 Route.data.attr("action", "tools");
 
                 //Wait for Web Page to be loaded
-                new Promise(function (resolve, reject) {
-                    Helpers.isResolved(resolve, reject, "container", 0);
-                }).catch(function (rejected) {
+                Helpers.getResource("container", 0)
+                .catch(function (rejected) {
                     fail("The Tools Page did not load within limited time: " + rejected);
                 }).then(function (resolved) {
                     tools = $("#tools");

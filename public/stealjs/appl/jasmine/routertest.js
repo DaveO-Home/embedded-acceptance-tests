@@ -1,5 +1,4 @@
 steal(function () {
-
     return function (Route, controller, action, id) {
         var addId = id? "/" + id: "";
         if (testit) {           

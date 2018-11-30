@@ -1,13 +1,11 @@
 /**
  * Controller to manage tablesorter
  */
-// import App from "app"
-// import Base from "basecontrol"
+
 steal("app",
       "basecontrol",
     function (App, Base) {
         return App.controllers.Table || (App.controllers.Table = new (Base.extend({
-            // module.exports = App.controllers.Table || (App.controllers.Table = new (Base.extend({
             defaults: {
             }
         }, {
@@ -15,7 +13,7 @@ steal("app",
                     var toolsUrl = "templates/stache/";
                     this.view({
                         data: data,
-                        templateUrl: this.baseUrl + toolsUrl,
+                        templateUrl: toolsUrl,
                         template: "tools.stache",
                         list: true,
                         loading: true,

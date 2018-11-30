@@ -1,22 +1,12 @@
-// import App from "app"
-// import Helpers from "helpers"
-// import Control from "can-control"
 
 steal("app",
     "helpers",
     "can-control",
     function (App, Helpers, Control) {
         var base = false;
-        //!steal-remove-start
-        if (typeof testit !== "undefined" && testit) {
-            base = true;
-        }
-        //!steal-remove-end
-
-        var baseUrl = base ? "base/" + window._bundler + "/appl/" : "";
+        var baseUrl = "" 
 
         return Control.extend({
-            // export default Control.extend({
             defaults: {
                 base: base
             }
@@ -52,7 +42,7 @@ steal("app",
                         template;
 
                     App.loadView({
-                        url: options.baseUrl + 'templates/stache/modal.stache'
+                        url: 'templates/stache/modal.stache'
                     }, function (modalFrag) {
                         template = Stache(modalFrag);
 

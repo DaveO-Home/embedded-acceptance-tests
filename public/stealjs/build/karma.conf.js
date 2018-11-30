@@ -9,13 +9,11 @@ module.exports = function (config) {
         basePath: '../../',
         frameworks: ['jasmine-jquery', 'jasmine'],
         proxies: {
-            // "/views": "/base/dist_test/" + bundler + "/appl/views",
-            // "/templates": "/base/dist_test/" + bundler + "/appl/templates",
-            // "/css": "/base/dist_test/" + bundler + "/appl/css",
-            // "/node_modules/font-awesome": "/base/node_modules/font-awesome",
-            // "/app_bootstrap.html": "/base/dist_test/" + bundler + "/appl/app_bootstrap.html",
-            // "/README.md": "/base/dist_test/README.md",
-
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "stealjs/appl/": "/base/stealjs/appl/",
             "can-map/": "/base/node_modules/can-map/",
             "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
         },

@@ -14,7 +14,7 @@ build.xml
 /public/dist_test/*
 /dist_test/maps
 /public/.fusebox/*
-/public/dev-bundle.js
+/public/dev-bundle.*
 /public/components/*
 /public/node_modules/*
 /public/bower_components

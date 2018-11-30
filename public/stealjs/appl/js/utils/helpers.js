@@ -55,7 +55,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 }
                 return weekKeys;
             },
-            setJobTypeSelector: function (Component, Map, osKeys, values, template, baseUrl) {
+            setJobTypeSelector: function (Component, Map, osKeys, values, template) {
                 var current = osKeys[0];
                 if (values) {
                     current = values[0];
@@ -80,7 +80,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                                     return false;
                                 }
                                 var tbodyTemplate = template;
-                                var toolsUrl = baseUrl + "templates/tools_";
+                                var toolsUrl = "templates/tools_"
 
                                 $.get(toolsUrl + selectedJobType + ".json", function (data) {
                                     if (selectedJobType == "ful") {
@@ -171,6 +171,15 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 }
                 //This works because the promise in the jasmine spec is active until done() is executed.
                 return true;
+            },
+            getResource (selector, startCount, childrenLength) {
+                return new Promise((resolve, reject) => {
+                    this.isResolved(resolve, reject, selector, startCount, childrenLength)
+                }).catch(rejected => {
+                    fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+                }).then(resolved => {
+                    return resolved
+                })
             },
             //Per Stack Overflow - Fire a click event in raw javascript
             fireEvent: function () {

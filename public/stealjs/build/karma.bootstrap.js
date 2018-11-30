@@ -28,7 +28,6 @@ __karma__.loaded = function () {
     const config = jasmine.getEnv().configuration()
     config.random = false;
     jasmine.getEnv().configure(config)
-    // System.mainConfig = 'stealjs/appl/js/config';
 
     steal.npmAlgorithm = 'flat';
 };

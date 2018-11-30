@@ -1,9 +1,7 @@
 steal(function () {
     return function (resource) {
-
         if (testit) {
             switch (resource) {
-
                 case "index":
                     expect(document.querySelector("#main_container > div > h1").innerHTML).toBe("Welcome To");
                     break;

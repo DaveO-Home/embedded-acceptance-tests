@@ -27,7 +27,6 @@ steal("app",
                     if (controller &&
                         controller[actionName] &&
                         controller.isValid ? controller.isValid(me) : true) {
-
                         //Execute the controller's action
                         controller[actionName](me);
                     } else {
@@ -84,7 +83,6 @@ steal("app",
                                 } else {
                                     return;  //Just in case Karma loads the index page.
                                 }
-                                options.base = Route.data.attr("base");
                                 options.selector = Route.data.attr("selector");
                             }
                             //!steal-remove-end

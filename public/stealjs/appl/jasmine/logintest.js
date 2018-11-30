@@ -15,9 +15,8 @@ steal("start", function (Start) {
                 }
 
                 Start.initMenu();
-                Start.base = true;
-                var loginObject = $("div .login")[0];
 
+                var loginObject = $("div .login")[0];
                 loginObject.click();
 
                 // Not bothering with a promise.

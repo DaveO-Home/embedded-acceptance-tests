@@ -26,11 +26,7 @@ steal("helpers",
             });
         }
         //!steal-remove-end   
-        var baseScriptsUrl = "~/",
-            pathName = window.location.pathname,
-            baseUrl = pathName !== "/context.html"
-                ? pathName.substring(0, pathName.substring(1, pathName.length).lastIndexOf("/") + 1) + "/"
-                : "/base/" + window._bundler + "/appl/";
+        const baseScriptsUrl = "~/"
 
         return {
             controllers: [],
@@ -45,21 +41,13 @@ steal("helpers",
                 });
             },
             toUrl: function (url) {
-                // Node Express exception
-                if (_.startsWith(baseUrl, "/appl/")) {
-                    baseUrl = "/appl";
-                }
-
-                if (url && url.indexOf("~/") === 0) {
-                    url = baseUrl + url.substring(2);
-                }
                 return url;
             },
             toScriptsUrl: function (url) {
-                return this.toUrl(baseScriptsUrl + "/" + url);
+                return url
             },
             toViewsUrl: function (url) {
-                return _.startsWith(url, "views/") ? this.toScriptsUrl(url) : this.toUrl(url);
+                return url
             },
             loadController: function (controller, fnLoad, fnError) {
                 var me = this;
@@ -81,8 +69,7 @@ steal("helpers",
             },
             loadView: function (options, fnLoad) {
                 if (options && fnLoad) {
-                    var resolvedUrl = this.toViewsUrl(options.url);
-
+                    var resolvedUrl = options.url;
                     var currentController = this.controllers[_.capitalize(options.controller)];
 
                     if (options.url) {
@@ -108,10 +95,7 @@ steal("helpers",
             renderTools: function (options, render) {
                 var currentController = this.controllers[_.capitalize(options.controller)];
                 var template;
-                //!steal-remove-start
-                baseUrl = testit ? "/base/" + window._bundler + "/appl/" : baseUrl;
-                //!steal-remove-end
-                var jsonUrl = baseUrl + "templates/tools_ful.json";
+                var jsonUrl = "templates/tools_ful.json";
 
                 $.get(options.templateUrl + options.template, function (source) {
                     template = Stache(source);
@@ -120,7 +104,7 @@ steal("helpers",
                         var osKeys = ["Combined", "Category1", "Category2"];
                         var values = ["ful", "cat1", "cat2"];
 
-                        Helpers.setJobTypeSelector(Component, Map, osKeys, values, template, baseUrl);
+                        Helpers.setJobTypeSelector(Component, Map, osKeys, values, template);
                         //!steal-remove-start
                         if (testit) {  //Firefox issueing disable Warnings with render instead of unload
                             data.base = true;  //Don't include disabled class

@@ -1,11 +1,6 @@
 /**
  * Controller for Welcome Page
  */
-// import App from "app"
-// import Base from "basecontrol"
-// import Menu from "menu"
-// import Marked from "marked"
-
 steal("app",
     "basecontrol", "menu", "marked",
     function (App, Base , Menu , Marked) {
@@ -13,8 +8,6 @@ steal("app",
 
         return App.controllers.Start ||
             (App.controllers.Start = new (Base.extend({
-                // export default App.controllers.Start ||
-                // (App.controllers.Start = new (Base.extend({
                 initMenu: function () {
                     me = this;
                     var hash = window.location.hash;
@@ -24,10 +17,10 @@ steal("app",
                 },
                 index: function (options) {
                     var indexUrl = "views/prod/index.html";
-                    var markdownUrl = this.base ? "base/README.md" : System.isEnv("development") ? "/README.md" : "/dist/README.md";
+                    var markdownUrl = System.isEnv("development") ? "/README.md" : "/dist/README.md";
 
                     this.view({
-                        url: me.baseUrl + indexUrl,
+                        url: indexUrl,
                         urlMd: markdownUrl,
                         fade: true,
                         controller: "Start",
@@ -40,8 +33,7 @@ steal("app",
                     var loginUrl = "views/prod/login.html";
 
                     this.modal({
-                        baseUrl: me.baseUrl,
-                        url: me.baseUrl + loginUrl,
+                        url: loginUrl,
                         title: 'Account Log In',
                         submit: 'Login',
                         submitCss: 'submit-login',
@@ -63,7 +55,7 @@ steal("app",
                 },
                 contact: function (ev) {
                     this.view({
-                        url: me.baseUrl + "views/prod/contact.html",
+                        url: "views/prod/contact.html",
                         selector: window.rmain_container || "#main_container",
                         fade: true,
                         contactListener: function (el) {
