@@ -23,7 +23,8 @@
         "rmain_container": true,
         "FuseBox": true,
         "process": true,
-        "module": true
+        "module": true,
+        "Promise": true
     },
     "env": { 
         "browser": true, "jasmine": true, "jquery": true, "amd": true

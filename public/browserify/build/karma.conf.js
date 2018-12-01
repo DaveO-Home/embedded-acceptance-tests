@@ -14,9 +14,7 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "stealjs/appl/": "/base/stealjs/appl/",
-            "can-map/": "/base/node_modules/can-map/",
-            "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
+            "browserify/appl/": "/base/" + bundler + "/browserify/appl/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.

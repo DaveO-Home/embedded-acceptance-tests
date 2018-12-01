@@ -4,12 +4,9 @@ var Base = require("b/basecontrol");
 
 module.exports = App.controllers.Pdf || (App.controllers.Pdf = new (Base.extend({
     finish: function (options) {
-
         $("#pdfDO").attr("src", options.pdfUrl);
-
     },
     test: function (options) {
-
         var toolsUrl = "views/prod/Test.pdf";
 
         this.view({
@@ -17,7 +14,5 @@ module.exports = App.controllers.Pdf || (App.controllers.Pdf = new (Base.extend(
             pdfUrl: toolsUrl,
             controller: options.controller
         });
-
     }
-
 }))("#main_container"));

@@ -17,7 +17,6 @@ steal(function () {
                     beforeAll(function (done) {
                         /* Important!
                          * Make sure the spa main bootstrap layout is added to the Karma page
-                         * For steal we are using ajax because a bundle is not being used
                          */
                         $.get("base/stealjs/appl/app_bootstrap.html", function (data) {
                             $("body").append(data)

@@ -5,25 +5,28 @@ var toolsTest = require("b/toolstest").toolstest;
 var contactTest = require("b/contacttest").contacttest;
 var loginTest = require("b/logintest").logintest;
 var mainContainer = "#main_container";
-var mainHtml = '<div id="main_container"><div class="loading-page"></div></div>';
 var Start = require("b/start");
 
 exports.apptest = function (Route, Helpers, App) {
     describe("Application Unit test suite - AppTest", function () {
-        beforeAll(function () {
+        beforeAll(function (done) {
             /* Important!
-             * Make sure the div container is added to the Karma page
+             * Make sure the bootstrap layout is added to the Karma page
              */
-            if (!$(mainContainer).length) {
-                $("body").append(mainHtml);
-            }
+            $.get("app_bootstrap.html", function (data) {
+                $("body").append(data)
+                done()
+            }, "html").fail(function (data, err) {
+                console.warn("Error fetching fixture data: " + err);
+                done()
+            });
 
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
         }, 10000);
 
         afterEach(function () {
-            //Get rid of nasty warning message from can-events.
+            //Get rid of warning message from can-events.
             $("#tools thead tr td input").each(function () {
                 this.disabled = false;
             });
@@ -43,22 +46,21 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("home", "");
             Route.data.attr("home", "#!");
             //Waiting for page to load.
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 1);
-            }).catch(function (rejected) {
-                fail("The Welcome Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(Route.data.index).toHaveBeenCalled();
-                    expect(Route.data.index.calls.count()).toEqual(1);
-                    expect(App.controllers["Start"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 1).toBe(true);
+            Helpers.getResource("container", 0, 1)
+                .catch(function (rejected) {
+                    fail("The Welcome Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(Route.data.index).toHaveBeenCalled();
+                        expect(Route.data.index.calls.count()).toEqual(1);
+                        expect(App.controllers["Start"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 1).toBe(true);
 
-                    domTest("index");
-                }
+                        domTest("index");
+                    }
 
-                done();
-            });
+                    done();
+                });
         });
 
         it("Is Tools Table Loaded", function (done) {
@@ -68,20 +70,19 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("controller", "table");
             Route.data.attr("action", "tools");
 
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 1);
-            }).catch(function (rejected) {
-                fail("The Tools Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(App.controllers["Table"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 1).toBe(true);
+            Helpers.getResource("container", 0, 1)
+                .catch(function (rejected) {
+                    fail("The Tools Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(App.controllers["Table"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 1).toBe(true);
 
-                    domTest("tools");
-                }
+                        domTest("tools");
+                    }
 
-                done();
-            });
+                    done();
+                });
         });
 
         routerTest(Route, "table", "tools", null);
@@ -91,21 +92,20 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("controller", "pdf");
             Route.data.attr("action", "test");
 
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 0);
-            }).catch(function (rejected) {
-                fail("The Pdf Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(Route.data.dispatch.calls.count()).not.toEqual(count);
-                    expect(App.controllers["Pdf"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 0).toBe(true);
+            Helpers.getResource("container", 0, 0)
+                .catch(function (rejected) {
+                    fail("The Pdf Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(Route.data.dispatch.calls.count()).not.toEqual(count);
+                        expect(App.controllers["Pdf"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 0).toBe(true);
 
-                    domTest("pdf");
-                }
+                        domTest("pdf");
+                    }
 
-                done();
-            });
+                    done();
+                });
         });
 
         routerTest(Route, "pdf", "test", null);
@@ -117,11 +117,14 @@ exports.apptest = function (Route, Helpers, App) {
         contactTest(Route, Helpers);
         //Verify modal form
         loginTest(Start);
-
+        
         if (testOnly) {
             it("Testing only", function () {
                 fail("Testing only, build will not proceed");
             });
         }
+        // Start the tests
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000;
+        __karma__.start();
     });
 };

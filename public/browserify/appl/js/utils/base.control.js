@@ -6,15 +6,10 @@ var App = require("b/app");
 var Helpers = require("b/helpers");
 var Control = require("can-control");
 
-var base = false;
-var baseUrl = "";
-
 module.exports = Control.extend({
     defaults: {
-        base: base
     }
 }, {
-    baseUrl: baseUrl,
     init: function () {
     },
     view: function (options) {
@@ -78,7 +73,6 @@ module.exports = Control.extend({
     hideModal: function () {
         //HIDE ANY OPEN MODAL WINDOWS
         $('.modal.in', this.element).modal('hide');
-    },
-    base: base
+    }
 });
 
