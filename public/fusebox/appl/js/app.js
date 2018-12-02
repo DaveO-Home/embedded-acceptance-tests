@@ -25,11 +25,11 @@ if (testit) {
 }
 /* develblock:end */
 
-var baseScriptsUrl = "~/",
-        pathName = window.location.pathname,
-        baseUrl = pathName
-        ? pathName.substring(0, pathName.substring(1, pathName.length).indexOf("/") + 1) + "/appl"
-        : "/base/" + window._bundler + "/appl/";
+var baseScriptsUrl = "~/";
+// pathName = window.location.pathname,
+// baseUrl = pathName
+// ? pathName.substring(0, pathName.substring(1, pathName.length).indexOf("/") + 1) + "/appl"
+// : "/base/" + window._bundler + "/appl/";
 
 module.exports = {
     controllers: [],
@@ -44,21 +44,13 @@ module.exports = {
         });
     },
     toUrl: function (url) {
-        //Node Express exception
-        if (_.startsWith(baseUrl, "/appl/")) {
-            baseUrl = "/appl";
-        }
-
-        if (url && url.indexOf("~/") === 0) {
-            url = baseUrl + url.substring(2);
-        }
         return url;
     },
     toScriptsUrl: function (url) {
-        return this.toUrl(baseScriptsUrl + "/" + url);
+        return url;
     },
     toViewsUrl: function (url) {
-        return _.startsWith(url, "views/") ? url : this.toUrl(url);
+        return url;
     },
     loadController: function (controllerName, controller, fnLoad, fnError) {
         var me = this;
@@ -69,7 +61,7 @@ module.exports = {
             var appController = controller;
 
             try {
-/* develblock:start */
+                /* develblock:start */
                 if (testit) {
                     describe("Application Controller", function () {
                         it("Loaded Controller", function () {
@@ -78,7 +70,7 @@ module.exports = {
                         });
                     });
                 }
-/* develblock:end */
+                /* develblock:end */
                 me.controllers[_.capitalize(controllerName)] = appController;
 
                 fnLoad(me.controllers[controllerName]);
@@ -96,17 +88,17 @@ module.exports = {
 
             if (options.url) {
                 $.get(resolvedUrl, fnLoad)
-                        .done(function (data, err) {
-                            if (typeof currentController !== "undefined" && currentController.finish) {
-                                currentController.finish(options);
-                            }
-                            if (err !== 'success') {
-                                console.error(err);
-                            }
-                        });
+                    .done(function (data, err) {
+                        if (typeof currentController !== "undefined" && currentController.finish) {
+                            currentController.finish(options);
+                        }
+                        if (err !== 'success') {
+                            console.error(err);
+                        }
+                    });
             } else if (options.local_content) {
                 fnLoad(options.local_content);
-                
+
                 if (typeof currentController !== "undefined" && currentController.finish) {
                     currentController.finish(options);
                 }
@@ -117,13 +109,7 @@ module.exports = {
         var currentController = this.controllers[_.capitalize(options.controller)];
         var template;
         var jsonUrl = "templates/tools_ful.json";
-        /* develblock:start */
-        if (testit) {
-            baseUrl = "/base/" + window._bundler + "/appl/";
-            jsonUrl = baseUrl + jsonUrl;
-            
-        }
-        /* develblock:end */
+        
         //fixture({url: "/listools"}, "templates/tools_ful.json");
         $.get(options.templateUrl + options.template, function (source) {
             template = Stache(source);
@@ -139,9 +125,9 @@ module.exports = {
                 console.error("Error fetching json data: " + err);
             });
         }, "text")
-                .fail(function (data, err) {
-                    console.error("Error Loading Template: " + err);
-                    console.warn(data);
-                });
+            .fail(function (data, err) {
+                console.error("Error Loading Template: " + err);
+                console.warn(data);
+            });
     }
 };

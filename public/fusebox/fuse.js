@@ -25,7 +25,7 @@ const aliases = {
 let isProduction = process.env.NODE_ENV === 'production';
 let distDir = isProduction ? "../dist/fusebox" : "../dist_test/fusebox";
 let isKarma = process.env.USE_KARMA === "true";
-let useQuantum = true;
+let useQuantum = false; // turned off Quantum for Canjs > v4
 let useHMR = process.env.USE_HMR === 'true';
 let resources = (f) => (!isProduction && isKarma ? `/base/dist_test/fusebox/resources/${f}` : isProduction ? `../resources/${f}` : `/dist_test/fusebox/resources/${f}`);
 
@@ -41,6 +41,7 @@ const fuse = FuseBox.init({
             template: isProduction? "./appl/testapp.html": "./appl/testapp_dev.html",
             target: isProduction? "appl/testapp.html": "appl/testapp_dev.html",
         }),
+        isProduction && EnvPlugin({ NODE_ENV: "production" }),
         isProduction && useQuantum && QuantumPlugin({
             api: (core) => {
                 core.solveComputed("moment/moment.js");

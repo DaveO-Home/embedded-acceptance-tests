@@ -17,10 +17,10 @@ module.exports = App.controllers.Start ||
             },
             index: function (options) {
                 var indexUrl = "views/prod/index.html";
-                var markdownUrl = this.base ? "base/README.md" : typeof testit !== "undefined"? "/README.md": "../../README.md";;
+                var markdownUrl = typeof testit !== "undefined"? "/README.md": "../../README.md";;
 
                 this.view({
-                    url: me.baseUrl + indexUrl,
+                    url: indexUrl,
                     urlMd: markdownUrl,
                     fade: true,
                     controller: "Start",
@@ -34,8 +34,7 @@ module.exports = App.controllers.Start ||
                 var loginUrl = "views/prod/login.html"
 
                 this.modal({
-                    baseUrl: me.baseUrl,
-                    url: me.baseUrl + loginUrl,
+                    url: loginUrl,
                     title: 'Account Log In',
                     submit: 'Login',
                     submitCss: 'submit-login',
@@ -56,9 +55,8 @@ module.exports = App.controllers.Start ||
                 $(sender).closest('.modal').modal('hide');
             },
             contact: function (ev) {
-
                 this.view({
-                    url: me.baseUrl + "views/prod/contact.html",
+                    url: "views/prod/contact.html",
                     selector: window.rmain_container || "#main_container",
                     fade: true,
                     contactListener: function (el) {
@@ -106,7 +104,6 @@ module.exports = App.controllers.Start ||
                                 }, secs);
                             }
                         };
-
                         form.find("input[type=submit]", el).click(formFunction);
                     }
                 });

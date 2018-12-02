@@ -15,7 +15,7 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
 
         this.view({
             data: data,
-            templateUrl: this.baseUrl + toolsUrl,
+            templateUrl: toolsUrl,
             template: "tools.stache",
             list: true,
             loading: true,
@@ -57,7 +57,6 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
 
         $(id).trigger("pageAndSize", defaultPage);
 
-    },
-    base: false
+    }
 
 }))("#main_container"));

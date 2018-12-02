@@ -12,6 +12,13 @@ module.exports = function (config) {
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "browserify/appl/": "/base/" + bundler + "/browserify/appl/"
+        },
         // list of files / patterns to load in the browser
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.

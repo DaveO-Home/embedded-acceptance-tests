@@ -87,11 +87,7 @@ module.exports = {
                         }
                         var tbodyTemplate = template; 
                         var toolsUrl = "templates/tools_";
-/* develblock:start */                                  
-                        if (testit) {
-                            toolsUrl = "base/" + window._bundler + "/appl/" + toolsUrl;
-                        }
-/* develblock:end */                                   
+                         
                         $.get(toolsUrl + selectedJobType + ".json", function (data) {
                             if (selectedJobType == "ful") {
                                 data.all = false;
@@ -183,6 +179,15 @@ module.exports = {
         }
 
         return true;
+    },
+    getResource (selector, startCount, childrenLength) {
+        return new Promise((resolve, reject) => {
+            this.isResolved(resolve, reject, selector, startCount, childrenLength)
+        }).catch(rejected => {
+            fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+        }).then(resolved => {
+            return resolved
+        })
     },
     //Per Stack Overflow - Fire a click event in raw javascript
     fireEvent: function () {

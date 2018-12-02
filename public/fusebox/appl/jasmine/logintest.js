@@ -17,7 +17,7 @@ module.exports = {
                 $("body").append('<div class="nav-login"><a href="#" class="login">Log in</a></div>');
 
                 Start.initMenu();
-                Start.base = true;
+// Start.base = true;
                 var loginObject = $("div .login")[0];
 
                 loginObject.click();
