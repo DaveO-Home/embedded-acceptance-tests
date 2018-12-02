@@ -10,12 +10,11 @@ module.exports = App.controllers['Table'] || (App.controllers['Table'] = new (Ba
     }
 }, {
     tools: function (data) {
-
         var toolsUrl = 'templates/stache/';
 
         this.view({
             data: data,
-            templateUrl: this.baseUrl + toolsUrl,
+            templateUrl: toolsUrl,
             template: 'tools.stache',
             list: true,
             loading: true,
@@ -23,7 +22,6 @@ module.exports = App.controllers['Table'] || (App.controllers['Table'] = new (Ba
         });
     },
     decorateTable: function (elementId) {
-
         var id = '#' + elementId;
         var headers;
         var pageSorter = {
@@ -57,7 +55,5 @@ module.exports = App.controllers['Table'] || (App.controllers['Table'] = new (Ba
 
         $(id).trigger('pageAndSize', defaultPage);
 
-    },
-    base: false
-
+    }
 }))('#main_container'));

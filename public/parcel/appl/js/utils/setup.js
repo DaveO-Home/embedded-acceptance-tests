@@ -8,6 +8,5 @@ module.exports = {
         //Show the page
         $('#top-nav').removeAttr('hidden');
         $('#side-nav').removeAttr('hidden');
-
     }
 };

@@ -11,6 +11,13 @@ module.exports = function (config) {
     config.set({
         basePath: '../../',
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "parcel/appl/": "/base/" + bundler + "/pacel/appl/"
+        },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
             {pattern: bundler + "/jasmine/webcomponents-hi-sd-ce.js", watched: false},

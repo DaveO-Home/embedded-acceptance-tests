@@ -9,7 +9,6 @@ module.exports = {
         var el = selector instanceof $ ? selector : $(selector);
         //Element is likely a list
         el.each(function () {
-
             var href = $('a', this).attr('href');
             var url = href ? trimStart(href, '#!') : 'none';
             var hash = trimStart(window.location.hash, '#!');

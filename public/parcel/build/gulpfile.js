@@ -178,7 +178,7 @@ gulp.task('tdd-parcel', ['build-development'], done => {
         global.whichBrowsers = ["Chrome", "Firefox"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 });
 /**
@@ -189,7 +189,7 @@ gulp.task('tddo', done => {
         global.whichBrowsers = ["Opera"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 });
 /**
@@ -213,6 +213,7 @@ gulp.task('watch-parcel', ['copy'], cb => {
 });
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('acceptance', ['r-test']);
 gulp.task('tdd', ['tdd-parcel']);
 gulp.task('test', ['pat']);
@@ -279,7 +280,7 @@ function copyImages() {
 function runKarma(done) {
 
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, result => {
         var exitCode = !result ? 0 : result;
