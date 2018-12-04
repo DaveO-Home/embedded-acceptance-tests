@@ -1,8 +1,8 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
-const {FuseBox, QuantumPlugin, WebIndexPlugin, CSSPlugin, CSSResourcePlugin, BabelPlugin, UglifyJSPlugin, HMRPlugin, EnvPlugin} = require("fuse-box");
-const  BlockStripPlugin = require("./appl/js/plugin/BlockStrip").BlockStrip;
-const  CopyFsPlugin = require("./appl/js/plugin/CopyFs").CopyFs;
+const { FuseBox, QuantumPlugin, WebIndexPlugin, CSSPlugin, CSSResourcePlugin, UglifyESPlugin, EnvPlugin } = require("fuse-box"); //BabelPlugin, HMRPlugin
+const BlockStripPlugin = require("./appl/js/plugin/BlockStrip").BlockStrip;
+const CopyFsPlugin = require("./appl/js/plugin/CopyFs").CopyFs;
 const aliases = {
     "apptest": "./jasmine/apptest.js",
     "contacttest": "./contacttest.js",
@@ -38,8 +38,8 @@ const fuse = FuseBox.init({
     useTypescriptCompiler: !isProduction,
     plugins: [
         WebIndexPlugin({
-            template: isProduction? "./appl/testapp.html": "./appl/testapp_dev.html",
-            target: isProduction? "appl/testapp.html": "appl/testapp_dev.html",
+            template: isProduction ? "./appl/testapp.html" : "./appl/testapp_dev.html",
+            target: isProduction ? "appl/testapp.html" : "appl/testapp_dev.html",
         }),
         isProduction && EnvPlugin({ NODE_ENV: "production" }),
         isProduction && useQuantum && QuantumPlugin({
@@ -55,13 +55,13 @@ const fuse = FuseBox.init({
             }), CSSPlugin()],
         CSSPlugin(),
         CopyFsPlugin({
-            copy: [{from: "appl/views/**/*", to: distDir + "/appl/views"},
-                {from: "appl/templates/**/*", to: distDir + "/appl/templates"},
-                {from: "images/*", to: distDir + "/images"},
-                {from: "../README.md", to: distDir}
+            copy: [{ from: "appl/views/**/*", to: distDir + "/appl/views" },
+            { from: "appl/templates/**/*", to: distDir + "/appl/templates" },
+            { from: "images/*", to: distDir + "/images" },
+            { from: "../README.md", to: distDir }
             ]
         }),
-        isProduction && !isKarma && UglifyJSPlugin({
+        isProduction && !isKarma && UglifyESPlugin({
             compress: true,
             mangle: true
         })
@@ -85,7 +85,6 @@ const fuse = FuseBox.init({
 });
 
 if (!isProduction) {
-
     if (useHMR === true) {
         fuse.dev({
             root: '../',
@@ -94,44 +93,40 @@ if (!isProduction) {
         });
     }
     var vendor = fuse.bundle("vendor")
-            .target("browser")
-            .instructions(`~ index.js`);
+        .target("browser")
+        .instructions(`~ index.js`);
 
     var acceptance = fuse.bundle("acceptance")
-            .target("browser")
-            .instructions(`> [index.js]`);
+        .target("browser")
+        .instructions(`> [index.js]`);
 
     if (useHMR === true) {
-        acceptance.hmr({reload: true})
-                .watch();
+        acceptance.hmr({ reload: true })
+            .watch();
     }
 } else {
     fuse.bundle('vendor')
-            .target('browser')
-            .sourceMaps(true)
-            .instructions(`~ index.js`)
-            .plugin(BlockStripPlugin({
-                options: {
-                    start: 'steal-remove-start',
-                    end: 'steal-remove-end'
-                }}))
-            .plugin(BabelPlugin({
-                    presets: ["env"]
-                }));
+        .target('browser')
+        .sourceMaps(true)
+        .instructions(`~ index.js`)
+        .plugin(BlockStripPlugin({
+            options: {
+                start: 'steal-remove-start',
+                end: 'steal-remove-end'
+            }
+        }))
 
     fuse.bundle('acceptance')   //Using .js so that dev code will be stripped.
-            .target('browser')
-            .sourceMaps(false)
-            .instructions(`!> [index.js]`) 
-            .alias(aliases)
-            .plugin(BlockStripPlugin({
-                options: {
-                    start: 'develblock:start',
-                    end: 'develblock:end'
-            }}))
-            .plugin(BabelPlugin({
-                presets: ["env"]
-            }));
+        .target('browser')
+        .sourceMaps(false)
+        .instructions(`!> [index.js]`)
+        .alias(aliases)
+        .plugin(BlockStripPlugin({
+            options: {
+                start: 'develblock:start',
+                end: 'develblock:end'
+            }
+        }))
 }
 
 fuse.run(); //{chokidar : {ignored: /((^|[\/\\])\..|node_modules)/} });

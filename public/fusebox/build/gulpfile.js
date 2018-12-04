@@ -134,6 +134,29 @@ gulp.task('build', ['clean', 'bootlint'], function (cb) {
     });
 });
 
+gulp.task('build-only', ['clean-only'], function (cb) {
+    var osCommands = 'cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ';
+
+    if (isWindows) {
+        osCommands = 'cd ..\\ & set NODE_ENV=production & set USE_KARMA=false & set USE_HMR=false & ';
+    }
+
+    log(chalk.cyan('Building production - please wait......'))
+    let cmd = exec(osCommands + 'node fuse.js');
+    cmd.stdout.on('data', (data) => {
+        if (data && data.length > 0) {
+            console.log(data.trim());
+        }
+    });
+    cmd.stderr.on('data', (data) => {
+        if (data && data.length > 0)
+            console.log(data.trim())
+    });
+    return cmd.on('exit', (code) => {
+        log(chalk.green(`Build successful - ${code}`));
+        cb()
+    });
+});
 /*
  * Bootstrap html linter 
  */
@@ -150,6 +173,16 @@ gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
  * Remove previous build
  */
 gulp.task('clean', ['bootlint'], done => {
+    isProduction = true;
+    dist = '../../dist/';
+    return del([
+        dist + 'fusebox/**/*',
+    ], { dryRun: false, force: true }, done);
+});
+/**
+ * Remove previous build - only
+ */
+gulp.task('clean-only', done => {
     isProduction = true;
     dist = '../../dist/';
     return del([
@@ -266,6 +299,7 @@ gulp.task('copy_images', function () {
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('bld', ['build-only'])
 gulp.task('test', ['pat']);
 gulp.task('tdd', ['fusebox-tdd']);
 gulp.task('hmr', ['fusebox-hmr']);
