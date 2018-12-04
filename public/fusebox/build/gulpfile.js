@@ -12,6 +12,7 @@ const log = require("fancy-log");
 const env = require("gulp-env");
 const copy = require('gulp-copy');
 const chalk = require('chalk');
+const del = require('del')
 
 var lintCount = 0,
         dist = "dist_test/fusebox",
@@ -109,7 +110,7 @@ gulp.task('accept', function (cb) {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['boot'], function (cb) { // ['boot'],
+gulp.task('build', ['clean', 'bootlint'], function (cb) {
     var osCommands = 'cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ';
 
     if (isWindows) {
@@ -136,7 +137,7 @@ gulp.task('build', ['boot'], function (cb) { // ['boot'],
 /*
  * Bootstrap html linter 
  */
-gulp.task('boot', ['eslint', 'csslint'], function (cb) {
+gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
 
         log(stdout);
@@ -144,6 +145,16 @@ gulp.task('boot', ['eslint', 'csslint'], function (cb) {
 
         cb(err);
     });
+});
+/**
+ * Remove previous build
+ */
+gulp.task('clean', ['bootlint'], done => {
+    isProduction = true;
+    dist = '../../dist/';
+    return del([
+        dist + 'fusebox/**/*',
+    ], { dryRun: false, force: true }, done);
 });
 /*
  * Build the application to run karma acceptance tests with hmr
@@ -253,8 +264,8 @@ gulp.task('copy_images', function () {
     return copyImages();
 });
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
-gulp.task('prod', ['pat', 'eslint', 'csslint', 'boot', 'build']);
+gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('test', ['pat']);
 gulp.task('tdd', ['fusebox-tdd']);
 gulp.task('hmr', ['fusebox-hmr']);

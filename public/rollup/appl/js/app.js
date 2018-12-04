@@ -22,12 +22,6 @@ if (typeof testit !== "undefined" && testit) {
 }
 //endRemoveIf(production)
 
-var baseScriptsUrl = "~/",
-        pathName = window.location.pathname,
-        baseUrl = pathName !== "/context.html"
-        ? pathName.substring(0, pathName.substring(1, pathName.length).lastIndexOf("/") + 1) + "/"
-        : "/base/" + window._bundler + "/appl/";
-
 module.exports = {
     controllers: [],
     init: function (options) {
@@ -52,22 +46,13 @@ module.exports = {
         });
     },
     toUrl: function (url) {
-        // Node Express exception
-        if (startsWith(baseUrl, "/appl/")) {
-            baseUrl = "/appl";
-        }
-
-        if (url && url.indexOf("~/") === 0) {
-            url = baseUrl + url.substring(2);
-        }
-
         return url;
     },
     toScriptsUrl: function (url) {
-        return this.toUrl(baseScriptsUrl + "/" + url);
+        return url;
     },
     toViewsUrl: function (url) {
-        return startsWith(url, "views/") ? this.toScriptsUrl(url) : this.toUrl(url);
+        return url;
     },
     loadController: function (controllerName, controller, fnLoad, fnError) {
         var me = this;
@@ -78,12 +63,12 @@ module.exports = {
             var appController = controller;
 
             try {
-//removeIf(production)
+                //removeIf(production)
                 if (testit) {
                     expect(appController).not.toBe(null);
                     expect(typeof fnLoad === 'function').toBe(true);
                 }
-//endRemoveIf(production)
+                //endRemoveIf(production)
 
                 me.controllers[capitalize(controllerName)] = appController;
 
@@ -103,14 +88,14 @@ module.exports = {
 
             if (options.url) {
                 $.get(resolvedUrl, fnLoad)
-                        .done(function (data, err) {
-                            if (typeof currentController !== "undefined" && currentController.finish) {
-                                currentController.finish(options);
-                            }
-                            if (err !== 'success') {
-                                console.error(err);
-                            }
-                        });
+                    .done(function (data, err) {
+                        if (typeof currentController !== "undefined" && currentController.finish) {
+                            currentController.finish(options);
+                        }
+                        if (err !== 'success') {
+                            console.error(err);
+                        }
+                    });
             } else if (options.local_content) {
                 fnLoad(options.local_content);
 
@@ -123,10 +108,8 @@ module.exports = {
     renderTools: function (options, render) {
         var currentController = this.controllers[capitalize(options.controller)];
         var template;
-        //removeIf(production)
-        baseUrl = testit ? "/base/" + window._bundler + "/appl/" : baseUrl;
-        //endRemoveIf(production)
-        var jsonUrl = baseUrl + "templates/tools_ful.json";
+
+        var jsonUrl = "templates/tools_ful.json";
         var me = this;
 
         // fixture({url: "/listools"}, "templates/tools_ful.json");
@@ -135,9 +118,9 @@ module.exports = {
 
             $.get(jsonUrl, function (data) {
                 //The can.Component/viewModel not working with ES6 - Using normal can.Control event handling on Table controller.
-//                var osKeys = ["Combined", "Category1", "Category2"];
-//                var values = ["ful", "cat1", "cat2"];
-//                Helpers.setJobTypeSelector(Component, CanMap, osKeys, values, template, baseUrl);
+                //                var osKeys = ["Combined", "Category1", "Category2"];
+                //                var values = ["ful", "cat1", "cat2"];
+                //                Helpers.setJobTypeSelector(Component, CanMap, osKeys, values, template);
 
                 render(template(data));
                 currentController.decorateTable(options.template.split(".")[0]);
@@ -146,7 +129,7 @@ module.exports = {
                     var osKeys = ["Combined", "Category1", "Category2"];
                     var values = ["ful", "cat1", "cat2"];
                     var tbodyTemplate = template;
-                    var toolsUrl = baseUrl + "templates/tools_";
+                    var toolsUrl = "templates/tools_";
                     var selectedJobType = getValue(sender.text, osKeys, values);
                     $.get(toolsUrl + selectedJobType + ".json", function (data) {
                         if (selectedJobType == "ful") {
@@ -157,7 +140,7 @@ module.exports = {
                         $("#dropdown1 a i").each(function () {
                             this.remove()
                         });
-                        $(sender).fa({icon: "check"});
+                        $(sender).fa({ icon: "check" });
                     }, "json").fail(function (data, err) {
 
                         console.error("Error fetching fixture data: " + err);
@@ -175,10 +158,10 @@ module.exports = {
                 console.error("Error fetching json data: " + err);
             });
         }, "text")
-                .fail(function (data, err) {
-                    console.error("Error Loading Template: " + err);
-                    console.warn(data);
-                });
+            .fail(function (data, err) {
+                console.error("Error Loading Template: " + err);
+                console.warn(data);
+            });
     },
     getValue: function (item, keys, values) {
         for (var idx = 0; idx < keys.length; idx++) {

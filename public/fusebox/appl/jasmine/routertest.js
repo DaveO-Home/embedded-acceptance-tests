@@ -2,7 +2,7 @@ module.exports = {
     
     routertest: function (Route, controller, action, id) {
         var addId = id ? "/" + id : "";
-        if (testit) {
+        if (typeof testit !== "undefined" && testit) {
             describe("Test Router: " + controller + "/" + action + addId, function () {
                 it("controller set: " + controller, function () {
                     expect(Route.data.controller).toBe(controller);

@@ -8,16 +8,9 @@ module.exports = {
             var modal;
             var closeButton;
             var nameObject;
-            var mainContainer = "#main_container";
 
             beforeAll(function (done) {
-                if (!$(mainContainer)[0]) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
-                }
-                $("body").append('<div class="nav-login"><a href="#" class="login">Log in</a></div>');
-
                 Start.initMenu();
-                Start.base = true;
                 var loginObject = $("div .login")[0];
 
                 loginObject.click();
@@ -29,6 +22,10 @@ module.exports = {
                     done();
                 }, 500);
             });
+            
+            afterAll(function() {
+                $(".remove").remove();
+            })
 
             it("Login form - verify modal with login loaded", function (done) {
                 expect(modal[0]).toBeInDOM();

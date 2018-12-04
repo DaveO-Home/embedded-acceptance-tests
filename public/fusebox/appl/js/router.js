@@ -109,7 +109,7 @@ module.exports = {
                 if (attr) {
                     /* develblock:start */
                     //Note: we are already in a spec at this time.
-                    if (testit && attr !== " ") {
+                    if (typeof testit !== "undefined" && testit && attr !== " ") {
                         var actions = ["tools", "test", undefined];
                         expect(actions.indexOf(attr) !== -1).toBe(true);
                     }
@@ -126,7 +126,7 @@ module.exports = {
                 if (attr) {
                     /* develblock:start */
                     //Note: we are already in a spec at this time.
-                    if (testit) {
+                    if (typeof testit !== "undefined" && testit) {
 
                         if (Route.data.attr("base")) {
 

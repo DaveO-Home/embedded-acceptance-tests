@@ -15,11 +15,11 @@ exports.apptest = function (Route, Helpers, App) {
             /* Important!
              * Make sure the main spa page is added to the Karma page
              */
-            $("body").append(bootstrapLayout.html)
-            
+            $("body").prepend(bootstrapLayout.html)
+
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-        }, 10000);
+        }, 5000);
 
         afterEach(function () {
             //Get rid of nasty warning message from can-events.
@@ -42,20 +42,19 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("home", "");
             Route.data.attr("home", "#!");
             //Waiting for page to load.
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 1);
-            }).catch(function (rejected) {
-                fail("The Welcome Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(Route.data.index).toHaveBeenCalled();
-                    expect(Route.data.index.calls.count()).toEqual(1);
-                    expect(App.controllers["Start"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 1).toBe(true);
-                    domTest("index");
-                }
-                done();
-            });
+            Helpers.getResource("container", 0, 1)
+                .catch(function (rejected) {
+                    fail("The Welcome Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(Route.data.index).toHaveBeenCalled();
+                        expect(Route.data.index.calls.count()).toEqual(1);
+                        expect(App.controllers["Start"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 1).toBe(true);
+                        domTest("index");
+                    }
+                    done();
+                });
         });
 
         it("Is Tools Table Loaded", function (done) {
@@ -65,19 +64,18 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("controller", "table");
             Route.data.attr("action", "tools");
 
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 1);
-            }).catch(function (rejected) {
-                fail("The Tools Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(App.controllers["Table"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 1).toBe(true);
+            Helpers.getResource("container", 0, 1)
+                .catch(function (rejected) {
+                    fail("The Tools Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(App.controllers["Table"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 1).toBe(true);
 
-                    domTest("tools");
-                }
-                done();
-            });
+                        domTest("tools");
+                    }
+                    done();
+                });
         });
 
         routerTest(Route, "table", "tools", null);
@@ -87,20 +85,19 @@ exports.apptest = function (Route, Helpers, App) {
             Route.data.attr("controller", "pdf");
             Route.data.attr("action", "test");
 
-            new Promise(function (resolve, reject) {
-                Helpers.isResolved(resolve, reject, "container", 0, 0);
-            }).catch(function (rejected) {
-                fail("The Pdf Page did not load within limited time: " + rejected);
-            }).then(function (resolved) {
-                if (resolved) {
-                    expect(Route.data.dispatch.calls.count()).not.toEqual(count);
-                    expect(App.controllers["Pdf"]).not.toBeUndefined();
-                    expect($(mainContainer).children().length > 0).toBe(true);
+            Helpers.getResource("container", 0, 0)
+                .catch(function (rejected) {
+                    fail("The Pdf Page did not load within limited time: " + rejected);
+                }).then(function (resolved) {
+                    if (resolved) {
+                        expect(Route.data.dispatch.calls.count()).not.toEqual(count);
+                        expect(App.controllers["Pdf"]).not.toBeUndefined();
+                        expect($(mainContainer).children().length > 0).toBe(true);
 
-                    domTest("pdf");
-                }
-                done();
-            });
+                        domTest("pdf");
+                    }
+                    done();
+                });
         });
 
         routerTest(Route, "pdf", "test", null);
@@ -119,5 +116,8 @@ exports.apptest = function (Route, Helpers, App) {
                 fail("Testing only, build will not proceed");
             });
         }
+
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+        __karma__.start();
     });
 };

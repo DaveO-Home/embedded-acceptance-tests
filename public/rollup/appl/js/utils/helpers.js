@@ -50,8 +50,8 @@ module.exports = {
     },
     getWeekKeys: function () {
         var nthWeek = moment().format("w"),
-                year = moment().format("TYYYY"),
-                weekKeys = [];
+            year = moment().format("TYYYY"),
+            weekKeys = [];
 
         for (var i = 1; i <= nthWeek; i++) {
 
@@ -60,7 +60,7 @@ module.exports = {
         }
         return weekKeys;
     },
-    setJobTypeSelector: function (Component, CanMap, osKeys, values, template, baseUrl) {
+    setJobTypeSelector: function (Component, CanMap, osKeys, values, template) {
         var current = osKeys[0];
         if (values) {
             current = values[0];
@@ -71,10 +71,10 @@ module.exports = {
             Component.extend({
                 tag: "jobtype-selector",
                 view: Stache("<select  class='jobtype-selector' value:bind='selectedJobType'>" +
-                        this.getOptions(osKeys, values) +
-                        "</select>"),
+                    this.getOptions(osKeys, values) +
+                    "</select>"),
                 ViewModel: function () {
-                    var selectedJobType = {selectedJobType: current};
+                    var selectedJobType = { selectedJobType: current };
                     return new CanMap(selectedJobType);
                 },
                 events: {
@@ -85,8 +85,8 @@ module.exports = {
                             return false;
                         }
                         var tbodyTemplate = template;
-                        var toolsUrl = baseUrl + "templates/tools_";
-                                 
+                        var toolsUrl = "templates/tools_";
+
                         $.get(toolsUrl + selectedJobType + ".json", function (data) {
                             if (selectedJobType == "ful") {
                                 data.all = false;
@@ -121,7 +121,7 @@ module.exports = {
         return function (frag) {
             var selector = controller.options.selector ? controller.options.selector : "#main_container";
 
-            /* This code is for loading content into an element other than main_container - not implemented */            
+            /* This code is for loading content into an element other than main_container - not implemented */
             var containerElement = controller.element.documentElement ? $(controller.element).find(selector) : null;
             var el = containerElement ? containerElement : $(selector);
 
@@ -150,7 +150,7 @@ module.exports = {
             helper.scrollTop();
         };
     }
-//removeIf(production)
+    //removeIf(production)
     ,
     // Custom promise for async call for a resource.  
     // If the DOM (#main_container) is populated then the promise is complete.
@@ -178,23 +178,32 @@ module.exports = {
         }
         return true;
     },
+    getResource (selector, startCount, childrenLength) {
+        return new Promise((resolve, reject) => {
+            this.isResolved(resolve, reject, selector, startCount, childrenLength)
+        }).catch(rejected => {
+            fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+        }).then(resolved => {
+            return resolved
+        })
+    },
     // Per Stack Overflow - Fire a click event in raw javascript
     fireEvent: function () {
         var eventType = null, i, j, k, l, event,
-                einstellungen = {
-                    "pointerX": 0,
-                    "pointerY": 0,
-                    "button": 0,
-                    "ctrlKey": false,
-                    "altKey": false,
-                    "shiftKey": false,
-                    "metaKey": false,
-                    "bubbles": true,
-                    "cancelable": true
-                }, moeglicheEvents = [
-            ["HTMLEvents", ["load", "unload", "abort", "error", "select", "change", "submit", "reset", "focus", "blur", "resize", "scroll"]],
-            ["MouseEvents", ["click", "dblclick", "mousedown", "mouseup", "mouseover", "mousemove", "mouseout"]]
-        ];
+            einstellungen = {
+                "pointerX": 0,
+                "pointerY": 0,
+                "button": 0,
+                "ctrlKey": false,
+                "altKey": false,
+                "shiftKey": false,
+                "metaKey": false,
+                "bubbles": true,
+                "cancelable": true
+            }, moeglicheEvents = [
+                ["HTMLEvents", ["load", "unload", "abort", "error", "select", "change", "submit", "reset", "focus", "blur", "resize", "scroll"]],
+                ["MouseEvents", ["click", "dblclick", "mousedown", "mouseup", "mouseover", "mousemove", "mouseout"]]
+            ];
         for (i = 0, j = moeglicheEvents.length; i < j; ++i) {
             for (k = 0, l = moeglicheEvents[i][1].length; k < l; ++k) {
                 if (arguments[1] === moeglicheEvents[i][1][k]) {
@@ -221,8 +230,8 @@ module.exports = {
                 event.initEvent(arguments[1], einstellungen.bubbles, einstellungen.cancalable);
             } else {
                 event.initMouseEvent(arguments[1], einstellungen.bubbles, einstellungen.cancelable, document.defaultView,
-                        einstellungen.button, einstellungen.pointerX, einstellungen.pointerY, einstellungen.pointerX, einstellungen.pointerY,
-                        einstellungen.ctrlKey, einstellungen.altKey, einstellungen.shiftKey, einstellungen.metaKey, einstellungen.button, arguments[0]);
+                    einstellungen.button, einstellungen.pointerX, einstellungen.pointerY, einstellungen.pointerX, einstellungen.pointerY,
+                    einstellungen.ctrlKey, einstellungen.altKey, einstellungen.shiftKey, einstellungen.metaKey, einstellungen.button, arguments[0]);
             }
 
             arguments[0].dispatchEvent(event);
@@ -250,5 +259,5 @@ module.exports = {
 
         return arguments[0];
     }
-//endRemoveIf(production)
+    //endRemoveIf(production)
 };

@@ -1,7 +1,7 @@
 module.exports = {
     domtest: function (resource) {
 
-        if (testit) {
+        if (typeof testit !== "undefined" && testit) {
             switch (resource) {
 
                 case "index":

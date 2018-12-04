@@ -15,7 +15,7 @@ define(["routertests",
                          * Make sure the div container is added to the Karma page
                          */
                         if (!$(mainContainer).length) {
-                            $("body").append(mainHtml);
+                            $("body").prepend(mainHtml);
                         }
 
                         Route.data.attr("base", "true");
@@ -31,7 +31,7 @@ define(["routertests",
                             this.disabled = false;
                         });
                         $(mainContainer).empty();
-                        $(mainContainer).append('<div class="loading-page"></div>');
+                        $(mainContainer).prepend('<div class="loading-page"></div>');
                     });
 
                     afterAll(function () {

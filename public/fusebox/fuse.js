@@ -1,6 +1,6 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
-const {FuseBox, QuantumPlugin, WebIndexPlugin, CSSPlugin, CSSResourcePlugin, UglifyJSPlugin, HMRPlugin, EnvPlugin} = require("fuse-box");
+const {FuseBox, QuantumPlugin, WebIndexPlugin, CSSPlugin, CSSResourcePlugin, BabelPlugin, UglifyJSPlugin, HMRPlugin, EnvPlugin} = require("fuse-box");
 const  BlockStripPlugin = require("./appl/js/plugin/BlockStrip").BlockStrip;
 const  CopyFsPlugin = require("./appl/js/plugin/CopyFs").CopyFs;
 const aliases = {
@@ -25,7 +25,7 @@ const aliases = {
 let isProduction = process.env.NODE_ENV === 'production';
 let distDir = isProduction ? "../dist/fusebox" : "../dist_test/fusebox";
 let isKarma = process.env.USE_KARMA === "true";
-let useQuantum = false; // turned off Quantum for Canjs > v4
+let useQuantum = false; // turned off Quantum for Canjs 5
 let useHMR = process.env.USE_HMR === 'true';
 let resources = (f) => (!isProduction && isKarma ? `/base/dist_test/fusebox/resources/${f}` : isProduction ? `../resources/${f}` : `/dist_test/fusebox/resources/${f}`);
 
@@ -105,10 +105,7 @@ if (!isProduction) {
         acceptance.hmr({reload: true})
                 .watch();
     }
-    ;
-
 } else {
-
     fuse.bundle('vendor')
             .target('browser')
             .sourceMaps(true)
@@ -117,7 +114,10 @@ if (!isProduction) {
                 options: {
                     start: 'steal-remove-start',
                     end: 'steal-remove-end'
-                }}));
+                }}))
+            .plugin(BabelPlugin({
+                    presets: ["env"]
+                }));
 
     fuse.bundle('acceptance')   //Using .js so that dev code will be stripped.
             .target('browser')
@@ -128,7 +128,10 @@ if (!isProduction) {
                 options: {
                     start: 'develblock:start',
                     end: 'develblock:end'
-            }}));
+            }}))
+            .plugin(BabelPlugin({
+                presets: ["env"]
+            }));
 }
 
 fuse.run(); //{chokidar : {ignored: /((^|[\/\\])\..|node_modules)/} });

@@ -5,14 +5,13 @@ module.exports = {
          */
         describe("Contact Form Validation", function () {
             var contact,
-                    submitObject,
-                    nameObject,
-                    emailObject,
-                    commentObject,
-                    mainContainer = "#main_container";
+                submitObject,
+                nameObject,
+                emailObject,
+                commentObject,
+                mainContainer = "#main_container";
 
             beforeAll(function (done) {
-
                 if (!$(mainContainer)[0]) {
                     $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
                 }
@@ -25,33 +24,25 @@ module.exports = {
             });
 
             it("Contact form - verify required fields", function (done) {
+                Helpers.getResource("container", 0, 1)
+                    .catch(function (rejected) {
+                        fail("Contact Page did not load within limited time: " + rejected);
+                    }).then(function (resolved) {
+                        contact = $(mainContainer + " form");
+                        nameObject = $("#inputName");
+                        emailObject = $("#inputEmail");
+                        commentObject = $("#inputComment");
 
-                new Promise(function (resolve, reject) {
+                        expect(nameObject[0].validity.valueMissing).toBe(true);
+                        expect(emailObject[0].validity.valueMissing).toBe(true);
+                        expect(commentObject[0].validity.valueMissing).toBe(true);
+                        expect(contact.find("input[type=checkbox]")[0].validity.valueMissing).toBe(false);  //Not required
 
-                    Helpers.isResolved(resolve, reject, "container", 0, 1);
-
-                }).catch(function (rejected) {
-
-                    fail("Contact Page did not load within limited time: " + rejected);
-
-                }).then(function (resolved) {
-
-                    contact = $(mainContainer + " form");
-                    nameObject = $("#inputName");
-                    emailObject = $("#inputEmail");
-                    commentObject = $("#inputComment");
-
-                    expect(nameObject[0].validity.valueMissing).toBe(true);
-                    expect(emailObject[0].validity.valueMissing).toBe(true);
-                    expect(commentObject[0].validity.valueMissing).toBe(true);
-                    expect(contact.find("input[type=checkbox]")[0].validity.valueMissing).toBe(false);  //Not required
-
-                    done();
-                });
+                        done();
+                    });
             });
 
             it("Contact form - validate populated fields, email mismatch.", function (done) {
-
                 submitObject = contact.find("input[type=submit]");
 
                 nameObject.val("me");
@@ -75,7 +66,6 @@ module.exports = {
             });
 
             it("Contact form - validate email with valid email address.", function (done) {
-
                 emailObject.val("ace@ventura.com");
 
                 expect(emailObject[0].validity.typeMismatch).toBe(false);
@@ -85,7 +75,6 @@ module.exports = {
             });
 
             it("Contact form - validate form submission.", function (done) {
-
                 submitObject.click();
 
                 setTimeout(function () {
@@ -93,7 +82,6 @@ module.exports = {
                     expect($(mainContainer + " form")[0]).not.toExist();
                     done();
                 }, 100);
-
             });
         });
     }

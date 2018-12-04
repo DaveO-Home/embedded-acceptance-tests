@@ -14,7 +14,7 @@ exports.apptest = function (Route, Helpers, App) {
              * Make sure the bootstrap layout is added to the Karma page
              */
             $.get("app_bootstrap.html", function (data) {
-                $("body").append(data)
+                $("body").prepend(data)
                 done()
             }, "html").fail(function (data, err) {
                 console.warn("Error fetching fixture data: " + err);

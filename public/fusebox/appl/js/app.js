@@ -12,7 +12,7 @@ require("tablesorter");
 
 // Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
-if (testit) {
+if (typeof testit !== "undefined" && testit) {
     describe("Popper Defined - required for Bootstrap", function () {
         it("is JQuery defined", function () {
             expect(typeof $ === "function").toBe(true);
@@ -62,7 +62,7 @@ module.exports = {
 
             try {
                 /* develblock:start */
-                if (testit) {
+                if (typeof testit !== "undefined" && testit) {
                     describe("Application Controller", function () {
                         it("Loaded Controller", function () {
                             expect(appController).not.toBe(null);

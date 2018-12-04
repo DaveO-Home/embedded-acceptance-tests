@@ -142,7 +142,7 @@
     "pump": "^3.0.0",
     "raw-loader": "^0.5.1",
     "reload-html-webpack-plugin": "^0.1.2",
-    "rollup": "^0.67.3",
+    "rollup": "^0.67.4",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-buble": "^0.19.4",

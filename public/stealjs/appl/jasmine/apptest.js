@@ -19,7 +19,7 @@ steal(function () {
                          * Make sure the spa main bootstrap layout is added to the Karma page
                          */
                         $.get("base/stealjs/appl/app_bootstrap.html", function (data) {
-                            $("body").append(data)
+                            $("body").prepend(data)
                             done()
                         }, "html").fail(function (data, err) {
                             console.warn("Error fetching fixture data: " + err);

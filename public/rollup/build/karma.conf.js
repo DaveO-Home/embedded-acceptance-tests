@@ -10,6 +10,13 @@ module.exports = function (config) {
     config.set({
         basePath: '../../',
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "rollup/appl/": "/base/" + bundler + "/rollup/appl/"
+        },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
             {pattern: bundler + "/appl/jasmine/webcomponents-hi-sd-ce.js", watched: false},
@@ -23,6 +30,7 @@ module.exports = function (config) {
             {pattern: 'dist_test/' + bundler + '/bundle.js', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: 'dist_test/' + bundler + '/**/*.*', included: false, watched: false},
             {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
+            {pattern: 'dist_test/node_modules/**/*.*', included: false, watched: false},
             //Karma/Jasmine/Loader
             bundler + '/build/karma.bootstrap.js'
         ],

@@ -199,7 +199,7 @@ gulp.task('tdd-rollup', ['build-development'], function (done) {
         global.whichBrowsers = [/*"Chrome",*/ "Firefox"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 
 });
@@ -212,7 +212,7 @@ gulp.task('tddo', function (done) {
         global.whichBrowsers = ["Opera"];
     }
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
     }, done).start();
 
 });
@@ -285,6 +285,7 @@ gulp.task('rollup-watch', function () {
 });
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('acceptance', ['r-test']);
 gulp.task('tdd', ['tdd-rollup']);
 gulp.task('test', ['pat']);
@@ -385,7 +386,7 @@ function copyFonts() {
 function runKarma(done) {
 
     new Server({
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true
     }, function (result) {
         var exitCode = !result ? 0 : result;
