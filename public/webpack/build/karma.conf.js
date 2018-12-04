@@ -12,6 +12,13 @@ module.exports = function (config) {
         basePath: '../../',
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine-jquery', 'jasmine'],
+        proxies: {
+            "/views/": "/base/" + bundler + "/appl/views/",
+            "/templates": "/base/" + bundler + "/appl/templates",
+            "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
+            "/README.md": "/base/README.md",
+            "rollup/appl/": "/base/" + bundler + "/webpack/appl/"
+        },
         // list of files / patterns to load in the browser
         files: [
             //Webcomponents for Firefox - used for link tag with rel="import" attribute.
@@ -22,7 +29,6 @@ module.exports = function (config) {
             bundler + '/tests/unit_tests*.js',
             {pattern: bundler + '/appl/**/*.*', included: false, watched: false},
             {pattern: 'package.json', watched: false, included: false},
-            {pattern: bundler + '/appl/**/*.html', included: false},
             {pattern: 'README.md', included: false},
             {pattern: 'dist_test/webpack/**/*', included: false, watched: true},
             //Test suites

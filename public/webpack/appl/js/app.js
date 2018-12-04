@@ -20,12 +20,6 @@ define("app", [
         })
     }
     /* develblock:end */
-    var baseScriptsUrl = "~/",
-            pathName = window.location.pathname,
-            baseUrl = pathName !== "/context.html"
-            ? pathName.substring(0, pathName.substring(1, pathName.length).lastIndexOf("/") + 1) + "/"
-            : "/base/" + window._bundler + "/appl/";
-
     return {
         controllers: [],
         init: function (options) {
@@ -39,22 +33,13 @@ define("app", [
             });
         },
         toUrl: function (url) {
-            //Node Express exception
-            if (_.startsWith(baseUrl, "/appl/")) {
-                baseUrl = "/appl"
-            }
-
-            if (url && url.indexOf("~/") === 0) {
-                url = baseUrl + url.substring(2);
-            }
-
             return url;
         },
         toScriptsUrl: function (url) {
-            return this.toUrl(baseScriptsUrl + "/" + url);
+            return url;
         },
         toViewsUrl: function (url) {
-            return _.startsWith(url, "views/") ? this.toScriptsUrl(url) : this.toUrl(url);
+            return url;
         },
         loadController: function (controller, fnLoad, fnError) {
             var me = this;
@@ -92,14 +77,14 @@ define("app", [
 
                 if (options.url) {
                     $.get(resolvedUrl, fnLoad)
-                            .done(function (data, err) {
-                                if (typeof currentController !== "undefined" && currentController.finish) {
-                                    currentController.finish(options);
-                                }
-                            })
-                            .fail(function (status) {
-                                console.warn("Ajax Get Failure:", status);
-                            });
+                        .done(function (data, err) {
+                            if (typeof currentController !== "undefined" && currentController.finish) {
+                                currentController.finish(options);
+                            }
+                        })
+                        .fail(function (status) {
+                            console.warn("Ajax Get Failure:", status);
+                        });
                 } else if (options.local_content) {
                     fnLoad(options.local_content);
 
@@ -116,10 +101,8 @@ define("app", [
 
             var osKeys = ["Combined", "Category1", "Category2"];
             var values = ["ful", "cat1", "cat2"];
-            /* develblock:start */
-            baseUrl = testit ? "/base/" + window._bundler + "/appl/" : baseUrl;
-            /* develblock:end */
-            Helpers.setJobTypeSelector(osKeys, values, template, baseUrl);
+
+            Helpers.setJobTypeSelector(osKeys, values, template);
 
             render(template(require("templates/tools_ful.json")));
             currentController.decorateTable(options.template.split(".")[0]);

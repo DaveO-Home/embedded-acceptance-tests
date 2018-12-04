@@ -1,6 +1,6 @@
 {
   "name": "embedded-acceptance-tests",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Karma Jasmine Browserify, Fusebox, Rollup, StealJS, Webpack, CanJS Testing",
   "private": true,
   "scripts": {
@@ -165,11 +165,11 @@
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.0",
-    "webpack": "^4.26.1",
+    "webpack": "^4.27.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10",
     "webpack-merge": "^4.1.4",
-    "webpack-stream": "^5.1.1",
+    "webpack-stream": "^5.2.1",
     "webpack-strip-block": "^0.2.0"
   },
   "steal": {

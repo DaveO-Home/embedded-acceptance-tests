@@ -81,7 +81,7 @@ gulp.task('csslint', ['pat'], function () {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['boot', 'setVersion'], function (cb) {
+gulp.task('build', ['bootlint', 'setVersion'], function (cb) {
     dist = 'dist';
     let win="";
     if(isWindows) {
@@ -99,7 +99,7 @@ gulp.task('build', ['boot', 'setVersion'], function (cb) {
 /*
  * Bootstrap html linter 
  */
-gulp.task('boot', ['eslint', 'csslint'], function (cb) {
+gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
     log("Starting Gulpboot.js")
     exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
 
@@ -120,7 +120,7 @@ gulp.task('acceptance-tests', ['test-build'], function (done) {
     }
     new Server({
 
-        configFile: __dirname + '/karma_conf.js',
+        configFile: __dirname + '/karma.conf.js',
         singleRun: true,
         watch: false
 
@@ -209,7 +209,7 @@ gulp.task('webpack-tdd', ["test-build"], function (done) {
     }
     
     new Server({
-        configFile: __dirname + '/karma_conf.js'
+        configFile: __dirname + '/karma.conf.js'
     }, done).start();
 });
 
@@ -308,7 +308,8 @@ gulp.task("webpack-server", ["setVersion"], function () {
 
 });
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
+gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
 gulp.task('tdd', ['webpack-tdd']);
 gulp.task('test', ['acceptance-tests']);
 gulp.task('watch', ['webpack-watch']);

@@ -27,7 +27,7 @@ gulp.task('bootlint', () => {
                 }
             };
 
-    var stream = gulp.src(["../appl/*.html"])
+    var stream = gulp.src(["../appl/test*.html"])
             .pipe(bootlint(options));
     
     stream.on('error', function() {

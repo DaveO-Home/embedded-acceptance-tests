@@ -5,13 +5,11 @@
 define(["app",
     "basecontrol"],
         function (App, Base) {
-
             return App.controllers.Table || (App.controllers.Table = new (Base.extend({
                 defaults: {
                 }
             }, {
                 tools: function (data) {
-
                     var stache = require("templates/stache/tools.stache");
                     this.view({
                         data: data,
@@ -23,7 +21,6 @@ define(["app",
                     });
                 },
                 decorateTable: function (elementId) {
-
                     var id = "#" + elementId,
                             headers,
                             pageSorter = {
@@ -57,9 +54,7 @@ define(["app",
 
                     $(id).trigger("pageAndSize", defaultPage);
 
-                },
-                base: false
-
+                }
             }))("#main_container"));
 
         });

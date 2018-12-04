@@ -128,6 +128,7 @@ module.exports = {
         new CopyWebpackPlugin([
             {from: './images/favicon.ico', to: 'images'},
             {from: isProduction ? './appl/testapp.html' : './appl/testapp_dev.html', to: 'appl'},
+            {from: isProduction ? '' : './appl/app_bootstrap.html', to: 'appl'},
             {from: '../README.md', to: '../'},
             {from: {
                     glob: './appl/views/**/*',
