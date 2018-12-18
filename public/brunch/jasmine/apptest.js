@@ -15,7 +15,7 @@ exports.apptest = function (Route, Helpers, App) {
             /* Important!
              * Make sure the main spa page is added to the Karma page
              */
-            $("body").append(bootstrapLayout.html)
+            $("body").prepend(bootstrapLayout.html)
             
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();

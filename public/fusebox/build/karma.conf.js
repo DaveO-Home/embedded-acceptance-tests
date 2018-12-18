@@ -17,7 +17,7 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "browserify/appl/": "/base/" + bundler + "/browserify/appl/"
+            "fusebox/appl/": "/base/" + bundler + "/fusebox/appl/"
         },
         // list of files / patterns to load in the browser
         files: [

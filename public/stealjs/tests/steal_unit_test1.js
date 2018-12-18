@@ -1,8 +1,7 @@
 "use strict"
 
-steal("setup", "@steal", function (setup, steal) {
+steal("setup", "@steal", function (setup, steel) {
     describe("Steal Loader - Suite 1", function () {
-
         it("Setup module loaded", function () {
             expect(setup).not.toBe(null);
         });
@@ -12,8 +11,7 @@ steal("setup", "@steal", function (setup, steal) {
         });
         
         it("In development mode", function () {
-            expect(steal.isEnv("development")).toBe(true);
+            expect(steel.isEnv("development")).toBe(true);
         });
-        
     });
 });
