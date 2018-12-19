@@ -15,7 +15,7 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "rollup/appl/": "/base/" + bundler + "/rollup/appl/"
+            "rollup/appl/": "/base/" + bundler + "/appl/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
