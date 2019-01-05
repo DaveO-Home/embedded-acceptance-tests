@@ -117,7 +117,7 @@ module.exports = {
             Route.register('{controller}/{action}/{id}');
             Route.register('{controller}/{action}');
             Route.register('{controller}');
-            Route.register('', {home: '#!'});
+            Route.register('', { home: '#!' });
 
             Route.start();
         });

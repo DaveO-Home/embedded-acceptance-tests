@@ -12,7 +12,6 @@ module.exports = {
         }, "slow");
     },
     convertToBoolean: function (value) {
-
         if (!this.isNullOrEmpty(value)) {
             return false;
         }
@@ -33,15 +32,12 @@ module.exports = {
         return Boolean(value);
     },
     parseJson: function (json) {
-
         return (JSON && JSON.parse(json)) || $.parseJSON(json);
     },
     isNullOrEmpty: function (value) {
-
         return typeof value === "undefined" || value === null || value.length === 0;
     },
     getValueOrDefault: function (value, defaultValue) {
-
         return !this.isNullOrEmpty(value) ? value : defaultValue;
     },
     /* eslint no-extend-native: 0 */
@@ -54,7 +50,6 @@ module.exports = {
         return str.endsWith(endswith);
     },
     getWeekKeys: function () {
-
         var nthWeek = moment().format("w");
         var year = moment().format("TYYYY");
         var weekKeys = [];
@@ -69,9 +64,7 @@ module.exports = {
 
         var current = osKeys[0];
         if (values) {
-
             current = values[0]; 
-
         }
 
         //Eliminate the warning that tag is already defined.
@@ -82,7 +75,7 @@ module.exports = {
                         this.getOptions(osKeys, values) +
                         "</select>"),
                 ViewModel: function () {
-                    var selectedJobType = {selectedJobType: current};
+                    var selectedJobType = { selectedJobType: current };
                     return new Map(selectedJobType);
                 },
                 events: {
@@ -90,9 +83,7 @@ module.exports = {
                         var selectedJobType = this.viewModel.selectedJobType;
 
                         if (!selectedJobType) {
-
                             return false;
-
                         }
                         var tbodyTemplate = template; 
                         var toolsUrl = "templates/tools_";
@@ -120,7 +111,6 @@ module.exports = {
         }
     },
     getOptions: function (keys, values) {
-
         if (!values || values.length !== keys.length) {
             values = keys;
         }
@@ -134,7 +124,6 @@ module.exports = {
     },
     //Insert loaded html into main_container or specified element
     renderer: function (controller, options) {
-
         var helper = this;
 
         return function (frag) {

@@ -2,7 +2,8 @@
 define("start", ["app",
     "basecontrol", "menu"],
     function (App, Base, Menu) {
-        var me, location = "#!";
+        var me = {};
+        var location = "#!";
         return App.controllers.Start ||
             (App.controllers.Start = new (Base.extend({
                 initMenu: function () {

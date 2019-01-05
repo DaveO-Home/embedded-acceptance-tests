@@ -47,12 +47,16 @@ const fuse = FuseBox.init({
                 core.solveComputed("moment/moment.js");
             },
             manifest: false,
-            replaceProcessEnv: false,
-            processPolyfill: true,
+            replaceProcessEnv: true,
+            processPolyfill: false,
             target: "browser",
-            uglify: false,
+            // uglify: {
+            //     compress: true,
+            //     mangle: false,
+            //     es6: true
+            // },
             // uglify: { es6: true },
-            treeshake: false
+            treeshake: true
         }),
         ["node_modules/font-awesome/**.css",
             CSSResourcePlugin({
@@ -67,10 +71,10 @@ const fuse = FuseBox.init({
             { from: "../README.md", to: distDir }
             ]
         }),
-        // isProduction && !isKarma && UglifyESPlugin({
-        //     compress: true,
-        //     mangle: true
-        // })
+        isProduction && !isKarma && UglifyESPlugin({
+            compress: true,
+            mangle: false
+        })
     ],
     homeDir: src,
     output: distDir + "/$name.js",

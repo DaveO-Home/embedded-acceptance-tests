@@ -1,4 +1,4 @@
-"use strict"
+// "use strict"
 describe("Unit Tests - Suite 1", function () {
     //Application Tests use Promises
     it("Verify that browser supports Promises", function () {

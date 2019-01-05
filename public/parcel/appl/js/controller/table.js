@@ -36,7 +36,7 @@ module.exports = App.controllers['Table'] || (App.controllers['Table'] = new (Ba
         var defaultPage = [1, 10];
 
         if (elementId === 'tools') {
-            headers = {'.disabled': {sorter: false, filter: false}};
+            headers = { '.disabled': { sorter: false, filter: false } };
             defaultPage = [1, 20];
         }
 

@@ -75,7 +75,7 @@ module.exports = {
                         this.getOptions(osKeys, values) +
                         '</select>'),
                 ViewModel: function () {
-                    var selectedJobType = {selectedJobType: current};
+                    var selectedJobType = { selectedJobType: current };
                     return new Map(selectedJobType);
                 },
                 events: {

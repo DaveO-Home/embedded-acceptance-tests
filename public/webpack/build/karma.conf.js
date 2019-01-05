@@ -32,7 +32,7 @@ module.exports = function (config) {
             {pattern: 'README.md', included: false},
             {pattern: 'dist_test/webpack/**/*', included: false, watched: true},
             //Test suites
-            {pattern: bundler + '/tests/**/*test.js', included: false},
+            {pattern: bundler + '/tests/**/*test.js', included: false, watched: false},
             //end Test suites
             {pattern: bundler + '/images/favicon.ico', included: false},
             //Jasmine/setup for tests and may start Karma

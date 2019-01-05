@@ -6,7 +6,7 @@
                     <h5 id="modal_title">{{title}}</h5>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>﻿
+            </div>
             <div class="modal-body">
                 {{{body}}}
             </div>

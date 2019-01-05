@@ -123,7 +123,10 @@ define(["routertests",
                     });
                 }
                 jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
-                __karma__.start()
+                setTimeout(function() {
+                    __karma__.start()
+                }, 10)
+                
             });
         };
     });

@@ -1,7 +1,7 @@
 define(["../appl/js/controller/start.js"], function (Start) {
     return function () {
         /* 
-         * Test Form validation and submission.
+         * Test popup modal for login.
          */
         describe("Popup Login Form", function () {
             var modal;
@@ -19,6 +19,9 @@ define(["../appl/js/controller/start.js"], function (Start) {
                 setTimeout(function () {
                     modal = $("#modalTemplate");
                     nameObject = $("#inputUsername");
+                    modal.on('shown.bs.modal', function(html){
+                        modal.modal("toggle");
+                    });
                     done();
                 }, 500);
             });
@@ -26,22 +29,12 @@ define(["../appl/js/controller/start.js"], function (Start) {
             it("Login form - verify modal with login loaded", function (done) {
                 expect(modal[0]).toBeInDOM();
                 expect(nameObject[0]).toExist();
-
-                closeButton = $(".close-modal");
-                closeButton.submit(function (ev) {
-                    ev.preventDefault();
-                    modal.modal("toggle");
-                    return false;
-                });
-
                 done();
             });
 
             it("Login form - verify cancel and removed from DOM", function (done) {
                 expect(modal[0]).toExist();
-
-                closeButton.click();
-
+                modal.modal("hide");
                 setTimeout(function () {
                     expect(modal[0]).not.toBeVisible();
                     expect(modal[0]).not.toBeInDOM();

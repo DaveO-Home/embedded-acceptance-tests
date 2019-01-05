@@ -302,7 +302,7 @@ function rollupBuild() {
                 output: {
                     format: "iife",
                     name: "acceptance",
-                    intro: 'window.process = {env:{NODE_ENV: "' + env + '"}}'
+                    // intro: ""
                 },
                 plugins: [
                     commonjs(),

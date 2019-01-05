@@ -49,7 +49,7 @@ gulp.task('pat', function (done) {
     return cmd.on('exit', (code) => {
         done()
         console.log(`Child exited with code ${code}`);
-        if(code > 0) {
+        if(code > 1) {
             process.exit(code)
         }
     });
@@ -112,7 +112,8 @@ gulp.task('build', ['boot'], function (cb) { // ['boot'],
         log(chalk.red('Production build failed'))
         if (data && data.length > 0)
             console.log(data.trim())
-        process.exit(1);
+        if(data && data.length > 1)
+            process.exit(1);
     });
     return cmd.on('exit', (code) => {
         cb()
@@ -217,6 +218,7 @@ gulp.task('brunch-tdd', function (done) { //,['accept']
 });
 
 gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
+gulp.task('prod', ['pat', 'eslint', 'csslint', 'boot', 'build']);
 gulp.task('test', ['pat']);
 gulp.task('tdd', ['brunch-tdd']);
 gulp.task('watch', ['brunch-watch']);

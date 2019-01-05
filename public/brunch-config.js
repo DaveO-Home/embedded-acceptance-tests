@@ -30,17 +30,19 @@ exports.files = {
 
 pluginsObject = {
   // Executes for production build only - See README.md for implementation
-//  stripcode: {
-//    start: 'develblock:start',
-//    end: 'develblock:end'
-//  },
-  babel: { presets: ['env'] },
+  // stripcode: {
+  //   start: 'develblock:start',
+  //   end: 'develblock:end'
+  // },
+  babel: {
+    presets: ['env']
+  },
   // See README.md for implementation
-//   eslint: {
-//     pattern: /^brunch\/appl\/.*\.js?$/,
-//     warnOnly: true,
-//     fix: true
-//   },
+  //   eslint: {
+  //     pattern: /^brunch\/appl\/.*\.js?$/,
+  //     warnOnly: true,
+  //     fix: true
+  //   },
   copycat: {
     'views': ['brunch/appl/views'],
     'templates': ['brunch/appl/templates'],
@@ -82,12 +84,12 @@ exports.server = {
   stripSlashes: true
 }
 
-pluginsObject.karma = require('./brunch/build/karma_conf')
+pluginsObject.karma = require('./brunch/build/karma.conf')
 pluginsObject.karma.singleRun = singleRun
 
 exports.overrides = {
   production: {
-    paths : {
+    paths: {
       watched: ['brunch/appl']
     },
     conventions: {
