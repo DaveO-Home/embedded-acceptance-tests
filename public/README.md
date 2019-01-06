@@ -5,7 +5,7 @@ This demo is comprised of eight javascript bundlers each configured to run the t
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
   **Warning**:
-        The project was upgraded to latest node_modules codebases, so you should build with node >= 10 and npm >= 6.4.1.  The project will install with; node v6.12.3 (npm v3.10.10).
+        The project was upgraded to latest node_modules codebases, so you should build with node >= 9 and npm >= 6.5.  The project will install with; node v6.12.3 (npm v3.10.10).
 
 ## Installation
 
