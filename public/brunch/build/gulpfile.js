@@ -11,6 +11,7 @@ const gulp = require('gulp');
 const log = require("fancy-log");
 const Server = require('karma').Server;
 const chalk = require('chalk');
+const del = require('del');
 
 let lintCount = 0
 let dist = "dist_test/brunch"
@@ -24,7 +25,7 @@ var initialTask;
 /**
  * Default: Production Acceptance Tests 
  */
-gulp.task('pat', function (done) {
+gulp.task('pat', ['clean-test'], function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
@@ -54,6 +55,12 @@ gulp.task('pat', function (done) {
         }
     });
 });
+gulp.task('clean-test', () => {
+    log(chalk.cyan('Cleaning dist_test/brunch......'))
+    return del([
+        dist + '/**/*',
+    ], { dryRun: false, force: true });
+})
 /*
  * javascript linter
  */

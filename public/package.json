@@ -15,7 +15,7 @@
     "webpackwatch": "unset USE_HMR; export USE_WATCH=true; node_modules/.bin/webpack --output-public-path /base/dist_test/ --colors;",
     "bpc": "rm -rf dist/brunch",
     "btc": "rm -rf dist_test/brunch",
-    "bt": "npm run btc && brunch b --env test",
+    "bt": "brunch b --env test",
     "bp": "npm run bpc && brunch build --production",
     "bw": "npm run btc && brunch watch --server",
     "broctc": "rm -rf dist_test/broccoli",

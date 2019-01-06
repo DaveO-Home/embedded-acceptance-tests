@@ -21,6 +21,9 @@ module.exports = {
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine-jquery', 'jasmine'],
+    proxies: {
+        "/base/dist_test/fonts/": "/base/dist_test/" + bundler + "/fonts/",
+    },
     // list of files / patterns to load in the browser
     files: [
         //Webcomponents for Firefox - used for link tag with import attribute.
@@ -40,7 +43,7 @@ module.exports = {
         { pattern: 'dist_test/' + bundler + '/*.css', included: false, watched: false },
         { pattern: 'dist_test/' + bundler + '/*.map', included: false, watched: false },
         { pattern: 'dist_test/' + bundler + '/*.map', included: false, watched: false },
-        { pattern: 'dist_test/' + 'fonts/*', included: false, watched: false },
+        { pattern: 'dist_test/' + bundler + '/fonts/*', included: false, watched: false },
         { pattern: bundler + '/images/favicon.ico', included: false, watched: false },
         //Jasmine/Loader tests and starts Karma
         bundler + '/build/karma.bootstrap.js'
