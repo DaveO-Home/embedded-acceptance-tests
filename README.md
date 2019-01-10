@@ -318,8 +318,6 @@ __\*\*\*__ Webpack defaults to v4.x.
 
 ### VIII.  **Broccoli**
 
-__\*\*\*__ Broccoli will not run with Webpack v4.x installed.
-
 Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
 
 1\. **Watch Window** -

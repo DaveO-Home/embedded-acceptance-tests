@@ -4,7 +4,7 @@ This demo is comprised of eight javascript bundlers each configured to run the t
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
-  **Warning**: If the application fails to install with your current node/npm versions, execute ```npm clean cache --force```, and use at least ```node``` version 9 and ```npm``` version 6 to install and build.
+  **Warning**: If the application fails to install with your current node/npm versions, execute ```npm clean cache --force```, and use at least ```node``` version 8 and ```npm``` version 6 to install and build.
 
 ## Installation
 
@@ -317,8 +317,6 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 __\*\*\*__ Webpack defaults to v4.x.
 
 ### VIII.  **Broccoli**
-
-__\*\*\*__ Broccoli will not run with Webpack v4.x installed.
 
 Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
 

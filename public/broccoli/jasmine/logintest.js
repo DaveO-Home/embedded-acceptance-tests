@@ -20,7 +20,7 @@ module.exports = {
                 setTimeout(function () {
                     modal = $("#modalTemplate");
                     nameObject = $("#inputUsername");
-                    modal.on('shown.bs.modal', function(html){
+                    modal.on('shown.bs.modal', function (html) {
                         modal.modal("toggle");
                     });
                     done();
