@@ -40,7 +40,7 @@ define(function () {
                         setTimeout(function () {
                             afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                             done();
-                        }, 500);
+                        }, 750);
 
                     });
             });

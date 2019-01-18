@@ -31,7 +31,7 @@ if (typeof testit !== "undefined" && testit) {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     setTimeout(function () {
         __karma__.start();  //<===== Very Important - executed here!!
-    }, 500);
+    }, 1000);
 
 }
 /* develblock:end */

@@ -124,7 +124,7 @@ exports.apptest = function (Route, Helpers, App) {
             });
         }
         // Start the tests
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 8000;
         __karma__.start();
     });
 };

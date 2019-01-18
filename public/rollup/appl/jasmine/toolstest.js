@@ -48,7 +48,7 @@ module.exports = {
                     expect('#dropdown1 a').toHaveLength(3);
                     expect(selectorObject).toBeFocused();
                     done()
-                }, 500)
+                }, 750)
 
             });
             // Not Working for rollup

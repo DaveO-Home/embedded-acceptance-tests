@@ -4,7 +4,9 @@ This demo is comprised of eight javascript bundlers each configured to run the t
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
-  **Warning**: If the application fails to install with your current node/npm versions, execute ```npm clean cache --force```, and use at least ```node``` version 9 and ```npm``` version 6 to install and build.
+  **Warning**: If the application fails to install with your current node/npm versions, execute ```npm clean cache --force```, and use at least ```node``` version 8 and ```npm``` version 6 to install and build.
+
+  **Dockerfile**: See instructions at bottom of README.
 
 ## Installation
 
@@ -318,6 +320,8 @@ __\*\*\*__ Webpack defaults to v4.x.
 
 ### VIII.  **Broccoli**
 
+**Warning**: Broccoli may not run with Webpack4 installed.
+
 Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
 
 1\. **Watch Window** -
@@ -333,3 +337,31 @@ At this point you can start a browser and enter `localhost:3080/appl/testapp_dev
   * `gulp tdd`
 
   __Note__; Tests will __not__ be rerun as code are modified. You can still run `gulp test` and `gulp`(for production) with expected results.
+
+### IX.  **Dockerfile**
+
+You can build a complete test/develpment environment on a Docker vm with the supplied Dockerfile.
+
+**Linux as Parent Host**(assumes docker is installed and daemon is running)-
+
+In directory containing the Dockerfile execute the following commands;
+
+1\. ```docker build -t embedded .```
+
+2\. ```docker run -ti --privileged  -p 3080:3080 -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix --name test_env embedded bash```
+
+You should be logged into the test container(test_env). There will be 4 embedded-acceptance-tests* directories. Change into to default directory defined in the Dockerfile, for example canjs(embedded-acceptance-tests/public). All of the node dependencies should be installed, so ```cd``` to a desired bundler build directory, i.e. ```stealjs/build``` and follow the above instructions on testing, development and production builds.
+
+3.\ When existing the vm after the ```docker run``` command, the container may be stopped. To restart execute ```docker start test_env``` and then ```docker exec -it --privileged --user tester -e DISPLAY=$DISPLAY -w /home/tester test_env bash```.  You can also use ```--user root``` to execute admin work.
+
+**Windows as Parent Host**-
+
+For Pro and Enterpise OS's, follow the Docker instructions on installation.  For the Home OS version you can use the legacy **Docker Desktop** client. It is best to have a Pro or Enterpise Windows OS to use a WSL(Windows bash) install. Use following commands with Windows;
+
+1\. ```docker build -t embedded .```
+
+2\. ```docker run -ti --privileged  -p 3080:3080 --name test_env embedded bash```
+
+3\. ```docker exec -it --privileged --user tester -w /home/tester test_env bash```
+
+__Note__; Without a complete Pro/Enterprise docker installation, the ```test_env``` container can only run with Headless browsers. Therfore you should execute ```export USE_BROWSERS=ChromeHeadless,FirefoxHeadless``` before testing, development and building.

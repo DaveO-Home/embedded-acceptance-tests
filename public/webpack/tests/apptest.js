@@ -122,7 +122,7 @@ define(["routertests",
                         fail("Testing only, build will not proceed");
                     });
                 }
-                jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000
+                jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000
                 setTimeout(function() {
                     __karma__.start()
                 }, 10)

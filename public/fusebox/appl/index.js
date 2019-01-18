@@ -29,9 +29,9 @@ if (testit) {
 
     //Run acceptance tests. - To run only unit tests, comment the apptest call.
     apptest(Route, Helpers, App);
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     setTimeout(function () {
         __karma__.start();  //<===== Very Important - executed here!! -- Fusebox needs a delay.
-    }, 500);
+    }, 750);
 }
 /* develblock:end */

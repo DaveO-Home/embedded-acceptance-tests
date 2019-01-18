@@ -23,7 +23,7 @@ exports.apptest = function (Route, Helpers, App) {
 
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-        }, 5000);
+        }, 10000);
 
         afterEach(function () {
             //Get rid of nasty warning message from can-events.
@@ -124,7 +124,7 @@ exports.apptest = function (Route, Helpers, App) {
                 fail("Testing only, build will not proceed");
             });
         }
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         __karma__.start();
     });
 };
