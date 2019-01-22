@@ -1,3 +1,5 @@
+const { timer } = require('rxjs');
+
 module.exports = {
     toolstest: function (Route, Helpers) {
         /* 
@@ -37,19 +39,23 @@ module.exports = {
             it("setup and click events executed.", function (done) {
                 Helpers.fireEvent(selectorItem[1], 'click');
 
-                setTimeout(function () {
-                    afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                    //jasmine-jquery matchers
-                    expect('click').toHaveBeenTriggeredOn(selectorItem[1]);
-                    expect(spyToolsEvent).toHaveBeenTriggered();
+                // Note: if page does not refresh, increase the timer time.
+                // Using RxJs instead of Promise.
+                const numbers = timer(50, 50);
+                const observable = numbers.subscribe(timer => {
+                    afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                    if (afterValue !== beforeValue || timer === 15) {
+                        expect('click').toHaveBeenTriggeredOn(selectorItem[1]);
+                        expect(spyToolsEvent).toHaveBeenTriggered();
 
-                    expect(tools[0]).toBeInDOM();
-                    expect('.disabled').toBeDisabled();
-                    expect('#dropdown1 a').toHaveLength(3);
-                    expect(selectorObject).toBeFocused();
-                    done()
-                }, 750)
-
+                        expect(tools[0]).toBeInDOM();
+                        expect('.disabled').toBeDisabled();
+                        expect('#dropdown1 a').toHaveLength(3);
+                        expect(selectorObject).toBeFocused();
+                        observable.unsubscribe();
+                        done();
+                    }
+                })
             });
             // Not Working for rollup
             // it("new page loaded on change.", function () {

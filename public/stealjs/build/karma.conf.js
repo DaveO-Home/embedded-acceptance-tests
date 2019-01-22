@@ -44,6 +44,7 @@ module.exports = function (config) {
             {pattern: 'package.json', watched: false, included: false},
             {pattern: 'node_modules/lodash/**/*js', watched: false, included: false},
             {pattern: 'node_modules/moment/**/*.js', watched: false, included: false},
+            {pattern: 'node_modules/rxjs/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/marked/lib/marked.js', watched: false, included: false},
             {pattern: 'README.md', included: false},
             {pattern: bundler + '/appl/**/*.html', included: false},

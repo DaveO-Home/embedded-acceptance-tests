@@ -19,10 +19,10 @@
 
     USER tester
     EXPOSE 3080
-    WORKDIR /home/tester
+    WORKDIR /home/tester/embedded-acceptance-tests
     ENV NPM_CONFIG_LOGLEVEL info
     ENV NODE_ENV development
-    #ENV HOME /home/tester
+    ENV HOME /home/tester
 
     # Once the docker container(test_env) is built, you can try any of the frontends 
     # with a manual install(npm install).

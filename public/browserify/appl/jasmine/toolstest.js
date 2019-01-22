@@ -1,3 +1,5 @@
+const { timer } = require('rxjs');
+
 module.exports = {
     toolstest: function (Route, Helpers) {
 
@@ -36,14 +38,17 @@ module.exports = {
                         selectorObject.val("cat1");
                         Helpers.fireEvent(selectorObject[0], 'change');
 
-                        //Note: if page does not refresh, increase the Timeout time.
-                        //Using setTimeout instead of Promise.
-                        setTimeout(function () {
-                            afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                            done();
-                        }, 750);
-
-                    });
+                        // Note: if page does not refresh, increase the timer time.
+                        // Using RxJs instead of Promise.
+                        const numbers = timer(50, 50);
+                        const observable = numbers.subscribe(timer => {
+                            afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                            if (afterValue !== beforeValue || timer === 15) {
+                                observable.unsubscribe();
+                                done();
+                            }
+                        })
+                    })
             });
 
             it("setup and change event executed.", function () {

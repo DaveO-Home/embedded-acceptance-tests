@@ -1,5 +1,6 @@
-steal(function () {
+steal("rxjs", function (Rx) {
     return function (Route, Helpers) {
+        var timer = Rx.timer
         /* 
          * Test that new data are loaded when the select value changes.
          */
@@ -21,28 +22,32 @@ steal(function () {
 
                 //Wait for Web Page to be loaded
                 Helpers.getResource("container", 0)
-                .catch(function (rejected) {
-                    fail("The Tools Page did not load within limited time: " + rejected);
-                }).then(function (resolved) {
-                    tools = $("#tools");
+                    .catch(function (rejected) {
+                        fail("The Tools Page did not load within limited time: " + rejected);
+                    }).then(function (resolved) {
+                        tools = $("#tools");
 
-                    beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
+                        beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
 
-                    selectorObject = $('.jobtype-selector');
-                    spyToolsEvent = spyOnEvent(selectorObject[0], 'change');
-                    /*
-                     *  The can.Component(jobtype-selector) has a change event - we want to test that.
-                     */
-                    selectorObject.val("cat1");
-                    Helpers.fireEvent(selectorObject[0], 'change');
+                        selectorObject = $('.jobtype-selector');
+                        spyToolsEvent = spyOnEvent(selectorObject[0], 'change');
+                        /*
+                         *  The can.Component(jobtype-selector) has a change event - we want to test that.
+                         */
+                        selectorObject.val("cat1");
+                        Helpers.fireEvent(selectorObject[0], 'change');
 
-                    //Note: if page does not refresh, increase the Timeout time.
-                    //Using setTimeout instead of Promise.
-                    setTimeout(function () {
-                        afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                        done();
-                    }, 750);
-                });
+                        // Note: if page does not refresh, increase the timer time.
+                        // Using RxJs instead of Promise.
+                        var numbers = timer(50, 50);
+                        var observable = numbers.subscribe(timer => {
+                            afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                            if (afterValue !== beforeValue || timer === 15) {
+                                observable.unsubscribe();
+                                done();
+                            }
+                        })
+                    });
             });
 
             it("setup and change event executed.", function () {

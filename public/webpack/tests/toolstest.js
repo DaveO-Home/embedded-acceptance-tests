@@ -1,5 +1,6 @@
 define(function () {
     return function (Route, Helpers) {
+        var {timer} = require("rxjs")
         /* 
          * Test that new data are loaded when the select value changes.
          */
@@ -35,13 +36,16 @@ define(function () {
                         selectorObject.val("cat1");
                         Helpers.fireEvent(selectorObject[0], 'change');
 
-                        // Note: if page does not refresh, increase the Timeout time.
-                        // Using setTimeout instead of Promise.
-                        setTimeout(function () {
-                            afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                            done();
-                        }, 750);
-
+                        // Note: if page does not refresh, increase the timer time.
+                        // Using RxJs instead of Promise.
+                        var numbers = timer(50, 50);
+                        var observable = numbers.subscribe(timer => {
+                            afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                            if (afterValue !== beforeValue || timer === 15) {
+                                observable.unsubscribe();
+                                done();
+                            }
+                        })
                     });
             });
 
@@ -66,7 +70,6 @@ define(function () {
                 //Verify that new page was loaded.
                 expect(beforeValue).not.toBe(afterValue);
             });
-
         });
     };
 });
