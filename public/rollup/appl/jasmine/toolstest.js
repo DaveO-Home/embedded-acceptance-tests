@@ -44,7 +44,7 @@ module.exports = {
                 const numbers = timer(50, 50);
                 const observable = numbers.subscribe(timer => {
                     afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
-                    if (afterValue !== beforeValue || timer === 15) {
+                    if (afterValue !== beforeValue || timer === 20) {
                         expect('click').toHaveBeenTriggeredOn(selectorItem[1]);
                         expect(spyToolsEvent).toHaveBeenTriggered();
 

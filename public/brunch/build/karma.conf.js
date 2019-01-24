@@ -78,7 +78,7 @@ module.exports = {
     port: 9876,
     colors: true,
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: 'WARN',
+    logLevel: 'ERROR',
     autoWatch: true,
     // Continuous Integration mode
     singleRun: true,
