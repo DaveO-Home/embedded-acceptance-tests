@@ -55,7 +55,7 @@ const fuse = FuseBox.init({
             //     mangle: false,
             //     es6: true
             // },
-            // uglify: { es6: true },
+            uglify: { es6: true },
             treeshake: true
         }),
         ["node_modules/font-awesome/**.css",
@@ -71,7 +71,7 @@ const fuse = FuseBox.init({
             { from: "../README.md", to: distDir }
             ]
         }),
-        isProduction && !isKarma && UglifyESPlugin({
+        isProduction && !isKarma && !useQuantum && UglifyESPlugin({
             compress: true,
             mangle: false
         })

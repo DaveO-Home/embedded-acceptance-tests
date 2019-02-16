@@ -169,10 +169,10 @@ module.exports = {
             resolve('loaded - with counter/length: ' + counter + ' - ' + container.children.length);
         } else {
             counter++;
-            if (counter > 5) {
+            if (counter > 175) {
                 reject('failed');
             } else {
-                var time = Math.random() * 1000 + 1000;
+                var time = Math.random() * 100 + 100;
 
                 setTimeout(function () {
                     isResolved(resolve, reject, selectorId, counter, length);
