@@ -27,10 +27,10 @@
     # Once the docker container(test_env) is built, you can try any of the frontends 
     # with a manual install(npm install).
     # It is recommended to remove the existing node_modules directories to conserve space.
-    RUN git clone https://github.com/DaveO-Home/embedded-acceptance-tests.git 
-    RUN git clone https://github.com/DaveO-Home/embedded-acceptance-tests-vue.git 
-    RUN git clone https://github.com/DaveO-Home/embedded-acceptance-tests-react.git 
-    RUN git clone https://github.com/DaveO-Home/embedded-acceptance-tests-ng.git
+    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests.git 
+    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-vue.git 
+    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-react.git 
+    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-ng.git
 
     # Change to correspond with desired repo - defaults to canjs
     RUN cd ./embedded-acceptance-tests; npm install 
