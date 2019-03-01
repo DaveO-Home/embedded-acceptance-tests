@@ -12,7 +12,7 @@
 
     RUN dnf install -y nodejs xorg-x11-fonts-Type1 PackageKit-gtk3-module libcanberra-gtk3 bzip2
 
-    RUN npm install gulp@3.9.1 -g
+    RUN npm install gulp -g
     RUN npm install brunch -g
     RUN npm install parcel -g
     RUN npm install broccoli-cli -g
