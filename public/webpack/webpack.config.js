@@ -11,18 +11,18 @@ const excludeUglify = isProduction ? /\.min\.js$/ : /\.js$/;
 const useHot = process.env.USE_HMR === 'true';
 const isWatch = process.env.USE_WATCH === 'true';
 const devPublicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : '/dist_test/webpack/';
-const version = Number(process.env.W_VERSION.substring(0, process.env.W_VERSION.lastIndexOf('.')))
+const version = Number(process.env.W_VERSION)
 
 let pathsToClean = [
     isProduction ? 'dist/webpack' : 'dist_test/webpack'
-  ]
-   
-  // the clean options to use
-  let cleanOptions = {
+]
+
+// the clean options to use
+let cleanOptions = {
     root: path.resolve(__dirname, '../'),
     verbose: true,
     dry: false
-  }
+}
 
 module.exports = {
     node: {
@@ -77,12 +77,12 @@ module.exports = {
     devServer: {
         host: "localhost",
         port: 3080,
-//        noInfo: true,
-//        https: false,
-//        hot: true,
-//        historyApiFallback: true,
-//        compress: false,
-//        contentBase: '../'
+        //        noInfo: true,
+        //        https: false,
+        //        hot: true,
+        //        historyApiFallback: true,
+        //        compress: false,
+        //        contentBase: '../'
     },
     output: {
         filename: '[name].bundle.js',
@@ -126,20 +126,24 @@ module.exports = {
             Popper: ['popper.js', 'default']
         }),
         new CopyWebpackPlugin([
-            {from: './images/favicon.ico', to: 'images'},
-            {from: isProduction ? './appl/testapp.html' : './appl/testapp_dev.html', to: 'appl'},
-            {from: isProduction ? '' : './appl/app_bootstrap.html', to: 'appl'},
-            {from: '../README.md', to: '../'},
-            {from: {
+            { from: './images/favicon.ico', to: 'images' },
+            { from: isProduction ? './appl/testapp.html' : './appl/testapp_dev.html', to: 'appl' },
+            { from: isProduction ? './appl/testapp.html' : './appl/app_bootstrap.html', to: 'appl' },
+            { from: '../README.md', to: '../' },
+            {
+                from: {
                     glob: './appl/views/**/*',
                     dot: false
                 },
-                to: ''},
-            {from: {
+                to: ''
+            },
+            {
+                from: {
                     glob: './appl/templates/**/*',
                     dot: false
                 },
-                to: ''}
+                to: ''
+            }
         ]),
         new webpack.DefinePlugin({
             'process.env': {
@@ -154,16 +158,16 @@ module.exports = {
     }
 };
 
-if (version > 4) {
+if (version >= 4) {
     module.exports.performance = {
         hints: "warning", // enum
-        hints: "error", // emit errors for perf hints
-        hints: false // turn off perf hints
+        // hints: "error", // emit errors for perf hints
+        // hints: false // turn off perf hints
     }
     module.exports.stats = isProduction ? "normal" : false // minimal, none, normal, verbose, errors-only
     module.exports.mode = isProduction ? 'production' : 'development'
     module.cache = isProduction ? true : false
-//    setSideEffects(version)
+    //    setSideEffects(version)
 } else {
     module.exports.plugins = (module.exports.plugins || []).concat([
         new ExtractTextPlugin({
@@ -187,7 +191,7 @@ if (!isProduction && useHot) {
 }
 
 if (isProduction) {
-    if (version > 4) {
+    if (version >= 4) {
         module.exports.plugins = (module.exports.plugins || []).concat([
             new webpack.LoaderOptionsPlugin({
                 minimize: true,
@@ -268,16 +272,16 @@ function setJsonLoader(version) {
 }
 
 function setSideEffects(version) {
-    if (version > 4) {
+    if (version >= 4) {
         module.exports.module.rules.push(
-                {
-                    include: /node_modules/,
-                    sideEffects: true
-                });
+            {
+                include: /node_modules/,
+                sideEffects: true
+            });
         module.exports.module.rules.push(
-                {
-                    include: /appl\/css/,
-                    sideEffects: true
-                });
+            {
+                include: /appl\/css/,
+                sideEffects: true
+            });
     }
 }

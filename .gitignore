@@ -33,3 +33,4 @@ public/sendMail
 public/sendmail.js
 GenCopy
 npm-*
+node_modules

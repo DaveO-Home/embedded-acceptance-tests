@@ -10,19 +10,20 @@ const isWatch = process.env.USE_WATCH === 'true';
 const isHMR = process.env.USE_HMR === 'true';
 
 let srcDir = '.';
-let scriptTree = 'broccoli/appl';
+let scriptTree;
+const lib = 'broccoli/appl';
 
 scriptTree = new WebpackWriter([srcDir],
-    require('./broccoli/webpack.config')
+    require('./webpack.config')
 )
 
-const assets = funnel('./broccoli', {
+const assets = funnel('../', {
     files: [isProduction ? './appl/testapp.html' : './appl/testapp_dev.html',
         './appl/css', './appl/views', './appl/templates', './images', '../README.md'],
     destDir: '/'
 });
 
-const vendorCss = concat(srcDir, {
+const vendorCss = concat('../..', {
     inputFiles: [
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/font-awesome/css/font-awesome.css',
@@ -31,7 +32,7 @@ const vendorCss = concat(srcDir, {
     outputFile: 'appl/css/vendor.css'
 });
 
-const fonts = funnel('./node_modules/font-awesome/fonts/', {
+const fonts = funnel('../../node_modules/font-awesome/fonts/', {
     include: [
         '*.*'],
     destDir: 'appl/fonts'

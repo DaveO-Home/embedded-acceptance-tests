@@ -18,7 +18,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
   1. OS Linux or Windows(Tested on Windows10)
   1. Node and npm
-  1. Gulp
+  1. Gulp4 is default - If your global Gulp is version 3, you and execute `npx gulp` from the build directories.
   1. Google Chrome
   1. Firefox
 
@@ -139,6 +139,8 @@ __A word on developing tests__; You can write and execute tests quicker by using
   * `gulp watch`
   * Develop or modify a test.
   * In another window execute `gulp acceptance` from the `build` directory to view the modified or new test results.
+
+__Also Note__; All of the development tasks(`hmr, server, watch`) etc, can be run from one window using the `gulp development` task.
 
 ### I.  **Browserify**
 
@@ -320,14 +322,14 @@ __\*\*\*__ Webpack defaults to v4.x.
 
 ### VIII.  **Broccoli**
 
-**Warning**: Broccoli may not run with Webpack4 installed.
+**Warning**: Broccoli has it's own webpack@3.12.0 package.json in the `broccoli/build` directory. Run `npm install` in this directory to run the Broccoli acceptance test tasks.
 
-Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. This demo uses the webpack plugin and it will work out of the box. However, to use the webpack plugins remaining in `broccoli/webpack.conf.js` the `broccoli-webpack` plugin needs to be upgraded. Simply `cd to node_modules/broccoli-webpack` and execute `npm install webpack@3.11.0`. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
+Broccoli is not a bundler but uses plugins to interface with other software, specifically, Webpack, Rollup and Browserify to build the javascript bundle and content. These bundler plugins are all outdated. The Webpack plugin works best since it seems to behave with the builtin watcher process. At least I learned how to spell broccoli. Broccoli is good at deploying static content and in the end uses little configuration and has a fast deploy.
 
 1\. **Watch Window** -
 
-  * `cd public`
-  * `npm run brocw`
+  * `cd public/broccoli/build`
+  * `gulp watch`
 
 At this point you can start a browser and enter `localhost:3080/appl/testapp_dev.html`. The watcher will recompile when application code are modified, however there is no auto-reload.  You have to manually reload the page. Also, the watcher recompiles into cache so Test Driven Development(`gulp tdd`) does not re-execute on code modifications since it watches the actual bundle.
 

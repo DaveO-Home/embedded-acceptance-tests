@@ -3,13 +3,10 @@
  * Production build using karma/jasmine acceptance test approval and Development environment with Webpack
  *
  * Successful acceptance tests & lints start the production build.
- * Tasks are run serially, 'pat' -> ('eslint', 'csslint') -> 'boot' -> 'build'
+ * Tasks are run serially, 'acceptance_tests' -> 'test_build' -> ('eslint', 'csslint', 'bootlint') -> 'boot' -> 'build'
  */
-let version;
-const { spawn } = require('child_process');
-const webpackVersion = spawn('npm', ['list', '--depth=0', 'webpack']);
 
-const gulp = require('gulp');
+const { series, parallel, task, src, dest } = require('gulp');
 const path = require('path');
 const Server = require('karma').Server;
 const eslint = require('gulp-eslint');
@@ -21,7 +18,10 @@ const webpack = require('webpack');
 const webpackStream = require("webpack-stream");
 const WebpackDevServer = require('webpack-dev-server');
 const ReloadPlugin = require('reload-html-webpack-plugin');
+const chalk = require('chalk')
+const packageDep = require('../../package.json')
 
+const version = Number(/\d/.exec(packageDep.devDependencies.webpack)[0])
 let lintCount = 0, dist = "dist_test";
 let browsers = process.env.USE_BROWSERS;
 let isWindows = /^win/.test(process.platform);
@@ -29,115 +29,102 @@ if (browsers) {
     global.whichBrowser = browsers.split(",");
 }
 
-/**
- * Default: Production Acceptance Tests 
- */
-gulp.task('pat', ["acceptance-tests"], function (done) {
-    done();
-});
-
 /*
  * javascript linter
  */
-gulp.task('eslint', ['pat'], function (cb) {
-    var stream = gulp.src(["../appl/js/**/*.js"])
-            .pipe(eslint({
-                configFile: 'eslintConf.json',
-                quiet: 0
-            }))
-            .pipe(eslint.format())
-            .pipe(eslint.result(function (result) {
-                //Keeping track of # of javascript files linted.
-                lintCount++;
-            }))
-            .pipe(eslint.failAfterError());
-
-    stream.on('end', function () {
-        log("# javascript files linted: " + lintCount);
-    });
+const esLint = function (cb) {
+    var stream = src(["../appl/js/**/*.js"])
+        .pipe(eslint({
+            configFile: 'eslintConf.json',
+            quiet: 0
+        }))
+        .pipe(eslint.format())
+        .pipe(eslint.result(function (result) {
+            //Keeping track of # of javascript files linted.
+            lintCount++;
+        }))
+        .pipe(eslint.failAfterError());
 
     stream.on('error', function (err) {
         log(err);
         process.exit(1);
     });
 
-    return stream;
-});
-
+    return stream.on('end', function () {
+        log("# javascript files linted: " + lintCount);
+        cb()
+    });
+};
 /*
  * css linter
  */
-gulp.task('csslint', ['pat'], function () {
-    var stream = gulp.src(['../appl/css/site.css'])
-            .pipe(csslint())
-            .pipe(csslint.formatter());
+const cssLint = function (cb) {
+    var stream = src(['../appl/css/site.css'])
+        .pipe(csslint())
+        .pipe(csslint.formatter());
 
     stream.on('error', function (err) {
         log(err);
         process.exit(1);
     });
-});
-
+    return stream.on('end', function () {
+        log("# javascript files linted: " + lintCount);
+        cb()
+    });
+};
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['bootlint', 'setVersion'], function (cb) {
+const build = function (cb) {
     dist = 'dist';
-    let win="";
-    if(isWindows) {
-	win="win";
+    let win = "";
+    let set = "";
+    if (isWindows) {
+        win = "win";
+        set = "set"
     }
-    
-    exec('export W_VERSION="' + version + '"; npm run webpackprod' + win, function (err, stdout, stderr) {
+    const cmd = set || "export";
+    exec(cmd + ' W_VERSION="' + version + '"; npm run webpackprod' + win, function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
-
         cb(err);
     });
-});
-
+};
 /*
  * Bootstrap html linter 
  */
-gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
-    log("Starting Gulpboot.js")
-    exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
-
+const bootLint = function (cb) {
+    log(chalk.cyan("Starting Gulpboot.js"))
+    exec('npx gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
-
         cb(err);
     });
-});
-
+};
 /**
  * Run karma/jasmine tests once and exit
  * Set environment variable USE_BUILD=false to bypass the build
  */
-gulp.task('acceptance-tests', ['test-build'], function (done) {
+const acceptance_tests = function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
     new Server({
-
         configFile: __dirname + '/karma.conf.js',
         singleRun: true,
         watch: false
-
     }, function (result) {
-
         var exitCode = !result ? 0 : result;
-
         done();
         if (exitCode > 0) {
             process.exit(exitCode);
         }
     }).start();
-});
+};
 /*
  * Build Test without Karma settings for npm Express server (npm start)
  */
-gulp.task("webpack-rebuild", ["setVersion"], function () {
+const webpack_rebuild = function (cb) {
     var envs = env.set({
         W_VERSION: version,
         NODE_ENV: "development",
@@ -149,18 +136,20 @@ gulp.task("webpack-rebuild", ["setVersion"], function () {
         USE_BUILD: "false"
     });
 
-    return gulp.src("../appl/index.js")
-            .pipe(envs)
-            .pipe(webpackStream(require('../webpack.config.js')))
-            .pipe(envs.reset)
-            .pipe(gulp.dest("../../dist_test/webpack"));
-});
-
+    const stream = src("../appl/index.js")
+        .pipe(envs)
+        .pipe(webpackStream(require('../webpack.config.js')))
+        .pipe(envs.reset)
+        .pipe(dest("../../dist_test/webpack"));
+    return stream.on("end", function () {
+        cb()
+    })
+};
 /*
  * Build the test bundle
  */
-gulp.task("test-build", ["setVersion"], function () {
-    var useBuild = process.env.USE_BUILD == "false"? "false": "true";
+const test_build = function (cb) {
+    var useBuild = process.env.USE_BUILD == "false" ? "false" : "true";
     var envs = env.set({
         W_VERSION: version,
         NODE_ENV: "development",
@@ -172,53 +161,39 @@ gulp.task("test-build", ["setVersion"], function () {
     });
 
     if (process.env.USE_BUILD == 'false') {  //Let Webpack do the build if only doing unit-tests
-
-        return gulp.src("../appl/index.js")
-                .pipe(envs);
+        const stream = src("../appl/index.js")
+            .pipe(envs);
+        return stream.on("end", function () {
+            cb();
+        })
     };
-    
-    return gulp.src("../appl/index.js")
-            .pipe(envs)
-            .pipe(webpackStream(require('../webpack.config.js')))
-            .pipe(envs.reset)
-            .pipe(gulp.dest("../../dist_test/webpack"));
-});
 
-/*
- * Extract Current Webpack Version - Now defaults to Webpack 4
- */
-gulp.task("setVersion", function () {
-    // webpackVersion.stdout.on('data', (data) => {
-    //     version='4.6.0'
-    //     const list = `${data}`.split(' ')
-    //     for(idx in list) {
-    //         if(list[idx].indexOf('webpack@') > -1) {
-    //             version = list[idx].substr(list[idx].indexOf('@')+1)
-    //         }
-    //     }
-    // });
-    return version = "4.26.0"
-});
-
+    const stream = src("../appl/index.js")
+        .pipe(envs)
+        .pipe(webpackStream(require('../webpack.config.js')))
+        .pipe(envs.reset)
+        .pipe(dest("../../dist_test/webpack"));
+    return stream.on("end", function () {
+        cb();
+    })
+};
 /**
  * Continuous testing - test driven development.  
  */
-gulp.task('webpack-tdd', ["test-build"], function (done) {
+const webpack_tdd = function (done) {
     if (!browsers) {
         global.whichBrowser = ['Chrome', 'Firefox'];
     }
-    
+
     new Server({
         configFile: __dirname + '/karma.conf.js'
     }, done).start();
-});
-
+};
 /*
  * Webpack recompile to 'dist_test' on code change
  * run watch in separate window. Used with karma tdd.
  */
-gulp.task("webpack-watch", ["setVersion"], function () {
-
+const webpack_watch = function (cb) {
     env.set({
         W_VERSION: version,
         NODE_ENV: "development",
@@ -228,28 +203,15 @@ gulp.task("webpack-watch", ["setVersion"], function () {
         PUBLIC_PATH: "/base/dist_test/webpack/"
     });
 
-    var webpackConfig = require('../webpack.config.js');
+    const webpackConfig = require('../webpack.config.js');
 
-    gulp.src("../appl/**/*")
-            .pipe(webpackStream(webpackConfig))
-            .pipe(gulp.dest("../../dist_test/webpack"));
-
-});
-
-gulp.task('set-watch-env', function () {
-
-    var envs = env.set({
-        NODE_ENV: "development",
-        USE_WATCH: "true",
-        USE_KARMA: "false",
-        USE_HMR: "false",
-        PUBLIC_PATH: "/base/dist_test/webpack/"
-    });
-
-    return gulp.src("./appl/index.js")
-            .pipe(envs);
-
-});
+    const stream = src("../appl/**/*")
+        .pipe(webpackStream(webpackConfig))
+        .pipe(dest("../../dist_test/webpack"));
+    return stream.on("end", function () {
+        cb()
+    })
+};
 
 /*
  * Webpack development server - use with normal development
@@ -259,8 +221,7 @@ gulp.task('set-watch-env', function () {
  * - hot module recompile/replace
  * - reload served web page.
  */
-gulp.task("webpack-server", ["setVersion"], function () {
-
+const webpack_server = function (cb) {
     env.set({
         W_VERSION: version,
         NODE_ENV: "development",
@@ -274,7 +235,7 @@ gulp.task("webpack-server", ["setVersion"], function () {
         hot: true,
         host: 'localhost',
         publicPath: '/dist_test/webpack/',
-        stats: {colors: true},
+        stats: { colors: true },
         watchOptions: {
             ignored: /node_modules/
         }
@@ -288,7 +249,7 @@ gulp.task("webpack-server", ["setVersion"], function () {
         new webpack.HotModuleReplacementPlugin()
     ]);
 
-    if(Number(version.substring(0, version.lastIndexOf('.'))) < 4) {
+    if (version < 4) {
         webpackConfig.plugins.concat([
             new ReloadPlugin()
         ])
@@ -298,32 +259,38 @@ gulp.task("webpack-server", ["setVersion"], function () {
 
     const compiler = webpack(webpackConfig);
     const server = new WebpackDevServer(compiler, options);
-
-    server.listen(3080, 'localhost', function (err) {
-        log('[webpack-server]', 'http://localhost:3080/webpack/appl/testapp_dev.html');
+    const port = process.env.PORT ? Number(process.env.PORT) : 3080;
+    const host = process.env.HOST || "localhost"
+    return server.listen(port, host, function (err) {
+        log(chalk.cyan('[webpack-server] http://localhost:' + port + '/webpack/appl/testapp_dev.html'));
         if (err) {
             log(err);
         }
+    }).on("end", function () {
+        cb();
     });
+};
 
-});
+const runTest = series(test_build, acceptance_tests)
+const runLint = parallel(esLint, cssLint, bootLint)
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('tdd', ['webpack-tdd']);
-gulp.task('test', ['acceptance-tests']);
-gulp.task('watch', ['webpack-watch']);
-gulp.task('hmr', ['webpack-server']);
-gulp.task('rebuild', ['webpack-rebuild']);   //removes karma config for node express.
+exports.default = series(runTest, runLint, build)
+exports.prod = series(runTest, runLint, build)
+exports.test = runTest
+exports.tdd = series(test_build, webpack_tdd)
+exports.watch = webpack_watch
+exports.hmr = webpack_server
+exports.rebuild = webpack_rebuild
+exports.development = parallel(webpack_server, webpack_watch, webpack_tdd)
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == 'true') {
     var fs = require('fs');
     var proc = require('process');
     var origstdout = process.stdout.write,
-            origstderr = process.stderr.write,
-            outfile = 'node_output.log',
-            errfile = 'node_error.log';
+        origstderr = process.stderr.write,
+        outfile = 'node_output.log',
+        errfile = 'node_error.log';
 
     if (fs.exists(outfile)) {
         fs.unlink(outfile);

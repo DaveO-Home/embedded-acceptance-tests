@@ -31,7 +31,7 @@ if (testit) {
     apptest(Route, Helpers, App);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     setTimeout(function () {
-        __karma__.start();  //<===== Very Important - executed here!! -- Fusebox needs a delay.
+        __karma__.start();
     }, 750);
 }
 /* develblock:end */

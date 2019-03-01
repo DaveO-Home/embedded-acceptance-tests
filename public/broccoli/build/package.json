@@ -1,0 +1,40 @@
+{
+  "name": "broccoli-tests",
+  "version": "1.0.0",
+  "description": "Broccoli Webpack",
+  "main": "index.js",
+  "scripts": {
+    "broctc": "rm -rf ../../dist_test/broccoli",
+    "brocpc": "rm -rf ../../dist/broccoli",
+    "broct": "npm run broctc && broccoli build ../../dist_test/broccoli",
+    "brocp": "npm run brocpc && broccoli build ../../dist/broccoli",
+    "brocw": "export USE_WATCH=true && broccoli serve --port 3080"
+  },
+  "keywords": [
+    "broccoli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "broccoli-concat": "^3.7.3",
+    "broccoli-env": "0.0.1",
+    "broccoli-funnel": "^2.0.2",
+    "broccoli-merge-trees": "^3.0.2",
+    "broccoli-uglify-sourcemap": "^3.0.0",
+    "broccoli-webpack": "^1.0.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "gulp": "^4.0.0",
+    "html-webpack-plugin": "^2.30.1",
+    "karma-webpack": "^2.0.13",
+    "reload-html-webpack-plugin": "^0.1.2",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^3.12.0",
+    "webpack-dev-server": "^2.11.2",
+    "webpack-merge": "^4.1.2",
+    "webpack-stream": "^4.0.3",
+    "webpack-strip-block": "^0.2.0"
+  },
+  "dependencies": {}
+}

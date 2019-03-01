@@ -10,7 +10,7 @@ var Setup = require("./js/utils/setup");
 var Helpers = require("./js/utils/helpers");
 /* eslint no-unused-vars: 0 */
 var Config = require("./js/config");
-require("tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js");
+require("../../node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js");
 
 App.init(Default);
 
@@ -23,7 +23,7 @@ Setup.init();
 //testit is true if running under Karma - see testapp_dev.html
 if (typeof testit !== "undefined" && testit) {
     
-    var apptest = require("../jasmine/apptest").apptest;
+    var apptest = require("./jasmine/apptest").apptest;
 
     //Run acceptance tests. - To run only unit tests, comment the apptest call.
     apptest(Route, Helpers, App);

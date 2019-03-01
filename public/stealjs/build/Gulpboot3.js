@@ -1,13 +1,13 @@
-const { src } = require('gulp');
+const gulp = require('gulp');
 const bootlint = require('gulp-bootlint');
 
-const bootLint = function() {
+gulp.task('bootlint', () => {
     var fileIssues = [],
             options = {
                 stoponerror: true,
                 stoponwarning: false,
                 loglevel: 'debug',
-                disabledIds: ['W009', 'E007', 'W005'],
+                disabledIds: ['E001', 'W009', 'E007', 'W005'],
                 issues: fileIssues,
                 reportFn: function (file, lint, isError, isWarning, errorLocation) {
                     var message = (isError) ? "ERROR! - " : "WARN! - ";
@@ -27,15 +27,15 @@ const bootLint = function() {
                 }
             };
 
-    var stream = src(["../appl/*.html"])
+    var stream = gulp.src(["../appl/*.html"])
             .pipe(bootlint(options));
     
-    stream.on('error', function() {
+    stream.on('error', function(err) {
+        console.log(err);
         process.exit(1);
     });
     
     return stream;
-    
-};
+});
 
-exports.default = bootLint;
+gulp.task('default', ['bootlint']);

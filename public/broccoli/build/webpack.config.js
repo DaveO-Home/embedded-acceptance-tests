@@ -1,28 +1,27 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const packageDep = require('./build/package.json')
+const packageDep = require('./package.json')
 
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.slice(-1)[0] == '-p';
 const useHot = process.env.USE_HMR === 'true';
 const isWatch = process.env.USE_WATCH === 'true';
 const devPublicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : '/dist_test/webpack/';
-let version = 3
+let version = Number(/\d/.exec(packageDep.devDependencies.webpack)[0])
 
-// if(process.env.W_VERSION) {
-//     version = Number(process.env.W_VERSION.substring(0, process.env.W_VERSION.lastIndexOf('.')))
-// }
-// Number(/\d/.exec(packageDep.devDependencies.webpack)[0])
+if(process.env.W_VERSION) {
+     version = Number(process.env.W_VERSION.substring(0, process.env.W_VERSION.lastIndexOf('.')))
+}
+
 let pathsToClean = [
     isProduction ? 'dist/broccoli' : 'dist_test/broccoli'
 ]
 // the clean options to use
 let cleanOptions = {
-    root: path.resolve(__dirname, '../'),
+    root: path.resolve(__dirname, '../..'),
     verbose: true,
     dry: false
 }
-
 
 let webpackConfig = {
     node: {
@@ -30,7 +29,7 @@ let webpackConfig = {
     },
     resolveLoader: {
         alias: {
-            "strip-custom-loader": path.join(__dirname, "appl/js/utils/strip-custom-loader")
+            "strip-custom-loader": path.join(__dirname, "../appl/js/utils/strip-custom-loader")
         }
     },
     resolve: {
@@ -38,14 +37,14 @@ let webpackConfig = {
         cacheWithContext: false,
         modules: [
             path.resolve('./'),
-            path.resolve("./build/node_modules"),
-            // "node_modules",
-            "appl"
+            path.resolve("./node_modules"),
+            "./node_modules",
+            "../appl"
         ]
     },
-    context: path.resolve(__dirname, "./"),
+    context: path.resolve(__dirname, "../"),
     entry: {
-        main: './appl/index.js'
+        main: '../appl/index.js'
     },
     target: 'web',
     output: {
@@ -86,7 +85,6 @@ let webpackConfig = {
 };
 
 if(!isWatch) {
-console.log("PUSHING IN COPYXXXXXXXXXXX***************")
     webpackConfig.plugins.push(new CleanWebpackPlugin(pathsToClean, cleanOptions))
 }
 

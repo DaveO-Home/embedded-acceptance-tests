@@ -4,8 +4,8 @@ var domTest = require("./domtest").domtest;
 var contactTest = require("./contacttest").contacttest;
 var loginTest = require("./logintest").logintest;
 var toolsTest = require("./toolstest").toolstest;
-var start = require("../appl/js/controller/start")
-var bootstrapLayout = require("../appl/app_bootstrap")
+var start = require("../js/controller/start")
+var bootstrapLayout = require("../app_bootstrap")
 
 exports.apptest = function (Route, Helpers, App) {
     var mainContainer = "#main_container";

@@ -1,7 +1,7 @@
-const gulp = require('gulp');
+const { src } = require('gulp');
 const bootlint = require('gulp-bootlint');
 
-gulp.task('bootlint', () => {
+const bootLint = function(cb) {
     var fileIssues = [],
             options = {
                 stoponerror: true,
@@ -27,15 +27,16 @@ gulp.task('bootlint', () => {
                 }
             };
 
-    var stream = gulp.src(["../appl/testapp*.html"])
+    var stream = src(["../appl/testapp*.html"])
             .pipe(bootlint(options));
     
     stream.on('error', function() {
         process.exit(1);
     });
-    
-    return stream;
-    
-});
+    stream.on("end", function() {
+        cb()
+    });
+    return stream;   
+};
 
-gulp.task('default', ['bootlint']);
+exports.default = bootLint

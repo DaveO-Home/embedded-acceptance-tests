@@ -1,5 +1,6 @@
 let startupHtml = "/appl/testapp_karma.html";
 let bundler = "rollup";
+
 // Karma configuration
 module.exports = function (config) {
 

@@ -1,10 +1,9 @@
 /**
  * Successful acceptance tests & lints start the production build.
- * Tasks are run serially, 'pat' -> ('eslint', 'csslint') -> 'boot' -> 'build'
+ * Tasks are run serially, 'pat' -> ('eslint', 'csslint', bootlint) -> 'boot' -> 'clean' -> 'build'
  */
 
-const gulp = require('gulp');
-
+const { series, parallel, task, src, dest } = require('gulp');
 const stealTools = require('steal-tools');
 const stealStream = require('steal-tools').streams;
 const Server = require('karma').Server;
@@ -13,6 +12,7 @@ const csslint = require('gulp-csslint');
 const exec = require('child_process').exec;
 const log = require("fancy-log");
 const del = require("del");
+const chalk = require("chalk")
 
 var lintCount = 0;
 let browsers = process.env.USE_BROWSERS;
@@ -23,29 +23,17 @@ var isWindows = /^win/.test(process.platform);
 /**
  * Default: Production Acceptance Tests 
  */
-gulp.task('pat', function (done) {
+const pat = function(done) {
     if (!browsers) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"]
     }
-
-    new Server({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: true
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        done();
-
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-    }).start();
-});
-
+    runKarma(done, true, false)
+};
 /*
  * javascript linter
  */
-gulp.task('eslint', ['pat'], () => {
-    var stream = gulp.src(["../appl/js/**/*.js"])
+const esLint = function(cb) {
+    var stream = src(["../appl/js/**/*.js"])
         .pipe(eslint({
             configFile: 'eslintConf.json',
             quiet: 0
@@ -57,33 +45,34 @@ gulp.task('eslint', ['pat'], () => {
         }))
         .pipe(eslint.failAfterError());
 
-    stream.on('end', function () {
-        log("# javascript files linted: " + lintCount);
-    });
     stream.on('error', function () {
         process.exit(1);
     });
 
-    return stream;
-});
+    return stream.on('end', function () {
+        log("# javascript files linted: " + lintCount);
+        cb()
+    });
+};
 /*
  * css linter
  */
-gulp.task('csslint', ['pat'], function () {
-    var stream = gulp.src(['../appl/css/site.css',
-        '../appl/css/main.css'])
+const cssLint = function (cb) {
+    var stream = src(['../appl/css/site.css'])
         .pipe(csslint())
         .pipe(csslint.formatter());
 
     stream.on('error', function () {
         process.exit(1);
     });
-});
-
+    return stream.on('end', function () {
+        cb();
+    });
+};
 /*
  *  Build the application to the production distribution using Steal/Steal-Tools v2
  */
-gulp.task('build', ['clean' , 'bootlint'], function () {
+const build = function() {
     return stealTools.build({
         configMain:"stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
@@ -107,11 +96,11 @@ gulp.task('build', ['clean' , 'bootlint'], function () {
             maxBundleRequests: 5,
             maxMainRequests: 5
         });
-});
+};
 /*
  * Tools Streams example - not used
  */
-gulp.task('buildX', [/*'build2', 'bootlint'*/], function () {
+const buildS = function () {
     const graphStream = stealStream.graph({
         configMain:"stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
@@ -142,11 +131,11 @@ gulp.task('buildX', [/*'build2', 'bootlint'*/], function () {
         .pipe(stealStream.bundle())
         .pipe(stealStream.concat())
         .pipe(stealStream.write());
-});
+};
 /*
  *  Build the application to the production distribution using Steal/Steal-Tools v2
  */
-gulp.task('build-only', ['clean-only'], function () {
+ const build_only = function() {
     return stealTools.build({
         configMain:"stealjs/appl/js/config",
         main: "stealjs/appl/js/index",
@@ -170,105 +159,80 @@ gulp.task('build-only', ['clean-only'], function () {
             maxBundleRequests: 5,
             maxMainRequests: 5
         });
-});
+};
 /*
  * Bootstrap html linter 
  */
-gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
-
-    exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
+const bootLint = function (cb) {
+    exec('npx gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
         cb(err);
     });
-});
+};
 /**
- * Remove previous build
+ * Remove previous production build
  */
-gulp.task('clean', ['bootlint'], done => {
+const clean = function(done) {
     isProduction = true;
     dist = '../../dist/';
-    return del([
+    del.sync([
         dist + 'stealjs/**/*',
         dist + 'bundles/**/*',
         dist + '../../dist/steal.production.js'
-    ], { dryRun: false, force: true }, done);
-});
-/**
- * Remove previous build
- */
-gulp.task('clean-only', done => {
-    isProduction = true;
-    dist = '../../dist/';
-    return del([
-        dist + 'stealjs/**/*',
-        dist + 'bundles/**/*',
-        dist + '../../dist/steal.production.js'
-    ], { dryRun: false, force: true }, done);
-});
+    ], { dryRun: false, force: true });
+    done();
+};
 /**
  * Run karma/jasmine tests using FirefoxHeadless 
  */
-gulp.task('steal-firefox', function (done) {
-    // Running both together as Headless has problems, tdd works
+const steal_firefox = function(done) {
     global.whichBrowsers = ["FirefoxHeadless"];
-
     runKarma(done, true, false);
-});
-
+};
 /**
  * Run karma/jasmine tests using ChromeHeadless 
  */
-gulp.task('steal-chrome', function (done) {
-    // Running both together as Headless has problems, tdd works
+ const steal_chrome = function(done) {
     global.whichBrowsers = ["ChromeHeadless"];
-
     runKarma(done, true, false);
-});
-
+};
 /**
  * Run karma/jasmine tests once and exit
  */
-gulp.task('steal-test', function (done) {
-    // Running both together as Headless has problems, tdd works
+const steal_test = function(done) {
     if (!browsers) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-
     runKarma(done, true, false);
-});
-
+};
 /**
  * Continuous testing - test driven development.  
  */
-gulp.task('steal-tdd', function (done) {
+const steal_tdd = function(done) {
     if (!browsers) {
         global.whichBrowsers = ['Firefox', 'Chrome'];
     }
-
     runKarma(done, false, true);
-});
-
+};
 /*
  * Startup live reload monitor. 
  */
-gulp.task('live-reload', ["vendor"], function (cb) {
+const live_reload = function(cb) {
     var osCommands = 'cd ../..; node_modules/.bin/steal-tools live-reload';
     if (isWindows) {
         osCommands = 'cd ..\\.. & .\\node_modules\\.bin\\steal-tools live-reload'
     }
-
     exec(osCommands, function (err, stdout, stderr) {
-
         log(stdout);
         log(stderr);
         cb(err);
     });
-});
+};
 /*
  * Build a vendor bundle from package.json
  */
-gulp.task('vendor', function (cb) {
+const vendor = function (cb) {
     let vendorBuild = process.env.USE_VENDOR_BUILD;
 
     if (vendorBuild && vendorBuild == "false") {
@@ -284,42 +248,50 @@ gulp.task('vendor', function (cb) {
         }).then(() => {
             cb();
         });
-});
+};
 /*
  * Startup live reload monitor. 
  */
-gulp.task('web-server', function (cb) {
+const web_server = function(cb) {
     var osCommand = 'cd ../../..; ';
     if (isWindows) {
         osCommand = 'cd ..\\..\\.. & ';
     }
-
+    const port = process.env.PORT || "3080";
+    log(chalk.cyan(`Use: localhost:${port}/stealjs/appl/testapp_dev.html`));
     exec(osCommand + 'npm start', function (err, stdout, stderr) {
-
         log(stdout);
         log(stderr);
         cb(err);
     });
-});
+};
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('prd', ['build-only'])
-gulp.task('tdd', ['steal-tdd']);
-gulp.task('test', ['steal-test']);
-gulp.task('firefox', ['steal-firefox']);
-gulp.task('chrome', ['steal-chrome']);
-gulp.task('hmr', ['live-reload']);
-gulp.task('server', ['web-server']);
+prodRun = series(pat, clean, parallel(esLint, cssLint, bootLint),  build)
+
+exports.default = prodRun
+exports.prod = prodRun
+exports.prd = series(clean, build)
+exports.test = pat
+exports.tdd = steal_tdd
+exports.firefox = steal_firefox
+exports.chorme = steal_chrome
+exports.hmr = series(vendor, live_reload)
+exports.server = web_server
+exports.development = parallel(series(vendor, live_reload), web_server)
 
 function runKarma(done, singleRun, watch) {
-
+    log(chalk.cyan("Wait..., building app and loading karma"));
     new Server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: singleRun,
         watch: typeof watch === "undefined" || !watch ? false : true
-    }, done()).start();
-
+    }, function (result) {
+        var exitCode = !result ? 0 : result;
+        done();
+        if (exitCode > 0) {
+            process.exit(exitCode);
+        }
+    }).start();
 }
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file

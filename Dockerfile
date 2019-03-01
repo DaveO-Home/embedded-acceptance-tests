@@ -34,5 +34,7 @@
 
     # Change to correspond with desired repo - defaults to canjs
     RUN cd ./embedded-acceptance-tests; npm install 
-    RUN cd ./embedded-acceptance-tests/public; npm install 
+    RUN cd ./embedded-acceptance-tests/public; npm install
+    # Uncomment if you want to run the broccoli tests
+    # RUN cd ./embedded-acceptance-tests/public/broccoli/build; npm install 
 
