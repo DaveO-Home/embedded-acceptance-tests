@@ -19,7 +19,7 @@
 
     USER tester
     EXPOSE 3080
-    ENV NPM_CONFIG_LOGLEVEL info
+    ENV NPM_CONFIG_LOGLEVEL notice
     ENV NODE_ENV development
 
     # Once the docker container(test_env) is built, you can try any of the frontends 
