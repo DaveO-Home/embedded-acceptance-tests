@@ -19,22 +19,18 @@
 
     USER tester
     EXPOSE 3080
-    WORKDIR /home/tester/embedded-acceptance-tests
     ENV NPM_CONFIG_LOGLEVEL info
     ENV NODE_ENV development
-    ENV HOME /home/tester
 
     # Once the docker container(test_env) is built, you can try any of the frontends 
     # with a manual install(npm install).
     # It is recommended to remove the existing node_modules directories to conserve space.
-    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests.git 
-    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-vue.git 
-    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-react.git 
-    RUN git clone git://github.com/DaveO-Home/embedded-acceptance-tests-ng.git
+    RUN cd ~; git clone git://github.com/DaveO-Home/embedded-acceptance-tests.git     
+    RUN cd ~; git clone git://github.com/DaveO-Home/embedded-acceptance-tests-vue.git
+    RUN cd ~; git clone git://github.com/DaveO-Home/embedded-acceptance-tests-react.git 
+    RUN cd ~; git clone git://github.com/DaveO-Home/embedded-acceptance-tests-ng.git
 
     # Change to correspond with desired repo - defaults to canjs
-    RUN cd ./embedded-acceptance-tests; npm install 
-    RUN cd ./embedded-acceptance-tests/public; npm install
-    # Uncomment if you want to run the broccoli tests
-    # RUN cd ./embedded-acceptance-tests/public/broccoli/build; npm install 
-
+    RUN cd ~/embedded-acceptance-tests; npm install
+    RUN cd ~/embedded-acceptance-tests/public; npm install
+    #RUN cd ~/embedded-acceptance-tests/public/broccoli/build; npm install
