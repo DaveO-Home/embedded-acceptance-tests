@@ -17,6 +17,14 @@
     RUN npm install parcel -g
     RUN npm install broccoli-cli -g
 
+    #Uncomment if you want to use the vs-code editor
+    #RUN echo $'[vscode] \n\
+#name=Visual Studio Code \n\
+#baseurl=https://packages.microsoft.com/yumrepos/vscode \n\
+#enabled=1 gpgcheck=1 \n\
+#gpgkey=https://packages.microsoft.com/keys/microsoft.asc' > /etc/yum.repos.d/vscode.repo
+    #RUN dnf install -y code
+
     USER tester
     EXPOSE 3080
     ENV NPM_CONFIG_LOGLEVEL notice
@@ -34,3 +42,4 @@
     RUN cd ~/embedded-acceptance-tests; npm install
     RUN cd ~/embedded-acceptance-tests/public; npm install
     #RUN cd ~/embedded-acceptance-tests/public/broccoli/build; npm install
+    WORKDIR /home/tester/embedded-acceptance-tests

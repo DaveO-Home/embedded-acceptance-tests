@@ -18,7 +18,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
   1. OS Linux or Windows(Tested on Windows10)
   1. Node and npm
-  1. Gulp4 is default - If your global Gulp is version 3, you and execute `npx gulp` from the build directories.
+  1. Gulp4 is default - If your global Gulp is version 3, you can  execute `npx gulp` from the build directories.
   1. Google Chrome
   1. Firefox
 
