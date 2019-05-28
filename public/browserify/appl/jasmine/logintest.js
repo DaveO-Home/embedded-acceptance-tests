@@ -48,7 +48,7 @@ module.exports = {
                     if (typeof modal2[0] === 'undefined' || timer === 25) {
                         expect(modal[0]).not.toBeVisible();
                         expect(modal[0]).not.toBeInDOM();
-                        $("div .login").remove(); // Just cleaning up page for tdd
+                        
                         observable.unsubscribe();
                         done();
                     }

@@ -1,4 +1,4 @@
-/*global testit:true module:true FuseBox:true*/
+/*global testit:true module:true*/
 /*eslint no-undef: "error"*/
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 

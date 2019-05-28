@@ -14,7 +14,11 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "browserify/appl/": "/base/" + bundler + "/appl/"
+            "browserify/appl/": "/base/" + bundler + "/appl/",
+            "/images/": "/base/" + bundler + "/images/",
+            "../../../dodex/": "/base/dodex/",
+            "/dodex/": "/base/" + bundler + "/appl/dodex/",
+            "/node_modules/font-awesome/": "/base/node_modules/font-awesome/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
@@ -29,7 +33,9 @@ module.exports = function (config) {
             {pattern: 'dist_test/' + bundler + '/vendor.js', included: false, watched: false, served: true},
             {pattern: 'dist_test/' + bundler + '/index.js', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: 'dist_test/' + bundler + '/**/*.*', included: false, watched: false},
-            {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
+            {pattern: bundler + '/images/*.ico', included: false, watched: false},
+            {pattern: 'node_modules/font-awesome/css/font-awesome.css', watched: false, included: false},
+            {pattern: 'node_modules/font-awesome/fonts/fontawesome-webfont.woff2', watched: false, included: false},
             //Karma/Jasmine/Loader
             bundler + '/build/karma.bootstrap.js'
         ],

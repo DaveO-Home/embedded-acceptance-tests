@@ -4,18 +4,19 @@ var domTest = require("b/domtest").domtest;
 var toolsTest = require("b/toolstest").toolstest;
 var contactTest = require("b/contacttest").contacttest;
 var loginTest = require("b/logintest").logintest;
+var dodexTest = require("./dodextest").dodextest;
 var mainContainer = "#main_container";
 var Start = require("b/start");
 
-exports.apptest = function (Route, Helpers, App) {
+exports.apptest = function (Route, Helpers, App, dodex, content) {
     describe("Application Unit test suite - AppTest", function () {
         beforeAll(function (done) {
             /* Important!
              * Make sure the bootstrap layout is added to the Karma page
              */
             $.get("app_bootstrap.html", function (data) {
-                $("body").prepend(data)
-                done()
+                $("body").prepend(data);
+                done();
             }, "html").fail(function (data, err) {
                 console.warn("Error fetching fixture data: " + err);
                 done()
@@ -23,7 +24,7 @@ exports.apptest = function (Route, Helpers, App) {
 
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-        }, 10000);
+        }, 4000);
 
         afterEach(function () {
             //Get rid of warning message from can-events.
@@ -34,7 +35,8 @@ exports.apptest = function (Route, Helpers, App) {
         });
 
         afterAll(function () {
-            $(mainContainer).remove();
+            $("div .login").remove(); // Just cleaning up page for tdd
+            $(".remove").remove();
         }, 5000);
 
         it("Is Welcome Page Loaded", function (done) {
@@ -117,14 +119,16 @@ exports.apptest = function (Route, Helpers, App) {
         contactTest(Route, Helpers);
         //Verify modal form
         loginTest(Start);
-        
+        //Test dodex
+        dodexTest(dodex, content, Route, Helpers, Start);
+
         if (testOnly) {
             it("Testing only", function () {
                 fail("Testing only, build will not proceed");
             });
         }
         // Start the tests
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 8000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
         __karma__.start();
     });
 };

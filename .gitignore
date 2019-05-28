@@ -1,6 +1,9 @@
 /.*/**/*
 public/parcel/build/.cache/*
 public/.cache/*
+public/dodex*/*
+public/dodex.*
+public/scss/*
 build.xml
 /nbproject/*
 /build/**/*

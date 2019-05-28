@@ -312,6 +312,7 @@ function getNPMPackageIds() {
         '"aw": "font-awesome",' +
         '"bo": "bootstrap",' +
         '"cn": "can",' +
+        '"dx": "dodex",' +
         '"jq": "jquery",' +
         '"lo": "lodash",' +
         '"md": "marked",' +
@@ -332,7 +333,7 @@ function applicationBuild() {
         cache: {},
         packageCache: {}
     });
-
+    browserifyInited.ignore('../scss/dodex.scss');
     let modules = [];
     var mods = getNPMPackageIds();
     for (var id in modules) {
@@ -383,7 +384,7 @@ function enableWatchify() {
 }
 
 function copySrc() {
-    return src(['../appl/views/**/*', '../appl/templates/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
+    return src(['../appl/views/**/*', '../appl/templates/**/*', '../appl/dodex/data/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
         .pipe(copy('../../' + dist + '/appl'));
 }
 
