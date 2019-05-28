@@ -107,7 +107,7 @@ module.exports = {
                 use: 'file-loader'
             },
             {
-                test: /\.stache$/,
+                test: /\.stache$/i,
                 use: "raw-loader"
             },
             {
@@ -119,7 +119,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(pathsToClean, cleanOptions),
+        // new CleanWebpackPlugin(pathsToClean, cleanOptions),
+        new CleanWebpackPlugin(), // v2
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
