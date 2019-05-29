@@ -50,7 +50,7 @@
     "can-route": "^4.4.8",
     "can-stache": "^4.17.18",
     "can-stache-bindings": "^4.10.6",
-    "can-view-callbacks": "^4.3.7",
+    "can-view-callbacks": "^4.4.0",
     "dodex": "^1.0.1",
     "font-awesome": "^4.7.0",
     "gulp-flatten": "^0.4.0",
@@ -155,7 +155,7 @@
     "steal-css": "^1.3.2",
     "steal-tools": "^2.2.2",
     "style-loader": "^0.23.1",
-    "typescript": "^3.4.5",
+    "typescript": "^3.5.1",
     "uglify-es": "^3.3.9",
     "uglify-js": "^3.5.15",
     "uglify-js-brunch": "^2.10.0",
@@ -294,6 +294,7 @@
     "b/logintest": "./browserify/appl/jasmine/logintest.js",
     "b/routertest": "./browserify/appl/jasmine/routertest.js",
     "b/toolstest": "./browserify/appl/jasmine/toolstest.js",
+    "b/dodextest": "./browserify/appl/jasmine/dodextest.js",
     "b/popper": "./node_modules/popper.js/dist/umd/popper.js"
   },
   "alias": {

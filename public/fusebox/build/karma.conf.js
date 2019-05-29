@@ -17,7 +17,10 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "fusebox/appl/": "/base/" + bundler + "/appl/"
+            "../../../dodex/": "/base/dodex/",
+            "/dodex/": "/base/" + bundler + "/appl/dodex/",
+            "fusebox/appl/": "/base/" + bundler + "/appl/",
+            "/resources/": "/base/dist_test/" + bundler + "/resources/" 
         },
         // list of files / patterns to load in the browser
         files: [

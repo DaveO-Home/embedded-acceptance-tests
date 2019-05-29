@@ -333,7 +333,7 @@ function applicationBuild() {
         cache: {},
         packageCache: {}
     });
-    browserifyInited.ignore('../scss/dodex.scss');
+
     let modules = [];
     var mods = getNPMPackageIds();
     for (var id in modules) {

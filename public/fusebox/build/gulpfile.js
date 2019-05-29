@@ -300,7 +300,7 @@ exports.acceptance = acceptanceRun
 exports.development = devRun
 
 function copySrc() {
-    return src(['../appl/views/**/*', '../appl/templates/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
+    return src(['../appl/dodex/data/**/*', '../appl/views/**/*', '../appl/templates/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
         .pipe(copy('../../' + dist + '/appl'));
 }
 

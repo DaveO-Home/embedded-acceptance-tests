@@ -10,6 +10,7 @@ const aliases = {
     "logintest": "./logintest.js",
     "routertest": "./routertest.js",
     "toolstest": "./toolstest.js",
+    "dodextest": "./dodextest.js",
     "app": "~/js/app",
     "config": "~/js/config",
     "default": "~/js/utils/default",
@@ -27,12 +28,13 @@ let distDir = isProduction ? "../dist/fusebox" : "../dist_test/fusebox";
 let isKarma = process.env.USE_KARMA === "true";
 let useQuantum = false; // turned off Quantum for Canjs 5
 let useHMR = process.env.USE_HMR === 'true';
-let resources = (f) => (!isProduction && isKarma ? `/base/dist_test/fusebox/resources/${f}` : isProduction ? `../resources/${f}` : `/dist_test/fusebox/resources/${f}`);
-
+let resources = (f) => `../resources/${f}`;
 var src = 'appl';
+
 if (!isProduction && fs.existsSync('../.fusebox')) {
     exec('rm -r ../.fusebox');
 }
+
 const fuse = FuseBox.init({
     experimentalFeatures: false,
     useTypescriptCompiler: !isProduction,
@@ -67,6 +69,7 @@ const fuse = FuseBox.init({
         CopyFsPlugin({
             copy: [{ from: "appl/views/**/*", to: distDir + "/appl/views" },
             { from: "appl/templates/**/*", to: distDir + "/appl/templates" },
+            { from: "appl/dodex/data/**/*", to: distDir + "/appl/dodex/data" },
             { from: "images/*", to: distDir + "/images" },
             { from: "../README.md", to: distDir }
             ]

@@ -8,7 +8,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
   **Dockerfile**: See instructions at bottom of README.
   
-  **Dodex**: Added to Browserify for testing and demo. https://github.com/DaveO-Home/dodex
+  **Dodex**: Added to Browserify and Fusebox for testing and demo. https://github.com/DaveO-Home/dodex
 
 ## Installation
 
