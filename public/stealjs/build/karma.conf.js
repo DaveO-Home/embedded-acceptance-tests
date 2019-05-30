@@ -15,7 +15,8 @@ module.exports = function (config) {
             "stealjs/appl/": "/base/stealjs/appl/",
             "can-map/": "/base/node_modules/can-map/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
-            "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
+            "can-view-callbacks/": "/base/node_modules/can-view-callbacks/",
+            "/images/": "/base/" + bundler + "/images/"
         },
         // list of files / patterns to load in the browser
         files: [
@@ -106,7 +107,7 @@ module.exports = function (config) {
         port: 9876,
         colors: true,
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_ERROR,
+        logLevel: config.LOG_WARN,
         autoWatch: true,
         singleRun: false,
         loggers: [{

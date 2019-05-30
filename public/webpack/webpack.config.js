@@ -42,6 +42,7 @@ module.exports = {
             pagercss: "tablesorter/dist/css/jquery.tablesorter.pager.min.css",
             sitecss: "css/site.css",
             sortercss: "tablesorter/dist/css/theme.blue.min.css",
+            dodexcss: "dodex/dist/dodex.min.css",
             app: "js/app.js",
             basecontrol: "js/utils/base.control",
             config: "js/config",
@@ -60,7 +61,9 @@ module.exports = {
             domtests: path.resolve(__dirname, "tests/domtest"),
             logintests: path.resolve(__dirname, "tests/logintest"),
             routertests: path.resolve(__dirname, "tests/routertest"),
-            toolstests: path.resolve(__dirname, "tests/toolstest")
+            toolstests: path.resolve(__dirname, "tests/toolstest"),
+            dodextests: path.resolve(__dirname, "tests/dodextest")
+            
         },
         modules: [
             path.resolve('./'),
@@ -127,7 +130,7 @@ module.exports = {
             Popper: ['popper.js', 'default']
         }),
         new CopyWebpackPlugin([
-            { from: './images/favicon.ico', to: 'images' },
+            { from: './images/*', to: '' },
             { from: isProduction ? './appl/testapp.html' : './appl/testapp_dev.html', to: 'appl' },
             { from: isProduction ? './appl/testapp.html' : './appl/app_bootstrap.html', to: 'appl' },
             { from: '../README.md', to: '../' },
@@ -141,6 +144,13 @@ module.exports = {
             {
                 from: {
                     glob: './appl/templates/**/*',
+                    dot: false
+                },
+                to: ''
+            },
+            {
+                from: {
+                    glob: './appl/dodex/**/*',
                     dot: false
                 },
                 to: ''

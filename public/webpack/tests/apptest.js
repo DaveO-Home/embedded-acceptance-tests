@@ -3,9 +3,9 @@ define(["routertests",
     "domtests",
     "toolstests",
     "logintests",
-    "contacttests"],
-    function (routerTest, domTest, toolsTest, loginTest, contactTest) {
-        return function (Route, Helpers, App) {
+    "contacttests", "dodextests", "start"],
+    function (routerTest, domTest, toolsTest, loginTest, contactTest, dodexTest, Start) {
+        return function (Route, Helpers, App, dodex, content) {
             var mainContainer = "#main_container";
 
             describe("Application Unit test suite - AppTest", function () {
@@ -39,7 +39,7 @@ define(["routertests",
 
                 afterAll(function () {
                     $(".remove").remove();
-                }, 5000);
+                });
 
                 it("Is Welcome Page Loaded", function (done) {
                     /*  
@@ -116,6 +116,8 @@ define(["routertests",
                 contactTest(Route, Helpers);
                 //Verify modal form
                 loginTest();
+                //Test dodex
+                dodexTest(dodex, content, Start);
 
                 if (testOnly) {
                     it("Testing only", function () {

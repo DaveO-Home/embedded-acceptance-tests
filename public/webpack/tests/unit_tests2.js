@@ -1,4 +1,4 @@
-// "use strict"
+
 describe("Unit Tests - Suite 2", function () {
     
     it("Is Karma active", function () {

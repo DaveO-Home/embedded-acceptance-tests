@@ -276,6 +276,7 @@ const runLint = parallel(esLint, cssLint, bootLint)
 
 exports.default = series(runTest, runLint, build)
 exports.prod = series(runTest, runLint, build)
+exports.prd = series(build)
 exports.test = runTest
 exports.tdd = series(test_build, webpack_tdd)
 exports.watch = webpack_watch
