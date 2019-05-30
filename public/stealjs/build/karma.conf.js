@@ -1,7 +1,6 @@
 // Karma configuration
 var bundler = "stealjs";
 module.exports = function (config) {
-
     if (!global.whichBrowsers) {
         global.whichBrowsers = ["ChromeHeadless, FirefoxHeadless"];
     }
@@ -15,6 +14,7 @@ module.exports = function (config) {
             "/README.md": "/base/README.md",
             "stealjs/appl/": "/base/stealjs/appl/",
             "can-map/": "/base/node_modules/can-map/",
+            "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "can-view-callbacks/": "/base/node_modules/can-view-callbacks/"
         },
         // list of files / patterns to load in the browser
@@ -45,6 +45,8 @@ module.exports = function (config) {
             {pattern: 'node_modules/lodash/**/*js', watched: false, included: false},
             {pattern: 'node_modules/moment/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/rxjs/**/*.js', watched: false, included: false},
+            {pattern: 'node_modules/dodex/**/*', watched: false, included: false},
+            {pattern: bundler + '/appl/dodex/**/*', watched: false, included: false},
             {pattern: 'node_modules/marked/lib/marked.js', watched: false, included: false},
             {pattern: 'README.md', included: false},
             {pattern: bundler + '/appl/**/*.html', included: false},
@@ -54,7 +56,7 @@ module.exports = function (config) {
             {pattern: bundler + '/appl/jasmine/**/*test.js', included: false},
             {pattern: bundler + '/tests/**/include-*.js', included: false},
             //end Test suites
-            {pattern: bundler + '/images/favicon.ico', included: false},
+            {pattern: bundler + '/images/*', included: false, watched: false},
             {pattern: 'node_modules/bootstrap/dist/css/bootstrap.min.css', watched: false, included: false},
             {pattern: 'node_modules/tablesorter/dist/css/theme.blue.min.css', watched: false, included: false},
             {pattern: 'node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css', watched: false, included: false},

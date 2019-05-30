@@ -1,7 +1,7 @@
 const { timer } = require('rxjs');
 
 module.exports = {
-    dodextest: function (dodex, content, Route, Helpers, Start) {
+    dodextest: function (dodex, content, Start) {
         /* 
          * Test Dodex operation.
          */
@@ -10,6 +10,10 @@ module.exports = {
             dodexTopElement,
             card1,
             card2,
+            front1,
+            front2,
+            back1,
+            back2,
             // dialRight,
             // dialLeft,
             mainContainer = "#main_container",

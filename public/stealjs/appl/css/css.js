@@ -5,5 +5,6 @@ steal(
     "node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css" , 
     "node_modules/font-awesome/css/font-awesome.css",
     "stealjs/appl/css/site.css",
+    "node_modules/dodex/dist/dodex.min.css",
     function () {
 	})

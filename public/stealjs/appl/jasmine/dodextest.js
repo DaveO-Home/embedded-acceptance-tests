@@ -1,10 +1,10 @@
-const { timer } = require('rxjs');
 
-module.exports = {
-    dodextest: function (dodex, content, Route, Helpers, Start) {
+steal("start", "rxjs", function (Start, Rxjs) {
+    return function (dodex, content) {
         /* 
          * Test Dodex operation.
          */
+        var timer = Rxjs.timer;
         var dodexElement,
             dodexToggle,
             dodexTopElement,
@@ -24,7 +24,7 @@ module.exports = {
                 if (!$(mainContainer)[0]) {
                     $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
                 }
-
+                
                 dodex.setContentFile("../dodex/data/content.js");
                 dodex.init({})
                     .then(function () {
@@ -34,7 +34,7 @@ module.exports = {
                         };
                         dodexToggle.onmousedown(); // Make visible
 
-                        const numbers = timer(50, 10);
+                        const numbers = timer(100, 10);
                         const observable = numbers.subscribe(timer => {
                             dodexTopElement = getElement(".top--dodex");
 
@@ -53,7 +53,7 @@ module.exports = {
                                 observable.unsubscribe();
                                 done();
                             }
-                            else if (timer === 50) {
+                            else if (timer === 100) {
                                 observable.unsubscribe();
                                 done();
                             }
@@ -215,7 +215,7 @@ module.exports = {
             });
         });
     }
-};
+});
 
 function getElement(element) {
     return document.querySelector(element);

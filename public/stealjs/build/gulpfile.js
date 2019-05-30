@@ -82,11 +82,12 @@ const build = function() {
             bundleAssets: {
                 infer: true,
                 glob: [
-                    '../images/favicon.ico',
+                    '../images/*',
                     '../appl/testapp.html',
                     '../appl/views/**/*',
                     '../appl/templates/**/*',
-                    '../../README.md'
+                    '../../README.md',
+                    '../appl/dodex/**/*'
                 ]
             },
             bundleSteal: false,
@@ -145,11 +146,12 @@ const buildS = function () {
             bundleAssets: {
                 infer: true,
                 glob: [
-                    '../images/favicon.ico',
+                    '../images/*',
                     '../appl/testapp.html',
                     '../appl/views/**/*',
                     '../appl/templates/**/*',
-                    '../../README.md'
+                    '../../README.md',
+                    '../appl/dodex/**/*'
                 ]
             },
             bundleSteal: false,

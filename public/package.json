@@ -139,7 +139,7 @@
     "pump": "^3.0.0",
     "raw-loader": "^1.0.0",
     "reload-html-webpack-plugin": "^0.1.2",
-    "rollup": "^1.12.4",
+    "rollup": "^1.12.5",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-buble": "^0.19.6",
@@ -194,10 +194,12 @@
       "logintest": "stealjs/appl/jasmine/logintest.js",
       "routertest": "stealjs/appl/jasmine/routertest.js",
       "toolstest": "stealjs/appl/jasmine/toolstest.js",
+      "dodextest": "stealjs/appl/jasmine/dodextest.js",
       "popper": "node_modules/popper.js/dist/umd/popper.min.js",
       "marked": "node_modules/marked/lib/marked.js",
       "css": "stealjs/appl/css/css.js",
-      "rxjs": "node_modules/rxjs/index.js"
+      "rxjs": "node_modules/rxjs/index.js",
+      "dodex": "node_modules/dodex/dist/dodex.min.js"
     },
     "map": {
       "app/app": "app",
@@ -221,7 +223,9 @@
       "popper/popper": "popper",
       "marked/marked": "marked",
       "css/css": "css",
-      "rxjs/rxjs": "rxjs"
+      "rxjs/rxjs": "rxjs",
+      "dodex/dodex": "dodex",
+      "dodextest/dodextest": "dodextest"
     },
     "npmAlgorithm": "flat",
     "ext": {

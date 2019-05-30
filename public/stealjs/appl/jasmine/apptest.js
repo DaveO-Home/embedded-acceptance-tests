@@ -1,16 +1,18 @@
 
 steal(function () {
-    return function (Route, Helpers, App) {
+    return function (Route, Helpers, App, dodex, content) {
         steal.import("routertest",
             "domtest",
             "toolstest",
             "contacttest",
-            "logintest").then(function (modules) {
+            "logintest",
+            "dodextest").then(function (modules) {
                 var routerTest = modules[0];
                 var domTest = modules[1];
                 var toolsTest = modules[2];
                 var contacttest = modules[3];
                 var logintest = modules[4];
+                var dodextest = modules[5];
                 var mainContainer = "#main_container";
 
                 describe("Application test suite - AppTest", function () {
@@ -118,6 +120,9 @@ steal(function () {
                     contacttest(Route, Helpers);
                     // Verify modal form
                     logintest();
+                    //Test dodex
+                    dodextest(dodex, content);
+
                     // Start the tests - includes steal based unit tests
                     window.tests()
 
