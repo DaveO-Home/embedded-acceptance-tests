@@ -120,7 +120,7 @@ exports.apptest = function (Route, Helpers, App, dodex, content) {
         //Verify modal form
         loginTest(Start);
         //Test dodex
-        dodexTest(dodex, content, Route, Helpers, Start);
+        dodexTest(dodex, content, Start);
 
         if (testOnly) {
             it("Testing only", function () {

@@ -14,6 +14,7 @@ module.exports = function (config) {
             "/README.md": "/base/README.md",
             "stealjs/appl/": "/base/stealjs/appl/",
             "can-map/": "/base/node_modules/can-map/",
+            "/node_modules/dodex/dist/": "/base/node_modules/dodex/dist/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "can-view-callbacks/": "/base/node_modules/can-view-callbacks/",
             "/images/": "/base/" + bundler + "/images/"

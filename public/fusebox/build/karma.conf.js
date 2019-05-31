@@ -20,7 +20,8 @@ module.exports = function (config) {
             "../../../dodex/": "/base/dodex/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "fusebox/appl/": "/base/" + bundler + "/appl/",
-            "/resources/": "/base/dist_test/" + bundler + "/resources/" 
+            "/resources/": "/base/dist_test/" + bundler + "/resources/",
+            "/images/": "/base/dist_test/" + bundler + "/images/"
         },
         // list of files / patterns to load in the browser
         files: [
@@ -39,8 +40,7 @@ module.exports = function (config) {
             //Looking for changes to the client bundle
             {pattern: 'dist_test/' + bundler + '/acceptance.js', included: false, watched: true, served: true},
             {pattern: 'dist_test/' + bundler + '/resources/*', included: false, watched: false},
-//            {pattern: 'dist/' + bundler + '/**/*.*', included: false, watched: false},
-            {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
+            {pattern: 'dist_test/' + bundler + '/images/*', included: false, watched: false},
             //Jasmine/Loader tests and starts Karma
             bundler + '/build/karma.bootstrap.js'
         ],

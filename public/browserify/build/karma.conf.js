@@ -16,9 +16,8 @@ module.exports = function (config) {
             "/README.md": "/base/README.md",
             "browserify/appl/": "/base/" + bundler + "/appl/",
             "/images/": "/base/" + bundler + "/images/",
-            "../../../dodex/": "/base/dodex/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
-            "/node_modules/font-awesome/": "/base/node_modules/font-awesome/"
+            "/node_modules/font-awesome/": "/base/node_modules/font-awesome/",
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
