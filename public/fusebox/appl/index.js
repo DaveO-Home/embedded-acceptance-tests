@@ -32,7 +32,7 @@ if ((typeof testit === "undefined" || !testit)) {
 				dodex.addCard(getAdditionalContent());
 			}
 			/* Auto display of widget */
-			dodex.openDodex();
+			// dodex.openDodex();
 		});
 }
 

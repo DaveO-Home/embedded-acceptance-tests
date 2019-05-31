@@ -129,26 +129,28 @@ task('cleant', function (done) {
  * Resources and content copied to dist directory - for production
  */
 task('copyprod', function () {
+    copyDodex();
     return copySrc();
 });
 
-task('copyprod-images', function () {
+task('copyprod-readme', function () {
     isProduction = true;
     dist = prodDist;
-    return copyImages();
+    return copyReadme();
 });
 
 /**
  * Resources and content copied to dist_test directory - for development
  */
 task('copy', function () {
+    copyDodex();
     return copySrc();
 });
 
-task('copy-images', function () {
+task('copy-readme', function () {
     isProduction = false;
     dist = testDist;
-    return copyImages();
+    return copyReadme();
 });
 /**
  * Continuous testing - test driven development.  
@@ -192,14 +194,14 @@ task('watch-parcel', function (cb) {
     return parcelBuild(true, cb)
 });
 
-const testRun = series('cleant', parallel('copy-images', 'copy'), 'build-development', 'pat');
-const copyRun = series('clean', parallel('copyprod-images', 'copyprod'))
+const testRun = series('cleant', parallel('copy-readme', 'copy'), 'build-development', 'pat');
+const copyRun = series('clean', parallel('copyprod-readme', 'copyprod'))
 const logSeperator = function(cb) { log("\n\n\n\n\n\n\n\n"); cb() }  // parcel clears too many lines
 const prodRun = series(testRun, parallel('eslint', 'csslint', 'bootlint'), copyRun, logSeperator, 'build')
 const acceptanceRun = series('pat')
-const rebuildRun = series('cleant', parallel('copy-images', 'copy'), 'build-development')
-const watchRun = series(parallel('copy-images', 'copy'), 'watch-parcel', 'sync', 'watcher')
-const tddRun = series('cleant', parallel('copy-images', 'copy'), 'build-development', 'tdd-parcel')
+const rebuildRun = series('cleant', parallel('copy-readme', 'copy'), 'build-development')
+const watchRun = series(parallel('copy-readme', 'copy'), 'watch-parcel', 'sync', 'watcher')
+const tddRun = series('cleant', parallel('copy-readme', 'copy'), 'build-development', 'tdd-parcel')
 const devRun = parallel(watchRun, 'tdd-parcel')
 
 prodRun.displayName = 'prod'
@@ -258,14 +260,19 @@ function parcelBuild(watch, cb) {
 }
 
 function copySrc() {
-    return src(['../appl/view*/**/*', '../appl/temp*/**/*'/*, isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'*/])
+    return src(['../appl/view*/**/*', '../appl/temp*/**/*'])
         .pipe(flatten({ includeParents: -2 })
             .pipe(dest('../../' + dist + '/')))
 }
 
-function copyImages() {
-    return src(['../images/*', '../../README.m*'])
-        .pipe(copy('../../' + dist + '/appl'));
+function copyDodex() {
+    return src(['../appl/dodex/**/*'])
+            .pipe(dest('../../' + dist + '/dodex'))
+}
+
+function copyReadme() {
+    return src([/*'../images/*',*/ '../../README.m*'])
+        .pipe(copy('../../' + dist + '/appl/data'));
 }
 
 function runKarma(done) {

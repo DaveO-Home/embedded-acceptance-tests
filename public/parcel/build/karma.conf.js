@@ -16,7 +16,10 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "parcel/appl/": "/base/" + bundler + "/appl/"
+            "parcel/appl/": "/base/" + bundler + "/appl/",
+            "/dodex/": "/base/" + bundler + "/appl/dodex/",
+            "/images/": "/base/dist_test/" + bundler + "/images/",
+            "/": "/base/dist_test/" + bundler + "/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
@@ -30,7 +33,6 @@ module.exports = function (config) {
             {pattern: 'README.md', included: false},
             {pattern: 'dist_test/' + bundler + '/appl.*.*', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: 'dist_test/' + bundler + '/**/*.*', included: false, watched: false},
-            {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
             //Karma/Jasmine/Loader
             bundler + '/build/karma.bootstrap.js'
         ],
@@ -80,6 +82,7 @@ module.exports = function (config) {
                 random: false
             }
         },
+        urlRoot: "/test/",
         concurrency: 5
     });
 };
