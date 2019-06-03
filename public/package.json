@@ -51,7 +51,7 @@
     "can-stache": "^4.17.18",
     "can-stache-bindings": "^4.10.7",
     "can-view-callbacks": "^4.4.0",
-    "dodex": "^1.0.2",
+    "dodex": "^1.0.3",
     "font-awesome": "^4.7.0",
     "gulp-flatten": "^0.4.0",
     "jquery": "^3.4.1",
