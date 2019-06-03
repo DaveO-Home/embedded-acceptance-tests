@@ -271,7 +271,7 @@ function copyDodex() {
 }
 
 function copyReadme() {
-    return src([/*'../images/*',*/ '../../README.m*'])
+    return src(['../../README.m*'])
         .pipe(copy('../../' + dist + '/appl/data'));
 }
 

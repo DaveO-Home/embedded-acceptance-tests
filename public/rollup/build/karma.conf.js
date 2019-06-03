@@ -16,7 +16,10 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "rollup/appl/": "/base/" + bundler + "/appl/"
+            "rollup/appl/": "/base/" + bundler + "/appl/",
+            "/dodex/": "/base/" + bundler + "/appl/dodex/",
+            "/node_modules/": "/base/dist_test/" + bundler + "/appl/node_modules/",
+            "/images/": "/base/dist_test/" + bundler + "/images/",
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
@@ -30,8 +33,6 @@ module.exports = function (config) {
             {pattern: 'README.md', included: false},
             {pattern: 'dist_test/' + bundler + '/bundle.js', included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: 'dist_test/' + bundler + '/**/*.*', included: false, watched: false},
-            {pattern: bundler + '/images/favicon.ico', included: false, watched: false},
-            {pattern: 'dist_test/node_modules/**/*.*', included: false, watched: false},
             //Karma/Jasmine/Loader
             bundler + '/build/karma.bootstrap.js'
         ],
@@ -65,7 +66,7 @@ module.exports = function (config) {
         port: 9876,
         colors: true,
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_ERROR,
+        logLevel: config.LOG_WARN,
         autoWatch: true,
         singleRun: false,
         loggers: [{

@@ -25,6 +25,7 @@ const commonjs = require('rollup-plugin-commonjs');
 const alias = require('rollup-plugin-alias');
 const resolve = require('rollup-plugin-node-resolve');
 const postcss = require('rollup-plugin-postcss');
+const cssnano = require('cssnano');
 const rollupBabel = require('rollup-plugin-babel');
 const progress = require('rollup-plugin-progress');
 const rename = require('gulp-rename');
@@ -146,6 +147,8 @@ const cleant = function (done) {
  * Resources and content copied to dist directory - for production
  */
 const copyprod = function () {
+    copyReadme();
+    copyDodex();
     return copySrc();
 };
 
@@ -170,6 +173,8 @@ const copyprod_fonts = function () {
  * Resources and content copied to dist_test directory - for development
  */
 const copy_src = function () {
+    copyReadme();
+    copyDodex();
     return copySrc();
 };
 
@@ -306,6 +311,7 @@ exports.rebuild = series(testCopy, buildDevelopment)
 exports.tdd = tdd_rollup // tddRun
 exports.watch = watch_rollup
 exports.development = parallel(tdd_rollup, watch_rollup)
+exports.tcopy = testCopy
 
 function rollupBuild(cb) {
     return src(['../appl/index.js'])
@@ -323,7 +329,8 @@ function rollupBuild(cb) {
                 commonjs(),
                 alias(aliases()),
                 resolve(),
-                postcss(),
+                postcss({minimize: true}),
+                cssnano(),
                 progress({
                     clearLine: isProduction ? false : true
                 }),
@@ -365,7 +372,8 @@ function aliases() {
         "domtest": "./domtest.js",
         "logintest": "./logintest.js",
         "routertest": "./routertest.js",
-        "toolstest": "./toolstest.js"
+        "toolstest": "./toolstest.js",
+        "dodextest": "./dodextest.js"
     };
 }
 
@@ -374,9 +382,19 @@ function copySrc() {
         .pipe(copy('../../' + dist + '/appl'));
 }
 
+function copyDodex() {
+    return src(['../appl/dodex/**/*'])
+            .pipe(dest('../../' + dist + '/appl/dodex'))
+}
+
 function copyImages() {
-    return src(['../images/*', '../../README.md'])
+    return src(['../images/*',])
         .pipe(copy('../../' + dist + '/appl'));
+}
+
+function copyReadme() {
+    return src(['../../README.md'])
+        .pipe(copy('../../' + dist + '/appl/data/data'));
 }
 
 function copyCss() {
@@ -386,13 +404,14 @@ function copyCss() {
 
 function copyNodeCss() {
     return src(['../../node_modules/bootstrap/dist/css/bootstrap.min.css', "../../node_modules/font-awesome/css/font-awesome.css",
-        "../../node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", "../../node_modules/tablesorter/dist/css/theme.blue.min.css"])
-        .pipe(copy('../../' + dist + '/appl'));
+        "../../node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", "../../node_modules/tablesorter/dist/css/theme.blue.min.css",
+        "../../node_modules/dodex/dist/dodex.min.css"])
+        .pipe(copy('../../' + dist + '/appl/data/data'));
 }
 
 function copyFonts() {
     return src(['../../node_modules/font-awesome/fonts/*'])
-        .pipe(copy('../../' + dist + '/appl'));
+        .pipe(copy('../../' + dist + '/appl/data/data'));
 }
 
 function runKarma(done) {

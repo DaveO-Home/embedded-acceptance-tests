@@ -15,7 +15,7 @@ module.exports = App.controllers.Start ||
         },
         index: function (options) {
             var indexUrl = "views/prod/index.html";
-            var markdownUrl = typeof testit !== "undefined" ? "/README.md" : "../../README.md";
+            var markdownUrl = typeof __karma__ !== "undefined" ? "/README.md" : "README.md";
 
             this.view({
                 url: indexUrl,

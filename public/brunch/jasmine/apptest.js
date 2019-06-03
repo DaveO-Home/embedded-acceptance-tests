@@ -4,10 +4,11 @@ var domTest = require("./domtest").domtest;
 var contactTest = require("./contacttest").contacttest;
 var loginTest = require("./logintest").logintest;
 var toolsTest = require("./toolstest").toolstest;
+var dodexTest = require("./dodextest").dodextest;
 var start = require("../appl/js/controller/start")
 var bootstrapLayout = require("../appl/app_bootstrap")
 
-exports.apptest = function (Route, Helpers, App) {
+exports.apptest = function (Route, Helpers, App, dodex, content) {
     var mainContainer = "#main_container";
 
     describe("Application Unit test suite - AppTest", function () {
@@ -19,7 +20,7 @@ exports.apptest = function (Route, Helpers, App) {
             
             spyOn(Route.data, 'index').and.callThrough();
             spyOn(Route.data, 'dispatch').and.callThrough();
-        }, 10000);
+        }, 2000);
 
         afterEach(function () {
             //Get rid of nasty warning message from can-events.
@@ -31,7 +32,7 @@ exports.apptest = function (Route, Helpers, App) {
 
         afterAll(function () {
             $("#remove").remove();
-        }, 5000);
+        });
 
         it("Is Welcome Page Loaded", function (done) {
             /*  
@@ -113,6 +114,8 @@ exports.apptest = function (Route, Helpers, App) {
         contactTest(Route, Helpers);
         //Verify modal form
         loginTest(start);
+        //Test dodex
+        dodexTest(dodex, content, start);
 
         if (testOnly) {
             it("Testing only", function () {

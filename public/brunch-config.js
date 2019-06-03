@@ -1,7 +1,7 @@
 const path = require('path')
 const isProduction = process.env.NODE_ENV === 'production'
 const deployDir = isProduction ? 'dist/brunch' : 'dist_test/brunch'
-const fontLocation = isProduction ? '../fonts' : 'fonts'
+const fontLocation = isProduction ? '../fonts' : '../fonts'
 const singleRun = process.env.USE_HMR !== 'true' && process.env.USE_TDD !== 'true'
 const htmlFile = isProduction ? 'brunch/appl/testapp.html' : 'brunch/appl/testapp_dev.html'
 
@@ -48,6 +48,7 @@ pluginsObject = {
     'templates': ['brunch/appl/templates'],
     './': ['README.md', htmlFile],
     'images': ['brunch/images'],
+    'dodex': ['brunch/appl/dodex'],
     verbose: false,
     onlyChanged: true
   }
@@ -70,7 +71,8 @@ exports.npm = {
     'tablesorter': [
       'dist/css/jquery.tablesorter.pager.min.css',
       'dist/css/theme.blue.min.css'
-    ]
+    ],
+    dodex: ['dist/dodex.min.css']
   },
   aliases: {
     "handlebars": "handlebars/dist/handlebars.min.js",

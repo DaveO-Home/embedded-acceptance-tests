@@ -4,10 +4,11 @@ var domTest = require("domtest").domtest;
 var toolsTest = require("toolstest").toolstest;
 var contactTest = require("contacttest").contacttest;
 var loginTest = require("logintest").logintest;
+var dodexTest = require("dodextest").dodextest;
 var mainContainer = "#main_container";
 var Start = require("../js/controller/start");
 
-exports.apptest = function (Route, Helpers, App) {
+exports.apptest = function (Route, Helpers, App, dodex, content) {
     describe("Application Unit test suite - AppTest", function () {
         beforeAll(function (done) {
             /* Important!
@@ -118,6 +119,8 @@ exports.apptest = function (Route, Helpers, App) {
         contactTest(Route, Helpers);
         //Verify modal form
         loginTest(Start);
+        //Test dodex
+        dodexTest(dodex, content, Start);
 
         if (testOnly) {
             it("Testing only", function () {
