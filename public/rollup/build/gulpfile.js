@@ -373,7 +373,8 @@ function aliases() {
         "logintest": "./logintest.js",
         "routertest": "./routertest.js",
         "toolstest": "./toolstest.js",
-        "dodextest": "./dodextest.js"
+        "dodextest": "./dodextest.js",
+        "inputtest": "./inputtest.js"
     };
 }
 

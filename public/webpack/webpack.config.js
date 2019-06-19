@@ -62,7 +62,8 @@ module.exports = {
             logintests: path.resolve(__dirname, "tests/logintest"),
             routertests: path.resolve(__dirname, "tests/routertest"),
             toolstests: path.resolve(__dirname, "tests/toolstest"),
-            dodextests: path.resolve(__dirname, "tests/dodextest")
+            dodextests: path.resolve(__dirname, "tests/dodextest"),
+            inputtests: path.resolve(__dirname, "tests/inputtest")
             
         },
         modules: [

@@ -5,8 +5,9 @@ var contactTest = require("contacttest").contacttest;
 var loginTest = require("logintest").logintest;
 var toolsTest = require("toolstest").toolstest;
 var dodexTest = require("dodextest").dodextest;
+var inputTest = require("./inputtest").inputtest;
 
-exports.apptest = function (Route, Helpers, App, dodex, content) {
+exports.apptest = function (Route, Helpers, App, dodex, input, content) {
     var mainContainer = "#main_container";
 
     describe("Application Unit test suite - AppTest", function () {
@@ -116,7 +117,9 @@ exports.apptest = function (Route, Helpers, App, dodex, content) {
         //Verify modal form
         loginTest();
         //Test dodex
-        dodexTest(dodex, content, Route, Helpers, Start);
+        dodexTest(dodex, input, content, Route, Helpers, Start);
+        //Test dodex input
+        inputTest(dodex, input, content, Start);
 
         if (testOnly) {
             it("Testing only", function () {

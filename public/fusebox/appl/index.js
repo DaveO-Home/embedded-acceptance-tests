@@ -16,6 +16,7 @@ require("config");
 require("pager");
 
 var dodex = require("dodex").default;
+var input = require("dodex-input").default;
 
 if ((typeof testit === "undefined" || !testit)) {
 	// Content for cards A-Z and static card
@@ -24,7 +25,10 @@ if ((typeof testit === "undefined" || !testit)) {
 		width: 375,
 		height: 200,
 		left: "50%",
-		top: "100px"
+		top: "100px",
+		input: input,    	// required if using frontend content load
+		private: "full", 	// frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+		replace: true    	// append to or replace default content - default false(append only)
 	})
 		.then(function () {
 			// Add in app/personal cards
@@ -49,7 +53,7 @@ if (testit) {
     var apptest = require("apptest").apptest;
 
     //Run acceptance tests. - To run only unit tests, comment the apptest call.
-    apptest(Route, Helpers, App, dodex, getAdditionalContent());
+    apptest(Route, Helpers, App, dodex, input, getAdditionalContent());
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
     setTimeout(function () {
         __karma__.start();

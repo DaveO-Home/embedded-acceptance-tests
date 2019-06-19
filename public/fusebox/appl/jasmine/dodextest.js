@@ -1,7 +1,7 @@
 const { timer } = require('rxjs');
 
 module.exports = {
-    dodextest: function (dodex, content, Route, Helpers, Start) {
+    dodextest: function (dodex, input, content, Route, Helpers, Start) {
         /* 
          * Test Dodex operation.
          */
@@ -26,7 +26,11 @@ module.exports = {
                 }
 
                 dodex.setContentFile("../dodex/data/content.js");
-                dodex.init({})
+                dodex.init({
+                    input: input,
+                    private: "full",
+                    replace: true
+                })
                     .then(function () {
                         dodexToggle = getElement(".dodex--open");
                         dodexToggle.onmousedown = event => {
@@ -62,7 +66,7 @@ module.exports = {
             });
 
             afterAll(function (done) {
-                $(".top--dodex").remove();
+                // $(".top--dodex").remove();
                 done()
             });
 

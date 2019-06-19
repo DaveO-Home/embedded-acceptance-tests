@@ -3,9 +3,12 @@ define(["routertests",
     "domtests",
     "toolstests",
     "logintests",
-    "contacttests", "dodextests", "start"],
-    function (routerTest, domTest, toolsTest, loginTest, contactTest, dodexTest, Start) {
-        return function (Route, Helpers, App, dodex, content) {
+    "contacttests", 
+    "dodextests", 
+    "inputtests", 
+    "start"],
+    function (routerTest, domTest, toolsTest, loginTest, contactTest, dodexTest, inputTest, Start) {
+        return function (Route, Helpers, App, dodex, input, content) {
             var mainContainer = "#main_container";
 
             describe("Application Unit test suite - AppTest", function () {
@@ -117,7 +120,9 @@ define(["routertests",
                 //Verify modal form
                 loginTest();
                 //Test dodex
-                dodexTest(dodex, content, Start);
+                dodexTest(dodex, input, content, Start);
+                //Test dodex input
+                inputTest(dodex);
 
                 if (testOnly) {
                     it("Testing only", function () {

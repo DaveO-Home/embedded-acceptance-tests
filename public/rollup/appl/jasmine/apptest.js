@@ -5,10 +5,11 @@ var toolsTest = require("toolstest").toolstest;
 var contactTest = require("contacttest").contacttest;
 var loginTest = require("logintest").logintest;
 var dodexTest = require("dodextest").dodextest;
+var inputTest = require("inputtest").inputtest;
 var mainContainer = "#main_container";
 var Start = require("../js/controller/start");
 
-exports.apptest = function (Route, Helpers, App, dodex, content) {
+exports.apptest = function (Route, Helpers, App, dodex, input, content) {
     describe("Application Unit test suite - AppTest", function () {
         beforeAll(function (done) {
             /* Important!
@@ -120,14 +121,16 @@ exports.apptest = function (Route, Helpers, App, dodex, content) {
         //Verify modal form
         loginTest(Start);
         //Test dodex
-        dodexTest(dodex, content, Start);
+        dodexTest(dodex, input, content, Start);
+        //Test dodex input
+        inputTest(dodex, input);
 
         if (testOnly) {
             it("Testing only", function () {
                 fail("Testing only, build will not proceed");
             });
         }
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
         __karma__.start();
     });
 };

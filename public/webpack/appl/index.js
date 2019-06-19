@@ -10,7 +10,8 @@ var Setup = require("setup");
 var Helpers = require("helpers");
 require("config");
 
-var dodex = require("dodex/dist/dodex.min.js").default;
+var dodex = require("dodex").default;
+var input = require("dodex-input").default;
 
 if ((typeof testit === "undefined" || !testit)) {
     // Content for cards A-Z and static card
@@ -19,7 +20,10 @@ if ((typeof testit === "undefined" || !testit)) {
 		width: 375,
 		height: 200,
 		left: "50%",
-		top: "100px"
+		top: "100px",
+		input: input,    	// required if using frontend content load
+		private: "full",    // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+		replace: true    	// append to or replace default content - default false(append only)
 	})
 		.then(function () {
 			// Add in app/personal cards
@@ -46,8 +50,8 @@ if (typeof steal !== "undefined") {
 //testit is true if running under Karma - see testapp_dev.html
 if (typeof testit !== "undefined" && testit) {
     var apptest = require("apptests")
-    // Run acceptance tests.
-    apptest(Route, Helpers, App , dodex, getAdditionalContent())
+	// Run acceptance tests.
+    apptest(Route, Helpers, App , dodex, input, getAdditionalContent())
 }
 /* develblock:end */
 

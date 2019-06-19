@@ -48,6 +48,7 @@ module.exports = function (config) {
             {pattern: 'node_modules/moment/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/rxjs/**/*.js', watched: false, included: false},
             {pattern: 'node_modules/dodex/**/*', watched: false, included: false},
+            {pattern: 'node_modules/dodex-input/**/*', watched: false, included: false},
             {pattern: bundler + '/appl/dodex/**/*', watched: false, included: false},
             {pattern: 'node_modules/marked/lib/marked.js', watched: false, included: false},
             {pattern: 'README.md', included: false},

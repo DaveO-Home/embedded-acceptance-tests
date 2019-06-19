@@ -5,10 +5,12 @@ steal("app",
     "helpers",
     "setup",
     "dodex",
+    "dodex-input",
     "config",
     "css",
-    function (App, Router, Default, Helpers, Setup, Dodex) {
+    function (App, Router, Default, Helpers, Setup, Dodex, Input) {
         var dodex = Dodex.default;
+        var input = Input.default;
         if ((typeof testit === "undefined" || !testit)) {
             // Content for cards A-Z and static card
             dodex.setContentFile("./dodex/data/content.js");
@@ -16,7 +18,10 @@ steal("app",
                 width: 375,
                 height: 200,
                 left: "50%",
-                top: "100px"
+                top: "100px",
+                input: input,    	// required if using frontend content load
+                private: "full",    // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+                replace: true    	// append to or replace default content - default false(append only)
             })
                 .then(function () {
                     // Add in app/personal cards
@@ -41,7 +46,7 @@ steal("app",
             steal.loader.import("apptest").then(function (apptest) {
                 // See apptest.js (window.tests()) to start testing
                 jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
-                apptest(Route, Helpers, App, dodex, getAdditionalContent());
+                apptest(Route, Helpers, App, dodex, input, getAdditionalContent());
             });
         }
         //!steal-remove-end

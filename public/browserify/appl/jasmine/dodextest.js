@@ -1,7 +1,7 @@
 const { timer } = require('rxjs');
 
 module.exports = {
-    dodextest: function (dodex, content, Start) {
+    dodextest: function (dodex, input, content, Start) {
         /* 
          * Test Dodex operation.
          */
@@ -26,7 +26,11 @@ module.exports = {
                 }
 
                 dodex.setContentFile("../dodex/data/content.js");
-                dodex.init({})
+                dodex.init({
+                    input: input,
+                    private: "full",
+                    replace: true
+                })
                     .then(function () {
                         dodexToggle = getElement(".dodex--open");
                         dodexToggle.onmousedown = event => {
@@ -34,7 +38,7 @@ module.exports = {
                         };
                         dodexToggle.onmousedown(); // Make visible
 
-                        const numbers = timer(50, 10);
+                        const numbers = timer(75, 10);
                         const observable = numbers.subscribe(timer => {
                             dodexTopElement = getElement(".top--dodex");
 
@@ -53,7 +57,7 @@ module.exports = {
                                 observable.unsubscribe();
                                 done();
                             }
-                            else if (timer === 50) {
+                            else if (timer === 75) {
                                 observable.unsubscribe();
                                 done();
                             }
@@ -62,7 +66,6 @@ module.exports = {
             });
 
             afterAll(function (done) {
-                $(".top--dodex").remove();
                 done()
             });
 
@@ -72,7 +75,7 @@ module.exports = {
                 dodexToggle.onmousedown();
                 expect(isVisible(dodexTopElement)).toBeFalsy();
                 dodexToggle.onmousedown(); // Make visible again
-                
+
                 done();
             });
 
@@ -121,7 +124,7 @@ module.exports = {
 
                 expect(card1.style.zIndex).toMatch('');
                 expect(card1.style.transform).toMatch("");
- 
+
                 done();
             });
 
@@ -183,35 +186,35 @@ module.exports = {
                 var tab = window.getComputedStyle(
                     card28.querySelector('.front28'), ':after'
                 ).getPropertyValue('content')
-                
+
                 expect(tab).toBe('"F01"');
 
                 done();
             });
 
             it("Dodex - Load Login Popup from card1(A)", function (done) {
-                const clickHandler = function(event) {
+                const clickHandler = function (event) {
                     Start["div .login click"](event.target, event);
                 }
                 var modal, nameObject;
                 var login = front1.querySelector(".login");
                 login.onclick = clickHandler;
                 login.dispatchEvent(new Event("click"));
-                const numbers = timer(100, 10);
-                    const observable = numbers.subscribe(timer => {
-                        modal = $("#modalTemplate");
-                        if ((typeof modal[0] !== "undefined" && modal[0].length !== 0) || timer === 75) {
-                            nameObject = document.querySelector("#inputUsername");
-                            modal.on('shown.bs.modal', function (html) {
-                                modal.modal("toggle");
-                            });
-                            expect(modal[0]).toHaveClass("modal");
-                            expect(nameObject).toHaveClass("form-control");
-                            modal.modal("hide");
-                            observable.unsubscribe();
-                            done();
-                        }
-                    })
+                const numbers = timer(150, 10);
+                const observable = numbers.subscribe(timer => {
+                    modal = $("#modalTemplate");
+                    if ((typeof modal[0] !== "undefined" && modal[0].length !== 0) || timer === 150) {
+                        nameObject = document.querySelector("#inputUsername");
+                        modal.on('shown.bs.modal', function (html) {
+                            modal.modal("toggle");
+                        });
+                        expect(modal[0]).toHaveClass("modal");
+                        expect(nameObject).toHaveClass("form-control");
+                        modal.modal("hide");
+                        observable.unsubscribe();
+                        done();
+                    }
+                })
             });
         });
     }

@@ -9,6 +9,7 @@ require("./js/config");
 require("../../node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js"); 
 
 var dodex = require("dodex").default;
+var input = require("dodex-input").default;
 
 if ((typeof testit === "undefined" || !testit)) {
 	// Content for cards A-Z and static card
@@ -17,7 +18,10 @@ if ((typeof testit === "undefined" || !testit)) {
 		width: 375,
 		height: 200,
 		left: "50%",
-		top: "100px"
+		top: "100px",
+		input: input,    	// required if using frontend content load
+		private: "full", // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+		replace: true    	// append to or replace default content - default false(append only)
 	})
 		.then(function () {
 			// Add in app/personal cards
@@ -39,7 +43,7 @@ Setup.init();
 if (typeof window.testit !== "undefined" && window.testit) {
     var apptest = require("apptest").apptest;   
     //Run acceptance tests.
-    apptest(Route, Helpers, App, dodex, getAdditionalContent());
+    apptest(Route, Helpers, App, dodex, input, getAdditionalContent());
 }
 //endRemoveIf(production)
 

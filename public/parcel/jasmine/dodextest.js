@@ -1,7 +1,7 @@
 const { timer } = require('rxjs');
 
 module.exports = {
-    dodextest: function (dodex, content, Start) {
+    dodextest: function (dodex, input, content, Start) {
         /* 
          * Test Dodex operation.
          */
@@ -26,7 +26,11 @@ module.exports = {
                 }
 
                 dodex.setContentFile("../dodex/data/content.js");
-                dodex.init({})
+                dodex.init({
+                    input: input,    	// required if using frontend content load
+                    private: "full", 	// frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+                    replace: true    	// append to or replace default content - default false(append only)
+                })
                     .then(function () {
                         dodexToggle = getElement(".dodex--open");
                         dodexToggle.onmousedown = event => {
@@ -62,7 +66,7 @@ module.exports = {
             });
 
             afterAll(function (done) {
-                $(".top--dodex").remove();
+                // $(".top--dodex").remove();
                 done()
             });
 

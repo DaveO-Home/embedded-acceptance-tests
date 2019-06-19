@@ -1,7 +1,7 @@
 
 define(function () {
-    return function (dodex, content, Start) {
-        var {timer} = require("rxjs");
+    return function (dodex, input, content, Start) {
+        var { timer } = require("rxjs");
         /* 
          * Test Dodex operation.
          */
@@ -26,7 +26,11 @@ define(function () {
                 }
 
                 dodex.setContentFile("../dodex/data/content.js");
-                dodex.init({})
+                dodex.init({
+                    input: input,    	// required if using frontend content load
+                    private: "full",    // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+                    replace: true    	// append to or replace default content - default false(append only)
+                })
                     .then(function () {
                         dodexToggle = getElement(".dodex--open");
                         dodexToggle.onmousedown = event => {
@@ -62,7 +66,7 @@ define(function () {
             });
 
             afterAll(function (done) {
-                $(".top--dodex").remove();
+                // $(".top--dodex").remove();
                 done()
             });
 
