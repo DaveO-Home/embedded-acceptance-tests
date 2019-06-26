@@ -26,7 +26,7 @@ module.exports = {
                     dodex.openDodex(event);
                 };
 
-                const numbers = timer(75, 10);
+                const numbers = timer(100, 10);
                 const observable = numbers.subscribe(timer => {
                     dodexTopElement = getElement(".top--dodex");
 
@@ -38,7 +38,7 @@ module.exports = {
                         observable.unsubscribe();
                         done();
                     }
-                    else if (timer === 75) {
+                    else if (timer === 100) {
                         observable.unsubscribe();
                         done();
                     }
@@ -56,7 +56,7 @@ module.exports = {
                 card27.dispatchEvent(dblClickEvent);
                 popupElement = getElement("#dodexInput");
                 expect(popupElement).toBeDefined();
-                let numbers = timer(75, 10);
+                let numbers = timer(150, 10);
                 let observable = numbers.subscribe(timer => {
                     const target = getElement(".content-input:target");
                     // Waiting for the popup to fade in
@@ -64,7 +64,7 @@ module.exports = {
                         expect(isVisible(target)).toBeTruthy();
                         observable.unsubscribe();
                         done();
-                    } else if (timer === 75) {
+                    } else if (timer === 150) {
                         observable.unsubscribe();
                         done();
                     }
@@ -86,7 +86,7 @@ module.exports = {
 
                 // The file upload handler is exposed for testing only.
                 window.handleFileSelect(null, fArray);
-                const numbers = timer(75, 10);
+                const numbers = timer(150, 10);
                 const observable = numbers.subscribe(timer => {
                     const results = getElement("#results");
 
@@ -98,7 +98,7 @@ module.exports = {
                         done();
                         observable.unsubscribe();
                     }
-                    else if (timer === 75) {
+                    else if (timer === 150) {
                         done();
                         observable.unsubscribe();
                     }
@@ -109,7 +109,7 @@ module.exports = {
                 const closeElement = getElement(".close");
                 closeElement.click();
 
-                const numbers = timer(75, 10);
+                const numbers = timer(150, 10);
                 const observable = numbers.subscribe(timer => {
                     // have to wait for the fade out to finish
                     if (getComputedStyle(getElement(".content-input")).opacity === "0") {
@@ -117,7 +117,7 @@ module.exports = {
                         expect(isVisible(target)).toBeFalsy();
                         observable.unsubscribe();
                         done();
-                    } else if (timer === 75) {
+                    } else if (timer === 150) {
                         observable.unsubscribe();
                         done();
                     }

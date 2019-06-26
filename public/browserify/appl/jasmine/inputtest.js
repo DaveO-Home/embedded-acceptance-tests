@@ -27,7 +27,7 @@ module.exports = {
                     dodex.openDodex(event);
                 };
 
-                const numbers = timer(75, 10);
+                const numbers = timer(100, 10);
                 const observable = numbers.subscribe(timer => {
                     dodexTopElement = getElement(".top--dodex");
 
@@ -39,7 +39,7 @@ module.exports = {
                         observable.unsubscribe();
                         done();
                     }
-                    else if (timer === 75) {
+                    else if (timer === 100) {
                         observable.unsubscribe();
                         done();
                     }
@@ -87,7 +87,7 @@ module.exports = {
 
                 // The file upload handler is exposed for testing only.
                 window.handleFileSelect(null, fArray);
-                const numbers = timer(75, 10);
+                const numbers = timer(100, 10);
                 const observable = numbers.subscribe(timer => {
                     const results = getElement("#results");
 
@@ -99,7 +99,7 @@ module.exports = {
                         done();
                         observable.unsubscribe();
                     }
-                    else if (timer === 75) {
+                    else if (timer === 100) {
                         done();
                         observable.unsubscribe();
                     }
