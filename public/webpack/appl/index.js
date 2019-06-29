@@ -9,11 +9,10 @@ var Default = require("default");
 var Setup = require("setup");
 var Helpers = require("helpers");
 require("config");
-
 var dodex = require("dodex").default;
 var input = require("dodex-input").default;
 
-if ((typeof testit === "undefined" || !testit)) {
+if (typeof testit === "undefined" || !testit) {
     // Content for cards A-Z and static card
 	dodex.setContentFile("./dodex/data/content.js");
 	dodex.init({
