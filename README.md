@@ -193,13 +193,6 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
     * `cd <install>/public/node_modules/eslint-brunch`
     * `npm install eslint@latest`
     * `cd <install>/public` and edit the `brunch-config.js` file and uncomment the eslint section.
-  * Using the local custom plugin for stripping development code. The application from the production build will work with the development code embedded, however to strip the code, do the following;
-    * `cd <install>/public/brunch/appl/js/stripcode-brunch`
-    * `npm link`
-    * `cd <install>/public`
-    * `npm link stripcode-brunch`
-    * Edit `brunch-config.js` and uncomment the `stripcode` plugin section.
-    * Edit `package.json` and in devDependencies section add `"stripcode-brunch": "^0.1.1"`. Development Code will be stripped during the production build.
 
     __Note:__ Don't forget to install Brunch using `npm install brunch -g`.
 

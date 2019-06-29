@@ -29,11 +29,10 @@ exports.files = {
 };
 
 pluginsObject = {
-  // Executes for production build only - See README.md for implementation
-  // stripcode: {
-  //   start: 'develblock:start',
-  //   end: 'develblock:end'
-  // },
+  stripcode: {
+    start: 'develblock:start',
+    end: 'develblock:end'
+  },
   babel: {
     presets: ['env']
   },
