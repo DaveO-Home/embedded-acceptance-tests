@@ -1,4 +1,3 @@
-/* global testit:true */
 require('bootstrap/dist/css/bootstrap.css');
 require('../css/site.css');
 require('font-awesome/css/font-awesome.css');

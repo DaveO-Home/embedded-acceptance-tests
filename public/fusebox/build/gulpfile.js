@@ -298,6 +298,7 @@ exports.hmr = hmrRun
 exports.rebuild = rebuildRun
 exports.acceptance = acceptanceRun
 exports.development = devRun
+exports.lint = parallel(esLint, cssLint, bootLint)
 
 function copySrc() {
     return src(['../appl/dodex/data/**/*', '../appl/views/**/*', '../appl/templates/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])

@@ -270,6 +270,7 @@ exports.rebuild = rebuildRun
 exports.acceptance = browserifyTest
 exports.development = parallel(browserifyWatch, hmrRun, tddRun)
 exports.tddo = tddo
+exports.lint = parallel(esLint, cssLint, bootLint)
 
 /*
     Build functions follow

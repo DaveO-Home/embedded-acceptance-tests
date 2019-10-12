@@ -1,4 +1,3 @@
-/*global testit:true module:true Stache:true extend:true change:true*/
 /*eslint no-undef: 'error'*/
 /*eslint no-console: ['error', { allow: ['warn', 'error'] }] */
 
@@ -227,7 +226,7 @@ module.exports = {
 
         if (arguments.length > 2) {
             if ((typeof arguments[2]) === 'object') {
-                change(einstellungen, arguments[2]);
+                this.change(einstellungen, arguments[2]);
             }
         }
 

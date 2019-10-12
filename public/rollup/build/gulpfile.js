@@ -312,6 +312,7 @@ exports.tdd = tdd_rollup // tddRun
 exports.watch = watch_rollup
 exports.development = parallel(tdd_rollup, watch_rollup)
 exports.tcopy = testCopy
+exports.lint = lintRun
 
 function rollupBuild(cb) {
     return src(['../appl/index.js'])

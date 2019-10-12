@@ -280,6 +280,7 @@ exports.chorme = steal_chrome
 exports.hmr = series(vendor, live_reload)
 exports.server = web_server
 exports.development = parallel(series(vendor, live_reload), web_server)
+exports.lint = parallel(esLint, cssLint, bootLint)
 
 function runKarma(done, singleRun, watch) {
     log(chalk.cyan("Wait..., building app and loading karma"));

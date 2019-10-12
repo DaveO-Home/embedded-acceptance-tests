@@ -1,4 +1,3 @@
-/* global module:true */
 
 window.Stache = require("can-stache");
 require("can-stache-bindings");

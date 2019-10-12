@@ -13,7 +13,7 @@
     RUN yum install -y nodejs
     RUN npm install gulp -g
     # RUN npm install parcel -g"
-    RUN npm install brunch -g"
+    RUN npm install brunch -g
 
     RUN echo $'[google-chrome] \n\
 name=google-chrome \n\

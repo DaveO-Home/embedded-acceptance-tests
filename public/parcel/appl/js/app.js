@@ -1,4 +1,3 @@
-/* global testit:true module:true Stache:true Popper:true */
 /* eslint no-undef: 'error' */
 /* eslint no-console: ['error', { allow: ['warn', 'error'] }] */
 

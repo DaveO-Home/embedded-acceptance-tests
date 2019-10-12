@@ -7,5 +7,4 @@ import "sortercss";
 import "pagercss";
 import "awesomecss";
 import "sitecss";
-// import "dodexcss";
-import "../../../node_modules/dodex/dist/dodex.min.css"
+import "dodexcss";

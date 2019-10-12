@@ -1,6 +1,6 @@
 # Embedded Acceptance Testing with Karma and Jasmine
 
-This demo is comprised of eight javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch, Parcel and even Broccoli. The Vue version of this demo can be found at https://github.com/DaveO-Home/embedded-acceptance-tests-vue, a React version at https://github.com/DaveO-Home/embedded-acceptance-tests-react and an Angular version at https://github.com/DaveO-Home/embedded-acceptance-tests-ng.
+This demo is comprised of eight javascript bundlers each configured to run the tests.  The Bootstrap single page application retains functionality among the bundlers with only minor code change.  The javascript framework used is Canjs and instrumentation is done with Gulp and Karma.  So you can pick your poison, Stealjs, Webpack, Browserify, Fusebox, Rollup, Brunch, Parcel and even Broccoli. The Vue version of this demo can be found at <https://github.com/DaveO-Home/embedded-acceptance-tests-vue,> a React version at <https://github.com/DaveO-Home/embedded-acceptance-tests-react> and an Angular version at <https://github.com/DaveO-Home/embedded-acceptance-tests-ng.>
 
 __Note__; the demo was not developed to compare software, rather simply to demonstrate how one might embed test code as part of the build process.  And the configuration also shows how to develop using hot module reload and test driven development.
 
@@ -8,7 +8,7 @@ __Note__; the demo was not developed to compare software, rather simply to demon
 
   **Dockerfile**: See instructions at bottom of README.
   
-  **Dodex**: Added for testing and demo. https://github.com/DaveO-Home/dodex
+  **Dodex**: Added for testing and demo. <https://github.com/DaveO-Home/dodex>
 
 ## Installation
 
@@ -137,10 +137,10 @@ __Note__; When modifying project assets(.stache, .html, etc.) you can execute `g
 
 __A word on developing tests__; You can write and execute tests quicker by using the rebuild process of a given bundler and running the `acceptance` gulp task after the auto-rebuild, e.g. with __Rollup__ you can;
 
-  * `cd public/rollup/build`
-  * `gulp watch`
-  * Develop or modify a test.
-  * In another window execute `gulp acceptance` from the `build` directory to view the modified or new test results.
+* `cd public/rollup/build`
+* `gulp watch`
+* Develop or modify a test.
+* In another window execute `gulp acceptance` from the `build` directory to view the modified or new test results.
 
 __Also Note__; All of the development tasks(`hmr, server, watch`) etc, can be run from one window using the `gulp development` task.
 
@@ -148,22 +148,22 @@ __Also Note__; All of the development tasks(`hmr, server, watch`) etc, can be ru
 
 1\. ***Development Server Window*** -
 
-   * `cd public/browserify/build`
-   * `gulp server`
+* `cd public/browserify/build`
+* `gulp server`
 
    Browsersync will start a browser tab(default Chrome) with `localhost:3080/dist_test/browserify/appl/testapp_dev.html`.  Any changes to the source code(*.js files) should be reflected in the browser auto reload.
 
 2\. ***Hot Module Reload(HMR) Window*** -
 
-   * `cd public/browserify/build`
-   * `gulp hmr`
+* `cd public/browserify/build`
+* `gulp hmr`
 
    The `watchify` plugin will remain active to rebuild the bundle on code change.
 
 3\. ***Test Driven Development(tdd) Window*** -
 
-   * `cd public/browserify/build`
-   * `gulp tdd`
+* `cd public/browserify/build`
+* `gulp tdd`
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.  Note, you do not need `hmr` active for `tdd`. Also, `tdd` can be run with a headless browser.
 
@@ -171,8 +171,8 @@ __Also Note__; All of the development tasks(`hmr, server, watch`) etc, can be ru
 
 1\. ***Watch, Recompile and Reload Window*** -
 
-  * `cd public/brunch/build`
-  * `gulp watch`
+* `cd public/brunch/build`
+* `gulp watch`
 
 At this point you can start a browser and enter `localhost:3080/`. Any changes to the source code(*.js files and other assets such as *.html) should be reflected in the browser auto reload.
 
@@ -180,8 +180,8 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
 2\. ***Test Driven Development(tdd) Window*** -
 
-  * `cd public/brunch/build`
-  * `gulp tdd`
+* `cd public/brunch/build`
+* `gulp tdd`
 
   While the Brunch watcher is running, tests are re-run when code are changed. 
   
@@ -189,10 +189,10 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
 3\. ***Special Considerations***
   
-  * Brunch plugin eslint-brunch uses eslint 3. The demo uses version 4.  The `gulp`(production build) command uses a gulp linter, so javascript linting is executed. However, if you wish to use the  eslint-brunch plugin, do the following;
-    * `cd <install>/public/node_modules/eslint-brunch`
-    * `npm install eslint@latest`
-    * `cd <install>/public` and edit the `brunch-config.js` file and uncomment the eslint section.
+* Brunch plugin eslint-brunch uses eslint 3. The demo uses version 4.  The `gulp`(production build) command uses a gulp linter, so javascript linting is executed. However, if you wish to use the  eslint-brunch plugin, do the following;
+* `cd <install>/public/node_modules/eslint-brunch`
+* `npm install eslint@latest`
+* `cd <install>/public` and edit the `brunch-config.js` file and uncomment the eslint section.
 
     __Note:__ Don't forget to install Brunch using `npm install brunch -g`.
 
@@ -200,15 +200,15 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
 1\. ***Hot Module Reload(HMR) Server Window*** -
 
-   * `cd public/fusebox/build`
-   * `gulp hmr` or `fuse hmr`
+* `cd public/fusebox/build`
+* `gulp hmr` or `fuse hmr`
 
    At this point you can start a browser and enter `localhost:3080/fusebox/appl/testapp_dev.html` or `localhost:3080/dist_test/fusebox/appl/testapp_dev.html`.  Any changes to the source code(*.js files) should be reflected in the browser auto reload.
 
 2\. ***Test Driven Development(tdd) Window*** -
 
-   * `cd public/fusebox/build`
-   * `gulp tdd`
+* `cd public/fusebox/build`
+* `gulp tdd`
 
    The HMR Server must be running if you want tests to rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`. A warning is issued under `tdd`(404: /dist_test/fusebox/resources) since `hmr` requires a non-karma build, this can be ignored.
 
@@ -218,19 +218,19 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
 1\. ***Watch, Recompile and Reload Window*** -
 
-  * `cd public/parcel/build`
-  * `gulp watch`
+* `cd public/parcel/build`
+* `gulp watch`
 
 At this point you can start a browser and enter `localhost:3080/dist_test/parcel/testapp_dev.html` (configured to auto open browser tab). Any changes to the source code(*.js and *.css files) should be reflected in the browser auto reload.
 
 2\. ***Test Driven Development(tdd) Window*** -
 
-  * `cd public/parcel/build`
-  * `gulp tdd`
+* `cd public/parcel/build`
+* `gulp tdd`
 
   While the Parcel watcher is running, tests are re-run when code are changed.
   
-  * Using `export USE_BUNDLER=false` - When using `gulp watch & gulp tdd` together, you can set USE_BUNDLER to false to startup TDD without building first, `gulp watch` does the test build.  Also, by settting `USE_BUNDLER=false` before `gulp`(production build), only testing and linting will execute.
+* Using `export USE_BUNDLER=false` - When using `gulp watch & gulp tdd` together, you can set USE_BUNDLER to false to startup TDD without building first, `gulp watch` does the test build.  Also, by settting `USE_BUNDLER=false` before `gulp`(production build), only testing and linting will execute.
 
   __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
@@ -238,8 +238,8 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 1\. ***Development Server Window*** -
 
-   * `cd public/rollup/build`
-   * `gulp watch`
+* `cd public/rollup/build`
+* `gulp watch`
 
    The Rollup Development Server, Watch(auto-rebuild) and Page Reload functions are started together.  Simply use one of the following URLs in any browser; `localhost:3080/rollup/appl/testapp_dev.html` or `localhost:3080/dist_test/rollup/appl/testapp_dev.html`.
 
@@ -247,8 +247,8 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 2\. ***Test Driven Development(tdd) Window*** -
 
-   * `cd public/rollup/build`
-   * `gulp tdd`
+* `cd public/rollup/build`
+* `gulp tdd`
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
@@ -256,14 +256,13 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 1\. ***Development Server Window*** -
 
-   * `cd public/stealjs/build`
-   * `gulp server`
-
+* `cd public/stealjs/build`
+* `gulp server`
 
 2\. ***Live-Reload(HMR) Window*** -
 
-   * `cd public/stealjs/build`
-   * `gulp hmr`
+* `cd public/stealjs/build`
+* `gulp hmr`
 
    At this point you can start a browser and enter `localhost:3080/stealjs/appl/testapp_dev.html`(please note that dist_test is not in the URL).  Any changes to the source code(*.js files) should be reflected in the browser auto reload.  The `gulp hmr` by default builds a vendor bundle for faster reload.  When you are not modifying the node_modules directory, subsequent executions of `gulp hmr` do not need the vendor bundle build. You can disable by setting an environment variable, `export USE_VENDOR_BUILD=false`.
 
@@ -276,8 +275,8 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 3\. ***Test Driven Development(tdd) Window*** -
 
-   * `cd public/steal/build`
-   * `gulp tdd`
+* `cd public/steal/build`
+* `gulp tdd`
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
@@ -285,21 +284,20 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 1\. ***Development HMR Server Window*** -
 
-   * `cd public/webpack/build`
-   * `gulp hmr`
-
+* `cd public/webpack/build`
+* `gulp hmr`
 
 2\. ***Hot Module Reload(Watch) Window*** -
 
-   * `cd public/webpack/build`
-   * `gulp watch`
+* `cd public/webpack/build`
+* `gulp watch`
 
    At this point you can start a browser and enter `localhost:3080/dist_test/webpack/appl/testapp_dev.html`.  Any changes to the source code(*.js files) should be reflected in the browser auto reload. Running the application from the source directory should also work, e.g., `localhost:3080/webpack/appl/testapp_dev.html`.
 
 3\. ***Test Driven Development(tdd) Window*** -
 
-   * `cd public/webpack/build`
-   * `gulp tdd`
+* `cd public/webpack/build`
+* `gulp tdd`
 
    Tests will rerun as source code(*.js) are changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
@@ -313,15 +311,15 @@ Broccoli is not a bundler but uses plugins to interface with other software, spe
 
 1\. **Watch Window** -
 
-  * `cd public/broccoli/build`
-  * `gulp watch`
+* `cd public/broccoli/build`
+* `gulp watch`
 
 At this point you can start a browser and enter `localhost:3080/appl/testapp_dev.html`. The watcher will recompile when application code are modified, however there is no auto-reload.  You have to manually reload the page. Also, the watcher recompiles into cache so Test Driven Development(`gulp tdd`) does not re-execute on code modifications since it watches the actual bundle.
 
 2\. ***Test Driven Development(tdd) Window*** -
 
-  * `cd public/broccoli/build`
-  * `gulp tdd`
+* `cd public/broccoli/build`
+* `gulp tdd`
 
   __Note__; Tests will __not__ be rerun as code are modified. You can still run `gulp test` and `gulp`(for production) with expected results.
 
@@ -331,9 +329,9 @@ You can build a complete test/develpment environment on a Docker vm with the sup
 
 **Linux as Parent Host**(assumes docker is installed and daemon is running)-
 
-In directory containing the Dockerfile execute the following commands;
+In the top parent directory, usually `..../embedded-acceptance-tests-vue/` execute the following commands;
 
-1\. ```docker build -t embedded .```
+1\. ```docker build -t embedded fedora``` or ```docker build -t embedded centos```
 
 2\. ```docker run -ti --privileged  -p 3080:3080 -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix --name test_env embedded bash```
 
@@ -345,7 +343,7 @@ You should be logged into the test container(test_env). There will be 4 embedded
 
 For Pro and Enterpise OS's, follow the Docker instructions on installation.  For the Home OS version you can use the legacy **Docker Desktop** client. It is best to have a Pro or Enterpise Windows OS to use a WSL(Windows bash) install. Use following commands with Windows;
 
-1\. ```docker build -t embedded .```
+1\. ```docker build -t embedded fedora``` or ```docker build -t embedded centos```
 
 2\. ```docker run -ti --privileged  -p 3080:3080 --name test_env embedded bash```
 

@@ -54,6 +54,7 @@ module.exports = {
       'process': true,
       '__karma__': true,
       'define': true,
-      'spyOnEvent': true
+      'spyOnEvent': true,
+      'Popper': true
   }
 }

@@ -1,4 +1,3 @@
-/*global testit:true module:true*/
 /*eslint no-undef: "error"*/
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 

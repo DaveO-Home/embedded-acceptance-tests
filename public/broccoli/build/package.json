@@ -16,6 +16,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "broccoli": "^3.2.0",
+    "broccoli-cli": "^1.0.0",
     "broccoli-concat": "^3.7.3",
     "broccoli-env": "0.0.1",
     "broccoli-funnel": "^2.0.2",
@@ -38,6 +40,5 @@
     "webpack-strip-block": "^0.2.0"
   },
   "dependencies": {
-    "broccoli": "^3.0.0"
   }
 }

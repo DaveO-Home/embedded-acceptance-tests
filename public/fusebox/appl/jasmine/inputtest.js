@@ -31,7 +31,7 @@ module.exports = {
                 const observable = numbers.subscribe(timer => {
                     dodexTopElement = getElement(".top--dodex");
 
-                    if ((typeof dodexTopElement !== "undefined" && dodexTopElement.length !== 0) &&
+                    if (typeof dodexTopElement !== "undefined" &&
                         dodexTopElement.classList.contains("plus-thousand")) {
                         card27 = getElement(".card27");
                         back27 = getElement(".back27");
@@ -59,7 +59,7 @@ module.exports = {
                 expect(popupElement).toBeDefined();
                 let numbers = timer(75, 10);
                 let observable = numbers.subscribe(timer => {
-                    const target = getElement(".content-input:target");
+                    const target = getElement(".content-input");
                     // Waiting for the popup to fade in
                     if (getComputedStyle(target).opacity === "1") {
                         expect(isVisible(target)).toBeTruthy();

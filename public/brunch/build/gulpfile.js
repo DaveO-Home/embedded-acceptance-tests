@@ -238,6 +238,7 @@ exports.watch = brunch_watch
 exports.rebuild = brunch_rebuild
 exports.acceptance = pat
 exports.development = parallel(brunch_watch, brunch_tdd)
+exports.lint = lintRun
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == 'true') {

@@ -30,39 +30,38 @@ module.exports = {
                     input: input,
                     private: "full",
                     replace: true
-                })
-                    .then(function () {
-                        dodexToggle = getElement(".dodex--open");
-                        dodexToggle.onmousedown = event => {
-                            dodex.openDodex(event);
-                        };
-                        dodexToggle.onmousedown(); // Make visible
+                }).then(function () {
+                    dodexToggle = getElement(".dodex--open");
+                    dodexToggle.onmousedown = event => {
+                        dodex.openDodex(event);
+                    };
+                    dodexToggle.onmousedown(); // Make visible
 
-                        const numbers = timer(50, 10);
-                        const observable = numbers.subscribe(timer => {
-                            dodexTopElement = getElement(".top--dodex");
+                    const numbers = timer(50, 10);
+                    const observable = numbers.subscribe(timer => {
+                        dodexTopElement = getElement(".top--dodex");
 
-                            if ((typeof dodexTopElement !== "undefined" && dodexTopElement.length !== 0) &&
-                                dodexTopElement.classList.contains("plus-thousand")) {
-                                dodexElement = getElement(".dodex");
-                                card1 = getElement(".card1");
-                                front1 = getElement(".front1");
-                                back1 = getElement(".back1");
-                                card2 = getElement(".card2");
-                                front2 = getElement(".front2");
-                                back2 = getElement(".back2");
-                                // const dials = getAllElements(".dial");
-                                // dialRight = dials[0];
-                                // dialLeft = dials[1];
-                                observable.unsubscribe();
-                                done();
-                            }
-                            else if (timer === 50) {
-                                observable.unsubscribe();
-                                done();
-                            }
-                        })
-                    });
+                        if (typeof dodexTopElement !== "undefined" &&
+                            dodexTopElement.classList.contains("plus-thousand")) {
+                            dodexElement = getElement(".dodex");
+                            card1 = getElement(".card1");
+                            front1 = getElement(".front1");
+                            back1 = getElement(".back1");
+                            card2 = getElement(".card2");
+                            front2 = getElement(".front2");
+                            back2 = getElement(".back2");
+                            // const dials = getAllElements(".dial");
+                            // dialRight = dials[0];
+                            // dialLeft = dials[1];
+                            observable.unsubscribe();
+                            done();
+                        }
+                        else if (timer === 50) {
+                            observable.unsubscribe();
+                            done();
+                        }
+                    })
+                });
             });
 
             afterAll(function (done) {
@@ -76,7 +75,7 @@ module.exports = {
                 dodexToggle.onmousedown();
                 expect(isVisible(dodexTopElement)).toBeFalsy();
                 dodexToggle.onmousedown(); // Make visible again
-                
+
                 done();
             });
 
@@ -125,14 +124,14 @@ module.exports = {
 
                 expect(card1.style.zIndex).toMatch('');
                 expect(card1.style.transform).toMatch("");
- 
+
                 done();
             });
 
             it("Dodex - Flip multiple cards on tab mousedown", function (done) {
                 // Make sure all cards are in original position
                 var x, card;
-                for (x = 1; x < 14; x++) {
+                for (x = 1;x < 14;x++) {
                     card = getElement(".card" + x);
                     expect(card.style.zIndex).toBe('');
                 }
@@ -141,7 +140,7 @@ module.exports = {
                 frontM.onmousedown = dodexElement.onmousedown;
                 frontM.dispatchEvent(mouseEvent);
                 // When tab M is clicked, it and all previous cards should be flipped.
-                for (x = 1; x < 14; x++) {
+                for (x = 1;x < 14;x++) {
                     card = getElement(".card" + x);
                     expect(card.style.transform).toMatch(/rotateX\(-190deg\)/);
                 }
@@ -153,7 +152,7 @@ module.exports = {
                 // front works here because the pseudo tab element does not have a back.
                 front1.dispatchEvent(mouseEvent);
                 // All cards should be back in original position;
-                for (x = 13; x > 0; x--) {
+                for (x = 13;x > 0;x--) {
                     card = getElement(".card" + x);
                     expect(card.style.transform).toBe('');
                 }
@@ -175,7 +174,7 @@ module.exports = {
                 expect(card28).toBeNull();
                 expect(card29).toBeNull();
 
-                for (var i = 0; i < 2; i++) {
+                for (var i = 0;i < 2;i++) {
                     dodex.addCard(content); // content comes from app index.js
                 }
                 card28 = getElement(".card28");
@@ -187,14 +186,14 @@ module.exports = {
                 var tab = window.getComputedStyle(
                     card28.querySelector('.front28'), ':after'
                 ).getPropertyValue('content')
-                
+
                 expect(tab).toBe('"F01"');
 
                 done();
             });
 
             it("Dodex - Load Login Popup from card1(A)", function (done) {
-                const clickHandler = function(event) {
+                const clickHandler = function (event) {
                     Start["div .login click"](event.target, event);
                 }
                 var modal, nameObject;
@@ -202,20 +201,20 @@ module.exports = {
                 login.onclick = clickHandler;
                 login.dispatchEvent(new Event("click"));
                 const numbers = timer(100, 10);
-                    const observable = numbers.subscribe(timer => {
-                        modal = $("#modalTemplate");
-                        if ((typeof modal[0] !== "undefined" && modal[0].length !== 0) || timer === 75) {
-                            nameObject = document.querySelector("#inputUsername");
-                            modal.on('shown.bs.modal', function (html) {
-                                modal.modal("toggle");
-                            });
-                            expect(modal[0]).toHaveClass("modal");
-                            expect(nameObject).toHaveClass("form-control");
-                            modal.modal("hide");
-                            observable.unsubscribe();
-                            done();
-                        }
-                    })
+                const observable = numbers.subscribe(timer => {
+                    modal = $("#modalTemplate");
+                    if ((typeof modal[0] !== "undefined" && modal[0].length !== 0) || timer === 75) {
+                        nameObject = document.querySelector("#inputUsername");
+                        modal.on('shown.bs.modal', function (html) {
+                            modal.modal("toggle");
+                        });
+                        expect(modal[0]).toHaveClass("modal");
+                        expect(nameObject).toHaveClass("form-control");
+                        modal.modal("hide");
+                        observable.unsubscribe();
+                        done();
+                    }
+                })
             });
         });
     }

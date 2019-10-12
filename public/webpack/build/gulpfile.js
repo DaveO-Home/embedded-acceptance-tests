@@ -283,6 +283,7 @@ exports.watch = webpack_watch
 exports.hmr = webpack_server
 exports.rebuild = webpack_rebuild
 exports.development = parallel(webpack_server, webpack_watch, webpack_tdd)
+exports.lint = runLint
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == 'true') {

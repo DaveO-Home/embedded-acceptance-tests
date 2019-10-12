@@ -214,6 +214,7 @@ exports.rebuild = rebuildRun
 exports.watch = watchRun
 exports.tdd = tddRun
 exports.development = devRun
+exports.lint = parallel('eslint', 'csslint', 'bootlint')
 
 function parcelBuild(watch, cb) {
     if (bundleTest && bundleTest === "false") {

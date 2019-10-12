@@ -1,7 +1,6 @@
 /**
  * Controller to manage tablesorter
  */
-
 define(["app",
     "basecontrol"],
         function (App, Base) {

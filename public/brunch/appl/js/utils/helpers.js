@@ -1,4 +1,3 @@
-/*global testit:true module:true Stache:true extend:true change:true*/
 /*eslint no-undef: "error"*/
 /*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
@@ -185,7 +184,6 @@ module.exports = {
         return true;
     },
     //Per Stack Overflow - Fire a click event in raw javascript
-    /* global extend:true */
     fireEvent (...args) {
         let eventType = null
         let i
@@ -221,7 +219,7 @@ module.exports = {
 
         if (arguments.length > 2) {
             if ((typeof arguments[2]) === 'object') {
-                change(einstellungen, arguments[2]);
+                this.change(einstellungen, arguments[2]);
             }
         }
 

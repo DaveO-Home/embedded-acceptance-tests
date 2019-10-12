@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReloadPlugin = require('reload-html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production' || process.argv.slice(-1)[0] == '-p';
 const excludeUglify = isProduction ? /\.min\.js$/ : /\.js$/;
@@ -42,8 +42,8 @@ module.exports = {
             pagercss: "tablesorter/dist/css/jquery.tablesorter.pager.min.css",
             sitecss: "css/site.css",
             sortercss: "tablesorter/dist/css/theme.blue.min.css",
-            // dodexcss: "dodex/dist/dodex.min.css",
-            dodex: "dodex/dist/dodex.min.js",
+            dodexcss: path.resolve(__dirname, "../node_modules/dodex/dist/dodex.min.css"),
+            dodex: "dodex/dodex",
             app: "js/app.js",
             basecontrol: "js/utils/base.control",
             config: "js/config",
