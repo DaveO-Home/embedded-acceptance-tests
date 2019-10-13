@@ -1,6 +1,3 @@
-/*global extend:true change:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var moment = require("moment");
 var callbacks = require("can-view-callbacks");
@@ -223,7 +220,7 @@ module.exports = {
 
         if (arguments.length > 2) {
             if ((typeof arguments[2]) === "object") {
-                change(einstellungen, arguments[2]);
+                this.change(einstellungen, arguments[2]);
             }
         }
 
@@ -246,6 +243,7 @@ module.exports = {
             einstellungen.clientX = einstellungen.pointerX;
             einstellungen.clientY = einstellungen.pointerY;
             event = document.createEventObject();
+            // eslint-disable-next-line no-undef
             event = extend(event, einstellungen);
             arguments[0].fireEvent("on" + arguments[1], event);
         }
