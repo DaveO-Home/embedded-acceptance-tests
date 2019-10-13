@@ -2,11 +2,12 @@
 window.jQuery = window.$ = require("jquery");
 window._bundler = "browserify";
 
-var App = require("b/app"),
-	Router = require("b/router"),
-	Default = require("b/default"),
-	Setup = require("b/setup"),
-	Helpers = require("b/helpers");
+require("b/config");
+var App = require("b/app");
+var Router = require("b/router");
+var	Default = require("b/default");
+var	Setup = require("b/setup");
+var Helpers = require("b/helpers");
 require("b/pager");
 
 var dodex = require("dodex").default;
