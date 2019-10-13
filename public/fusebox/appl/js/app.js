@@ -1,6 +1,3 @@
-/*global testit:true module:true Stache:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var Helpers = require("./utils/helpers");
 var Component = require("can-component");
@@ -25,7 +22,7 @@ if (typeof testit !== "undefined" && testit) {
 }
 /* develblock:end */
 
-var baseScriptsUrl = "~/";
+// var baseScriptsUrl = "~/";
 // pathName = window.location.pathname,
 // baseUrl = pathName
 // ? pathName.substring(0, pathName.substring(1, pathName.length).indexOf("/") + 1) + "/appl"
@@ -66,7 +63,7 @@ module.exports = {
                     describe("Application Controller", function () {
                         it("Loaded Controller", function () {
                             expect(appController).not.toBe(null);
-                            expect(typeof fnLoad === 'function').toBe(true);
+                            expect(typeof fnLoad === "function").toBe(true);
                         });
                     });
                 }
@@ -92,7 +89,7 @@ module.exports = {
                         if (typeof currentController !== "undefined" && currentController.finish) {
                             currentController.finish(options);
                         }
-                        if (err !== 'success') {
+                        if (err !== "success") {
                             console.error(err);
                         }
                     });

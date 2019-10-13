@@ -88,4 +88,4 @@ module.exports = { html: `<span id="remove" class="remove">
         </div> 
     </footer> 
 </span>`
-}
+};

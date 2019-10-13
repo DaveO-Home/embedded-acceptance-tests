@@ -1,20 +1,20 @@
-const { src } = require('gulp');
-const bootlint = require('gulp-bootlint');
+const { src } = require("gulp");
+const bootlint = require("gulp-bootlint");
 
 const bootLint = function() {
     var fileIssues = [],
             options = {
                 stoponerror: true,
                 stoponwarning: false,
-                loglevel: 'debug',
-                disabledIds: ['E001', 'W009', 'E007', 'W005'],
+                loglevel: "debug",
+                disabledIds: ["E001", "W009", "E007", "W005"],
                 issues: fileIssues,
                 reportFn: function (file, lint, isError, isWarning, errorLocation) {
                     var message = (isError) ? "ERROR! - " : "WARN! - ";
                     if (errorLocation) {
-                        message += file.path + ' (line:' + (errorLocation.line + 1) + ', col:' + (errorLocation.column + 1) + ') [' + lint.id + '] ' + lint.message;
+                        message += file.path + " (line:" + (errorLocation.line + 1) + ", col:" + (errorLocation.column + 1) + ") [" + lint.id + "] " + lint.message;
                     } else {
-                        message += file.path + ': ' + lint.id + ' ' + lint.message;
+                        message += file.path + ": " + lint.id + " " + lint.message;
                     }
                     console.log(message);
                 },
@@ -30,7 +30,7 @@ const bootLint = function() {
     var stream = src(["../appl/*.html"])
             .pipe(bootlint(options));
     
-    stream.on('error', function(err) {
+    stream.on("error", function(err) {
         console.log(err);
         process.exit(1);
     });

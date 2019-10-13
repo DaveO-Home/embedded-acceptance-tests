@@ -3,7 +3,8 @@ steal("app",
     "can-map",
     "can-route",
     "start",
-    function (App, Map, Route, Start) {
+    "lodash",
+    function (App, Map, Route, Start, _) {
         var ApplViewModel = Map.extend({
             init: function () {
                 Start.initMenu();
@@ -46,18 +47,21 @@ steal("app",
                     var viewModel = new ApplViewModel();
 
                     Route.data = viewModel;
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("change", function (ev, attr, how, newVal, oldVal) {
                         if (how === "set") {
                             Start.initMenu();
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("id", function (ev, attr, oldVal) {
                         if (attr) {
                             this.dispatch();
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("action", function (ev, attr, oldVal) {
                         if (attr) {
                             //!steal-remove-start
@@ -71,6 +75,7 @@ steal("app",
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("home", function (ev, attr, oldVal) {
                         var options = {};
 
@@ -91,6 +96,7 @@ steal("app",
 
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("controller", function (ev, attr, oldVal) {
                         if (attr && typeof this[attr] === "function") {
                             this[attr](ev);

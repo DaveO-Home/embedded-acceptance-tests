@@ -1,27 +1,27 @@
-const path = require('path');
-const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const packageDep = require('./package.json')
+const path = require("path");
+const webpack = require("webpack");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const packageDep = require("./package.json");
 
-const isProduction = process.env.NODE_ENV === 'production' || process.argv.slice(-1)[0] == '-p';
-const useHot = process.env.USE_HMR === 'true';
-const isWatch = process.env.USE_WATCH === 'true';
-const devPublicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : '/dist_test/webpack/';
-let version = Number(/\d/.exec(packageDep.devDependencies.webpack)[0])
+const isProduction = process.env.NODE_ENV === "production" || process.argv.slice(-1)[0] == "-p";
+const useHot = process.env.USE_HMR === "true";
+const isWatch = process.env.USE_WATCH === "true";
+const devPublicPath = process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : "/dist_test/webpack/";
+let version = Number(/\d/.exec(packageDep.devDependencies.webpack)[0]);
 
 if(process.env.W_VERSION) {
-     version = Number(process.env.W_VERSION.substring(0, process.env.W_VERSION.lastIndexOf('.')))
+     version = Number(process.env.W_VERSION.substring(0, process.env.W_VERSION.lastIndexOf(".")));
 }
 
 let pathsToClean = [
-    isProduction ? 'dist/broccoli' : 'dist_test/broccoli'
-]
+    isProduction ? "dist/broccoli" : "dist_test/broccoli"
+];
 // the clean options to use
 let cleanOptions = {
-    root: path.resolve(__dirname, '../..'),
+    root: path.resolve(__dirname, "../.."),
     verbose: true,
     dry: false
-}
+};
 
 let webpackConfig = {
     node: {
@@ -36,7 +36,7 @@ let webpackConfig = {
         symlinks: false,
         cacheWithContext: false,
         modules: [
-            path.resolve('./'),
+            path.resolve("./"),
             path.resolve("./node_modules"),
             "./node_modules",
             "../appl"
@@ -44,13 +44,13 @@ let webpackConfig = {
     },
     context: path.resolve(__dirname, "../"),
     entry: {
-        main: '../appl/index.js'
+        main: "../appl/index.js"
     },
-    target: 'web',
+    target: "web",
     output: {
-        filename: 'app.js',
-        chunkFilename: '[name].chunk.js',
-        path: path.resolve(__dirname, isProduction ? "./dist/broccoli" : './dist_test/broccoli'),
+        filename: "app.js",
+        chunkFilename: "[name].chunk.js",
+        path: path.resolve(__dirname, isProduction ? "./dist/broccoli" : "./dist_test/broccoli"),
         publicPath: isProduction ? "/dist/broccoli/" : devPublicPath
     },
     module: {
@@ -60,7 +60,7 @@ let webpackConfig = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader',
+                loader: "babel-loader",
             },
             setJsonLoader(version)
         ]
@@ -69,15 +69,15 @@ let webpackConfig = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            Popper: ['popper.js', 'default']
+            Popper: ["popper.js", "default"]
         }),
         new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: isProduction ? '"production"' : '"development"'
+            "process.env": {
+                NODE_ENV: isProduction ? "\"production\"" : "\"development\""
             }
         })
     ],
-    devtool: isProduction ? '' : 'inline-source-map',
+    devtool: isProduction ? "" : "inline-source-map",
     watch: isWatch,
     watchOptions: {
         ignored: /node_modules/
@@ -85,7 +85,7 @@ let webpackConfig = {
 };
 
 if(!isWatch) {
-    webpackConfig.plugins.push(new CleanWebpackPlugin(pathsToClean, cleanOptions))
+    webpackConfig.plugins.push(new CleanWebpackPlugin(pathsToClean, cleanOptions));
 }
 
 module.exports = webpackConfig;
@@ -94,16 +94,16 @@ function setJsRules(isProduction) {
     var rules = {
         test: /\.js$/,
         exclude: /(node_modules|unit_\test*\.js)/
-    }
+    };
 
     if (isProduction) {
-        rules.enforce = 'pre';
+        rules.enforce = "pre";
         rules.use = [
             {
                 loader: "strip-custom-loader", //'webpack-strip-block',
                 options: {
-                    start: 'develblock:start',
-                    end: 'develblock:end'
+                    start: "develblock:start",
+                    end: "develblock:end"
                 }
             }
         ];
@@ -114,16 +114,16 @@ function setJsRules(isProduction) {
 function setCanJsRules(isProduction) {
     var rules = {
         test: /can.*\.js$/
-    }
+    };
 
     if (isProduction) {
-        rules.enforce = 'pre';
+        rules.enforce = "pre";
         rules.use = [
             {
                 loader: "strip-custom-loader",
                 options: {
-                    start: 'steal-remove-start',
-                    end: 'steal-remove-end'
+                    start: "steal-remove-start",
+                    end: "steal-remove-end"
                 }
             }
         ];
@@ -132,13 +132,13 @@ function setCanJsRules(isProduction) {
 }
 
 function setJsonLoader(version) {
-    let rules = {}
+    let rules = {};
 
     if (version < 4) {
         rules = {
             test: /\.json$/,
             use: "json-loader"
-        }
+        };
     }
     return rules;
 }

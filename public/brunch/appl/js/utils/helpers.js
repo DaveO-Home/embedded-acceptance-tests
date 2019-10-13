@@ -126,7 +126,7 @@ module.exports = {
         var helper = this;
 
         return function (frag) {
-            const selector = typeof options.selector !== 'undefined' ? options.selector : '#main_container';
+            const selector = typeof options.selector !== "undefined" ? options.selector : "#main_container";
             let el = $(selector);
             
             el = $(selector);
@@ -184,28 +184,28 @@ module.exports = {
         return true;
     },
     //Per Stack Overflow - Fire a click event in raw javascript
-    fireEvent (...args) {
-        let eventType = null
-        let i
-        let j
-        let k
-        let l
-        let event
+    fireEvent (/*...args*/) {
+        let eventType = null;
+        let i;
+        let j;
+        let k;
+        let l;
+        let event;
 
         const einstellungen = {
-            'pointerX': 0,
-            'pointerY': 0,
-            'button': 0,
-            'ctrlKey': false,
-            'altKey': false,
-            'shiftKey': false,
-            'metaKey': false,
-            'bubbles': true,
-            'cancelable': true
-        }
+            "pointerX": 0,
+            "pointerY": 0,
+            "button": 0,
+            "ctrlKey": false,
+            "altKey": false,
+            "shiftKey": false,
+            "metaKey": false,
+            "bubbles": true,
+            "cancelable": true
+        };
         const moeglicheEvents = [
-            ['HTMLEvents', ['load', 'unload', 'abort', 'error', 'select', 'change', 'submit', 'reset', 'focus', 'blur', 'resize', 'scroll']],
-            ['MouseEvents', ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mousemove', 'mouseout']]
+            ["HTMLEvents", ["load", "unload", "abort", "error", "select", "change", "submit", "reset", "focus", "blur", "resize", "scroll"]],
+            ["MouseEvents", ["click", "dblclick", "mousedown", "mouseup", "mouseover", "mousemove", "mouseout"]]
         ];
         for (i = 0, j = moeglicheEvents.length; i < j; ++i) {
             for (k = 0, l = moeglicheEvents[i][1].length; k < l; ++k) {
@@ -218,18 +218,18 @@ module.exports = {
         }
 
         if (arguments.length > 2) {
-            if ((typeof arguments[2]) === 'object') {
+            if ((typeof arguments[2]) === "object") {
                 this.change(einstellungen, arguments[2]);
             }
         }
 
         if (eventType === null) {
-            throw new SyntaxError('Event type "' + arguments[1] + '" is not implemented!');
+            throw new SyntaxError("Event type \"" + arguments[1] + "\" is not implemented!");
         }
 
         if (document.createEvent) {
             event = document.createEvent(eventType);
-            if (eventType === 'HTMLEvents') {
+            if (eventType === "HTMLEvents") {
                 event.initEvent(arguments[1], einstellungen.bubbles, einstellungen.cancalable);
             } else {
                 event.initMouseEvent(arguments[1], einstellungen.bubbles, einstellungen.cancelable, document.defaultView,
@@ -242,15 +242,16 @@ module.exports = {
             einstellungen.clientX = einstellungen.pointerX;
             einstellungen.clientY = einstellungen.pointerY;
             event = document.createEventObject();
+            // eslint-disable-next-line no-undef
             event = extend(event, einstellungen);
-            arguments[0].fireEvent('on' + arguments[1], event);
+            arguments[0].fireEvent("on" + arguments[1], event);
         }
     },
     change: function change () {
         var name;
         for (name in arguments[1]) {
-            if ((typeof arguments[1][name]) === 'object') {
-                if ((typeof arguments[0][name]) === 'undefined') {
+            if ((typeof arguments[1][name]) === "object") {
+                if ((typeof arguments[0][name]) === "undefined") {
                     arguments[0][name] = {};
                 }
 

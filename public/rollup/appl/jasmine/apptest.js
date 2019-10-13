@@ -16,15 +16,15 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
              * Make sure the div container is added to the Karma page
              */
             $.get("app_bootstrap.html", function (data) {
-                $("body").prepend(data)
-                done()
+                $("body").prepend(data);
+                done();
             }, "html").fail(function (data, err) {
                 console.warn("Error fetching fixture data: " + err);
-                done()
+                done();
             });
 
-            spyOn(Route.data, 'index').and.callThrough();
-            spyOn(Route.data, 'dispatch').and.callThrough();
+            spyOn(Route.data, "index").and.callThrough();
+            spyOn(Route.data, "dispatch").and.callThrough();
         }, 10000);
 
         afterEach(function () {

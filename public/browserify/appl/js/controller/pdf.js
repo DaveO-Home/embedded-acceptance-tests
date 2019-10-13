@@ -1,4 +1,3 @@
-/*global module:true*/
 var App = require("b/app");
 var Base = require("b/basecontrol");
 

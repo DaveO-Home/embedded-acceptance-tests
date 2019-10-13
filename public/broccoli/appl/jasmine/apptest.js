@@ -4,8 +4,8 @@ var domTest = require("./domtest").domtest;
 var contactTest = require("./contacttest").contacttest;
 var loginTest = require("./logintest").logintest;
 var toolsTest = require("./toolstest").toolstest;
-var start = require("../js/controller/start")
-var bootstrapLayout = require("../app_bootstrap")
+var start = require("../js/controller/start");
+var bootstrapLayout = require("../app_bootstrap");
 
 exports.apptest = function (Route, Helpers, App) {
     var mainContainer = "#main_container";
@@ -15,10 +15,10 @@ exports.apptest = function (Route, Helpers, App) {
             /* Important!
              * Make sure the main spa page is added to the Karma page
              */
-            $("body").append(bootstrapLayout.html)
+            $("body").append(bootstrapLayout.html);
             
-            spyOn(Route.data, 'index').and.callThrough();
-            spyOn(Route.data, 'dispatch').and.callThrough();
+            spyOn(Route.data, "index").and.callThrough();
+            spyOn(Route.data, "dispatch").and.callThrough();
         }, 10000);
 
         afterEach(function () {

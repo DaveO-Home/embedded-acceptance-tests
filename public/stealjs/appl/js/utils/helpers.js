@@ -1,6 +1,6 @@
 
 steal("moment", "can-view-callbacks", /* "can-debug", */
-    function (moment, callbacks, debug) {
+    function (moment, callbacks/*, debug*/) {
         return {
             scrollTop: function () {
                 $("html, body").animate({
@@ -80,7 +80,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                                     return false;
                                 }
                                 var tbodyTemplate = template;
-                                var toolsUrl = "templates/tools_"
+                                var toolsUrl = "templates/tools_";
 
                                 $.get(toolsUrl + selectedJobType + ".json", function (data) {
                                     if (selectedJobType == "ful") {
@@ -90,7 +90,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                                     var tbody = tbodyTemplate(data);
                                     $(".tablesorter tbody").html(tbody).trigger("update");
                                 }, "json").fail(function (data, err) {
-                                    console.log("Error fetching fixture data: " + err);
+                                    console.error("Error fetching fixture data: " + err);
                                 });
                             }
                         }
@@ -103,7 +103,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                 }
 
                 var options = "<option value=''></option>";
-                for (i = 0; i < keys.length; i++) {
+                for (let i = 0; i < keys.length; i++) {
                     options = options + "<option value='" + values[i] + "'>" + keys[i] + "</option>";
                 }
 
@@ -174,12 +174,12 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
             },
             getResource (selector, startCount, childrenLength) {
                 return new Promise((resolve, reject) => {
-                    this.isResolved(resolve, reject, selector, startCount, childrenLength)
+                    this.isResolved(resolve, reject, selector, startCount, childrenLength);
                 }).catch(rejected => {
-                    fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+                    fail(`The ${selector} Page did not load within limited time: ${rejected}`);
                 }).then(resolved => {
-                    return resolved
-                })
+                    return resolved;
+                });
             },
             //Per Stack Overflow - Fire a click event in raw javascript
             fireEvent: function () {
@@ -233,6 +233,7 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
                     einstellungen.clientX = einstellungen.pointerX;
                     einstellungen.clientY = einstellungen.pointerY;
                     event = document.createEventObject();
+                    // eslint-disable-next-line no-undef
                     event = extend(event, einstellungen);
                     arguments[0].fireEvent("on" + arguments[1], event);
                 }
@@ -255,12 +256,12 @@ steal("moment", "can-view-callbacks", /* "can-debug", */
             },
             load: function (url, fnLoad) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', url);
+                xhr.open("GET", url);
                 xhr.onload = function () {
                     if (xhr.status === 200) {
                         fnLoad(xhr.responseText);
                     } else {
-                        console.log('Request failed.  Returned status of ' + xhr.status);
+                        console.error("Request failed.  Returned status of " + xhr.status);
                     }
                 };
                 xhr.send();

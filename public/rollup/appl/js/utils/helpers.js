@@ -1,6 +1,3 @@
-/*global extend:true change:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var moment = require("moment");
 var callbacks = require("can-view-callbacks");
@@ -180,12 +177,12 @@ module.exports = {
     },
     getResource (selector, startCount, childrenLength) {
         return new Promise((resolve, reject) => {
-            this.isResolved(resolve, reject, selector, startCount, childrenLength)
+            this.isResolved(resolve, reject, selector, startCount, childrenLength);
         }).catch(rejected => {
-            fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+            fail(`The ${selector} Page did not load within limited time: ${rejected}`);
         }).then(resolved => {
-            return resolved
-        })
+            return resolved;
+        });
     },
     // Per Stack Overflow - Fire a click event in raw javascript
     fireEvent: function () {
@@ -216,7 +213,7 @@ module.exports = {
 
         if (arguments.length > 2) {
             if ((typeof arguments[2]) === "object") {
-                change(einstellungen, arguments[2]);
+                this.change(einstellungen, arguments[2]);
             }
         }
 
@@ -239,6 +236,7 @@ module.exports = {
             einstellungen.clientX = einstellungen.pointerX;
             einstellungen.clientY = einstellungen.pointerY;
             event = document.createEventObject();
+            // eslint-disable-next-line no-undef
             event = extend(event, einstellungen);
             arguments[0].fireEvent("on" + arguments[1], event);
         }

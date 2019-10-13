@@ -6,21 +6,21 @@
  * Tasks are run serially, 'pat' -> ('eslint', 'csslint') -> 'boot' -> 'build'
  */
 let version;
-const { spawn } = require('child_process');
-const webpackVersion = spawn('npm', ['list', '--depth=0', 'webpack']);
+const { spawn } = require("child_process");
+const webpackVersion = spawn("npm", ["list", "--depth=0", "webpack"]);
 
-const gulp = require('gulp');
-const path = require('path');
-const Server = require('karma').Server;
-const eslint = require('gulp-eslint');
-const csslint = require('gulp-csslint');
-const exec = require('child_process').exec;
+const gulp = require("gulp");
+const path = require("path");
+const Server = require("karma").Server;
+const eslint = require("gulp-eslint");
+const csslint = require("gulp-csslint");
+const exec = require("child_process").exec;
 const log = require("fancy-log");
 const env = require("gulp-env");
-const webpack = require('webpack');
+const webpack = require("webpack");
 const webpackStream = require("webpack-stream");
-const WebpackDevServer = require('webpack-dev-server');
-const ReloadPlugin = require('reload-html-webpack-plugin');
+const WebpackDevServer = require("webpack-dev-server");
+const ReloadPlugin = require("reload-html-webpack-plugin");
 
 let lintCount = 0, dist = "dist_test";
 let browsers = process.env.USE_BROWSERS;
@@ -32,17 +32,17 @@ if (browsers) {
 /**
  * Default: Production Acceptance Tests 
  */
-gulp.task('pat', ["acceptance-tests"], function (done) {
+gulp.task("pat", ["acceptance-tests"], function (done) {
     done();
 });
 
 /*
  * javascript linter
  */
-gulp.task('eslint', ['pat'], function (cb) {
+gulp.task("eslint", ["pat"], function (cb) {
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
-                configFile: 'eslintConf.json',
+                configFile: "eslintConf.json",
                 quiet: 0
             }))
             .pipe(eslint.format())
@@ -52,11 +52,11 @@ gulp.task('eslint', ['pat'], function (cb) {
             }))
             .pipe(eslint.failAfterError());
 
-    stream.on('end', function () {
+    stream.on("end", function () {
         log("# javascript files linted: " + lintCount);
     });
 
-    stream.on('error', function (err) {
+    stream.on("error", function (err) {
         log(err);
         process.exit(1);
     });
@@ -67,12 +67,12 @@ gulp.task('eslint', ['pat'], function (cb) {
 /*
  * css linter
  */
-gulp.task('csslint', ['pat'], function () {
-    var stream = gulp.src(['../appl/css/site.css'])
+gulp.task("csslint", ["pat"], function () {
+    var stream = gulp.src(["../appl/css/site.css"])
             .pipe(csslint())
             .pipe(csslint.formatter());
 
-    stream.on('error', function (err) {
+    stream.on("error", function (err) {
         log(err);
         process.exit(1);
     });
@@ -81,14 +81,14 @@ gulp.task('csslint', ['pat'], function () {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['bootlint', 'setVersion'], function (cb) {
-    dist = 'dist';
+gulp.task("build", ["bootlint", "setVersion"], function (cb) {
+    dist = "dist";
     let win="";
     if(isWindows) {
 	win="win";
     }
     
-    exec('export W_VERSION="' + version + '"; npm run webpackprod' + win, function (err, stdout, stderr) {
+    exec("export W_VERSION=\"" + version + "\"; npm run webpackprod" + win, function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
 
@@ -99,9 +99,9 @@ gulp.task('build', ['bootlint', 'setVersion'], function (cb) {
 /*
  * Bootstrap html linter 
  */
-gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
-    log("Starting Gulpboot.js")
-    exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
+gulp.task("bootlint", ["eslint", "csslint"], function (cb) {
+    log("Starting Gulpboot.js");
+    exec("gulp --gulpfile Gulpboot.js", function (err, stdout, stderr) {
 
         log(stdout);
         log(stderr);
@@ -114,13 +114,13 @@ gulp.task('bootlint', ['eslint', 'csslint'], function (cb) {
  * Run karma/jasmine tests once and exit
  * Set environment variable USE_BUILD=false to bypass the build
  */
-gulp.task('acceptance-tests', ['test-build'], function (done) {
+gulp.task("acceptance-tests", ["test-build"], function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
     new Server({
 
-        configFile: __dirname + '/karma.conf.js',
+        configFile: __dirname + "/karma.conf.js",
         singleRun: true,
         watch: false
 
@@ -151,7 +151,7 @@ gulp.task("webpack-rebuild", ["setVersion"], function () {
 
     return gulp.src("../appl/index.js")
             .pipe(envs)
-            .pipe(webpackStream(require('../webpack.config.js')))
+            .pipe(webpackStream(require("../webpack.config.js")))
             .pipe(envs.reset)
             .pipe(gulp.dest("../../dist_test/webpack"));
 });
@@ -171,15 +171,15 @@ gulp.task("test-build", ["setVersion"], function () {
         PUBLIC_PATH: "/base/dist_test/webpack/"   //This sets config to run under Karma
     });
 
-    if (process.env.USE_BUILD == 'false') {  //Let Webpack do the build if only doing unit-tests
+    if (process.env.USE_BUILD == "false") {  //Let Webpack do the build if only doing unit-tests
 
         return gulp.src("../appl/index.js")
                 .pipe(envs);
-    };
+    }
     
     return gulp.src("../appl/index.js")
             .pipe(envs)
-            .pipe(webpackStream(require('../webpack.config.js')))
+            .pipe(webpackStream(require("../webpack.config.js")))
             .pipe(envs.reset)
             .pipe(gulp.dest("../../dist_test/webpack"));
 });
@@ -197,19 +197,19 @@ gulp.task("setVersion", function () {
     //         }
     //     }
     // });
-    return version = "4.26.0"
+    return version = "4.26.0";
 });
 
 /**
  * Continuous testing - test driven development.  
  */
-gulp.task('webpack-tdd', ["test-build"], function (done) {
+gulp.task("webpack-tdd", ["test-build"], function (done) {
     if (!browsers) {
-        global.whichBrowser = ['Chrome', 'Firefox'];
+        global.whichBrowser = ["Chrome", "Firefox"];
     }
     
     new Server({
-        configFile: __dirname + '/karma.conf.js'
+        configFile: __dirname + "/karma.conf.js"
     }, done).start();
 });
 
@@ -228,7 +228,7 @@ gulp.task("webpack-watch", ["setVersion"], function () {
         PUBLIC_PATH: "/base/dist_test/webpack/"
     });
 
-    var webpackConfig = require('../webpack.config.js');
+    var webpackConfig = require("../webpack.config.js");
 
     gulp.src("../appl/**/*")
             .pipe(webpackStream(webpackConfig))
@@ -236,7 +236,7 @@ gulp.task("webpack-watch", ["setVersion"], function () {
 
 });
 
-gulp.task('set-watch-env', function () {
+gulp.task("set-watch-env", function () {
 
     var envs = env.set({
         NODE_ENV: "development",
@@ -270,28 +270,28 @@ gulp.task("webpack-server", ["setVersion"], function () {
     });
 
     const options = {
-        contentBase: '../../',
+        contentBase: "../../",
         hot: true,
-        host: 'localhost',
-        publicPath: '/dist_test/webpack/',
+        host: "localhost",
+        publicPath: "/dist_test/webpack/",
         stats: {colors: true},
         watchOptions: {
             ignored: /node_modules/
         }
     };
 
-    var webpackConfig = require('../webpack.config.js');
-    webpackConfig.devtool = 'eval';
-    webpackConfig.output.path = path.resolve('../../dist_test/webpack');
+    var webpackConfig = require("../webpack.config.js");
+    webpackConfig.devtool = "eval";
+    webpackConfig.output.path = path.resolve("../../dist_test/webpack");
     webpackConfig.plugins.concat([
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ]);
 
-    if(Number(version.substring(0, version.lastIndexOf('.'))) < 4) {
+    if(Number(version.substring(0, version.lastIndexOf("."))) < 4) {
         webpackConfig.plugins.concat([
             new ReloadPlugin()
-        ])
+        ]);
     }
 
     WebpackDevServer.addDevServerEntrypoints(webpackConfig, options);
@@ -299,8 +299,8 @@ gulp.task("webpack-server", ["setVersion"], function () {
     const compiler = webpack(webpackConfig);
     const server = new WebpackDevServer(compiler, options);
 
-    server.listen(3080, 'localhost', function (err) {
-        log('[webpack-server]', 'http://localhost:3080/webpack/appl/testapp_dev.html');
+    server.listen(3080, "localhost", function (err) {
+        log("[webpack-server]", "http://localhost:3080/webpack/appl/testapp_dev.html");
         if (err) {
             log(err);
         }
@@ -308,22 +308,22 @@ gulp.task("webpack-server", ["setVersion"], function () {
 
 });
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('prod', ['pat', 'eslint', 'csslint', 'bootlint', 'build']);
-gulp.task('tdd', ['webpack-tdd']);
-gulp.task('test', ['acceptance-tests']);
-gulp.task('watch', ['webpack-watch']);
-gulp.task('hmr', ['webpack-server']);
-gulp.task('rebuild', ['webpack-rebuild']);   //removes karma config for node express.
+gulp.task("default", ["pat", "eslint", "csslint", "bootlint", "build"]);
+gulp.task("prod", ["pat", "eslint", "csslint", "bootlint", "build"]);
+gulp.task("tdd", ["webpack-tdd"]);
+gulp.task("test", ["acceptance-tests"]);
+gulp.task("watch", ["webpack-watch"]);
+gulp.task("hmr", ["webpack-server"]);
+gulp.task("rebuild", ["webpack-rebuild"]);   //removes karma config for node express.
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
-if (process.env.USE_LOGFILE == 'true') {
-    var fs = require('fs');
-    var proc = require('process');
+if (process.env.USE_LOGFILE == "true") {
+    var fs = require("fs");
+    var proc = require("process");
     var origstdout = process.stdout.write,
             origstderr = process.stderr.write,
-            outfile = 'node_output.log',
-            errfile = 'node_error.log';
+            outfile = "node_output.log",
+            errfile = "node_error.log";
 
     if (fs.exists(outfile)) {
         fs.unlink(outfile);
@@ -333,12 +333,12 @@ if (process.env.USE_LOGFILE == 'true') {
     }
 
     process.stdout.write = function (chunk) {
-        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstdout.apply(this, arguments);
     };
 
     process.stderr.write = function (chunk) {
-        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstderr.apply(this, arguments);
     };
 }

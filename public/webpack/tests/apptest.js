@@ -17,18 +17,18 @@ define(["routertests",
                      * Make sure the bootstrap html is added to the Karma page
                      */
                     $.get("app_bootstrap.html", function (data) {
-                        $("body").prepend(data)
-                        done()
+                        $("body").prepend(data);
+                        done();
                     }, "html").fail(function (data, err) {
                         console.warn("Error fetching fixture data: " + err);
-                        done()
+                        done();
                     });
 
                     Route.data.attr("base", "true");
                     Route.data.attr("selector", mainContainer);
 
-                    spyOn(Route.data, 'index').and.callThrough();
-                    spyOn(Route.data, 'dispatch').and.callThrough();
+                    spyOn(Route.data, "index").and.callThrough();
+                    spyOn(Route.data, "dispatch").and.callThrough();
                 }, 5000);
 
                 afterEach(function () {
@@ -37,7 +37,7 @@ define(["routertests",
                         this.disabled = false;
                     });
                     $(mainContainer).empty();
-                    $(mainContainer).prepend('<div class="loading-page"></div>');
+                    $(mainContainer).prepend("<div class=\"loading-page\"></div>");
                 });
 
                 afterAll(function () {
@@ -129,10 +129,10 @@ define(["routertests",
                         fail("Testing only, build will not proceed");
                     });
                 }
-                jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000
+                jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
                 setTimeout(function() {
-                    __karma__.start()
-                }, 10)
+                    __karma__.start();
+                }, 10);
                 
             });
         };

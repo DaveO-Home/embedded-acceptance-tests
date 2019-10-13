@@ -1,6 +1,3 @@
-/*global testit:true module:true FuseBox:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var App = require("./app");
 var Map = require("can-map");

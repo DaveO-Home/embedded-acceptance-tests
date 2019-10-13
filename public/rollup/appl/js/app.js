@@ -1,8 +1,4 @@
-/*global testit:true module:true Stache:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
-var startsWith = require("lodash/startsWith");
 var capitalize = require("lodash/capitalize");
 
 require("bootstrap");
@@ -66,7 +62,7 @@ module.exports = {
                 //removeIf(production)
                 if (testit) {
                     expect(appController).not.toBe(null);
-                    expect(typeof fnLoad === 'function').toBe(true);
+                    expect(typeof fnLoad === "function").toBe(true);
                 }
                 //endRemoveIf(production)
 
@@ -92,7 +88,7 @@ module.exports = {
                         if (typeof currentController !== "undefined" && currentController.finish) {
                             currentController.finish(options);
                         }
-                        if (err !== 'success') {
+                        if (err !== "success") {
                             console.error(err);
                         }
                     });
@@ -110,7 +106,6 @@ module.exports = {
         var template;
 
         var jsonUrl = "templates/tools_ful.json";
-        var me = this;
 
         // fixture({url: "/listools"}, "templates/tools_ful.json");
         $.get(options.templateUrl + options.template, function (source) {
@@ -138,7 +133,7 @@ module.exports = {
                         var tbody = tbodyTemplate(data);
                         $(".tablesorter tbody").html(tbody).trigger("update");
                         $("#dropdown1 a i").each(function () {
-                            this.remove()
+                            this.remove();
                         });
                         $(sender).fa({ icon: "check" });
                     }, "json").fail(function (data, err) {
@@ -152,7 +147,7 @@ module.exports = {
                                 return values[idx];
                         }
                     }
-                }
+                };
                 currentController.dropdownEvent = updateTable;
             }, "json").fail(function (data, err) {
                 console.error("Error fetching json data: " + err);

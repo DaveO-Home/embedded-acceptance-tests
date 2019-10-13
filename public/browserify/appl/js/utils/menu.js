@@ -1,4 +1,3 @@
-/*global module:true*/
 var _ = require("lodash");
 
 module.exports = {

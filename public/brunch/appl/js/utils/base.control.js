@@ -55,7 +55,7 @@ module.exports = Control.extend({
         var template;
 
         App.loadView({
-            url: options.baseUrl + 'templates/stache/modal.stache'
+            url: options.baseUrl + "templates/stache/modal.stache"
         }, function (modalFrag) {
 
             template = Stache(modalFrag);
@@ -64,17 +64,17 @@ module.exports = Control.extend({
 
                 options["body"] = frag;
                 options["foot"] = Stache(options.foot)(options);
-                var el = $(document.body).append(template(options)).find('> .modal').last();
+                var el = $(document.body).append(template(options)).find("> .modal").last();
                 var css = {};
                 if (options.width) {
 
-                    css["width"] = typeof css.width === 'number'
-                            ? options.width + '%' : options.width;
+                    css["width"] = typeof css.width === "number"
+                            ? options.width + "%" : options.width;
                     var width = css.width.substring(0, css.width.length - 1);
-                    css['margin-left'] = (100 - width) / 2 + '%';
+                    css["margin-left"] = (100 - width) / 2 + "%";
                 }
 
-                $(el).on('show.bs.modal', function () {
+                $(el).on("show.bs.modal", function () {
 
                     if (options.fnLoad) {
                         options.fnLoad(el);
@@ -82,23 +82,23 @@ module.exports = Control.extend({
 
                     me.on();
 
-                }).on('hide.bs.modal', function () {
+                }).on("hide.bs.modal", function () {
 
                     if (options.fnHide) {
                         options.fnHide(el);
                     }
 
-                }).on('hidden.bs.modal', function () {
+                }).on("hidden.bs.modal", function () {
 
                     $(this).remove();
 
-                }).modal('show').css(css).find("> .modal-dialog").addClass(options.widthClass);
+                }).modal("show").css(css).find("> .modal-dialog").addClass(options.widthClass);
             });
         });
     },
     hideModal: function () {
         //HIDE ANY OPEN MODAL WINDOWS
-        $('.modal.in', this.element).modal('hide');
+        $(".modal.in", this.element).modal("hide");
     },
     base: base
 });

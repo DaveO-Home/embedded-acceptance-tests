@@ -24,7 +24,7 @@ var statusReporter = {
 window.__karma__.loaded = function () {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
     jasmine.getEnv().addReporter(statusReporter);
-    const config = jasmine.getEnv().configuration()
+    const config = jasmine.getEnv().configuration();
     config.random = false;
-    jasmine.getEnv().configure(config)
+    jasmine.getEnv().configure(config);
 };

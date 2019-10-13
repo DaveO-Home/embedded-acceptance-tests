@@ -6,7 +6,7 @@ define("basecontrol", ["app",
             defaults: {
             }
         }, {
-                init: function (element, options) {
+                init: function () {
                 },
                 view: function (options) {
                     var loading = Helpers.getValueOrDefault(options.loading, false);
@@ -32,7 +32,7 @@ define("basecontrol", ["app",
                     }
                 },
                 modal: function (options) {
-                    var me = this
+                    var me = this;
                     var template;
 
                     App.loadView({

@@ -1,8 +1,8 @@
 /* develblock:start */
 window._bundler = "broccoli";
-require('can-debug')
+require("can-debug");
 /* develblock:end */
-require("./js/utils/set.globals")
+require("./js/utils/set.globals");
 var App = require("./js/app");
 var Router = require("./js/router");
 var Default = require("./js/utils/default");

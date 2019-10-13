@@ -1,7 +1,7 @@
 
 steal(function() {
    return {
-        template: 'stache',
+        template: "stache",
         errorNotify: false,
         errorLog: false
     };

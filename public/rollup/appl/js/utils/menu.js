@@ -1,4 +1,3 @@
-/*global module:true*/
 
 var trimStart = require("lodash/trimStart");
 

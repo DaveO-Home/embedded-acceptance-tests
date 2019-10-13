@@ -1,4 +1,3 @@
-/*global module:true*/
 /**
  * Controller to manage tablesorter
  */

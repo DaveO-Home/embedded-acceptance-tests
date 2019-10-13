@@ -1,0 +1,6 @@
+/build/
+/dist/
+/dist_test/
+/*.js
+marked.js
+webcomponents-hi-sd-ce.js

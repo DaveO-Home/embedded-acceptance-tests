@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: ['error', { 'args': 'none' }]*/
-var App = require('../app');
-var Base = require('../utils/base.control');
-var Menu = require('../utils/menu');
+var App = require("../app");
+var Base = require("../utils/base.control");
+var Menu = require("../utils/menu");
 var me, location;
 
 module.exports = App.controllers.Start ||
@@ -9,57 +9,57 @@ module.exports = App.controllers.Start ||
             initMenu: function () {
                 me = this;
                 var hash = window.location.hash;
-                location = hash === '#!contact' ? location : hash;
-                Menu.activate('#top-nav div ul li');
-                Menu.activate('#side-nav nav ul li');
+                location = hash === "#!contact" ? location : hash;
+                Menu.activate("#top-nav div ul li");
+                Menu.activate("#side-nav nav ul li");
             },
             index: function (options) {
-                var indexUrl = 'views/prod/index.html';
-                var markdownUrl = typeof __karma__ !== 'undefined'? '/README.md': 'README.md';
+                var indexUrl = "views/prod/index.html";
+                var markdownUrl = typeof __karma__ !== "undefined"? "/README.md": "README.md";
 
                 this.view({
                     url: indexUrl,
                     urlMd: markdownUrl,
                     fade: true,
-                    controller: 'Start',
+                    controller: "Start",
                     fnLoad: function (el) {
                     }
                 });
             },
-            'div .login click': function (sender, e) {
+            "div .login click": function (sender, e) {
                 e.preventDefault();
 
-                var loginUrl = 'views/prod/login.html'
+                var loginUrl = "views/prod/login.html";
 
                 this.modal({
                     url: loginUrl,
-                    title: 'Account Log In',
-                    submit: 'Login',
-                    submitCss: 'submit-login',
-                    widthClass: 'modal-lg',
-                    width: '30%',
+                    title: "Account Log In",
+                    submit: "Login",
+                    submitCss: "submit-login",
+                    widthClass: "modal-lg",
+                    width: "30%",
                     foot: me.footer,
-                    close: 'Close',
+                    close: "Close",
                     contactFooter: me.contactFooter
                 });
             },
-            '.modal .submit-login click': function (sender, e) {
+            ".modal .submit-login click": function (sender, e) {
                 e.preventDefault();
 
-                alert('Not implemented');
-                $(sender).closest('.modal').modal('hide');
+                alert("Not implemented");
+                $(sender).closest(".modal").modal("hide");
             },
-            'div .modal-footer .contact click': function (sender, e) {
-                $(sender).closest('.modal').modal('hide');
+            "div .modal-footer .contact click": function (sender, e) {
+                $(sender).closest(".modal").modal("hide");
             },
             contact: function (ev) {
 
                 this.view({
-                    url: 'views/prod/contact.html',
-                    selector: window.rmain_container || '#main_container',
+                    url: "views/prod/contact.html",
+                    selector: window.rmain_container || "#main_container",
                     fade: true,
                     contactListener: function (el) {
-                        var form = $('form', el);
+                        var form = $("form", el);
 
                         var formFunction = function (e) {
                             /* develblock:start */
@@ -68,13 +68,13 @@ module.exports = App.controllers.Start ||
                             }
                             /* develblock:end */
                             var validateForm = function (isValid) {
-                                var inputs = Array.prototype.slice.call(document.querySelectorAll('form input'));
-                                inputs.push(document.querySelector('form textarea'));
+                                var inputs = Array.prototype.slice.call(document.querySelectorAll("form input"));
+                                inputs.push(document.querySelector("form textarea"));
                                 for (var i = 0; i < inputs.length; i++) {
                                     isValid = !inputs[i].checkValidity() ? false : isValid;
-                                    inputs[i].setCustomValidity('');
+                                    inputs[i].setCustomValidity("");
                                     if (inputs[i].validity.valueMissing && !isValid) {
-                                        inputs[i].setCustomValidity('Please enter data for required field');
+                                        inputs[i].setCustomValidity("Please enter data for required field");
                                     }
                                 }
                                 return isValid;
@@ -98,35 +98,35 @@ module.exports = App.controllers.Start ||
                                 }
                                 /* develblock:end */
                                 setTimeout(function () {
-                                    $('#main_container').empty();
+                                    $("#main_container").empty();
                                     window.location.hash = location;
                                 }, secs);
                             }
                         };
 
-                        form.find('input[type=submit]', el).click(formFunction);
+                        form.find("input[type=submit]", el).click(formFunction);
                     }
                 });
             },
-            footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button>' +
-                                 '<button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>',
-            contactFooter: '<div class="modal-footer">' +
-                                        '<div class="mr-auto contact" >' +
-                                            '<a href="#!contact" ><small class="grey">Contact</small></a>' +
-                                        '</div>' +
-                                        '</div>',
-            alert: '<div class="alert alert-info alert-dismissible fade show" role="alert">' +
-                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                                '<strong>Thank You!</strong> Your request is being processed.' +
-                                '</div>',
+            footer: "<button class=\"btn btn-sm btn-primary submit-modal mr-auto raised submit-login\">{{submit}}</button>" +
+                                 "<button class=\"btn btn-sm close-modal raised\" data-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
+            contactFooter: "<div class=\"modal-footer\">" +
+                                        "<div class=\"mr-auto contact\" >" +
+                                            "<a href=\"#!contact\" ><small class=\"grey\">Contact</small></a>" +
+                                        "</div>" +
+                                        "</div>",
+            alert: "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\">" +
+                                "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
+                                "<strong>Thank You!</strong> Your request is being processed." +
+                                "</div>",
             showAlert: function () {
-                $('form.form-horizontal').append(me.alert);
+                $("form.form-horizontal").append(me.alert);
             },
             finish: function (options) {
-                var marked = require('marked');
+                var marked = require("marked");
                 var mdFunction = function (data) {
-                    $('.markdown').append(marked(data));
-                }
-                $.get(options.urlMd, mdFunction, 'text');
+                    $(".markdown").append(marked(data));
+                };
+                $.get(options.urlMd, mdFunction, "text");
             }
         }))(document));

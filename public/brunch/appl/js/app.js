@@ -74,7 +74,7 @@ module.exports = {
                     describe("Application Controller", function () {
                         it("Loaded Controller", function () {
                             expect(appController).not.toBe(null);
-                            expect(typeof fnLoad === 'function').toBe(true);
+                            expect(typeof fnLoad === "function").toBe(true);
                         });
                     });
                 }
@@ -99,7 +99,7 @@ module.exports = {
                             if (typeof currentController !== "undefined" && currentController.finish) {
                                 currentController.finish(options);
                             }
-                            if (err !== 'success') {
+                            if (err !== "success") {
                                 console.error(err);
                             }
                         });

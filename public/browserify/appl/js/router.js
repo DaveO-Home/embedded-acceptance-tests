@@ -1,6 +1,3 @@
-/*global testit:true module:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 const App = require("b/app");
 const Map = require("can-map");
@@ -20,17 +17,17 @@ const ApplViewModel = Map.extend({
         Start.contact(ev);
     },
     dispatch: function () {
-        const me = this
-        const controllerName = _.capitalize(this.controller)
+        const me = this;
+        const controllerName = _.capitalize(this.controller);
         const actionName = this.action
-                ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index"
+            ? this.action.charAt(0).toLowerCase() + _.camelCase(this.action.slice(1)) : "index";
         const failMsg = "Load problem with: \"" + controllerName + "/" + actionName + "\".";
 
         //The controller will initiate the view. ---> calls basecontrol.view ---> app.loadView
         App.loadController(controllerName, getController(controllerName), function (controller) {
             if (controller &&
-                    controller[actionName] &&
-                    controller.isValid ? controller.isValid(me) : true) {
+                controller[actionName] &&
+                controller.isValid ? controller.isValid(me) : true) {
                 //Execute the controller's action
                 controller[actionName](me);
 
@@ -78,13 +75,13 @@ module.exports = {
 
             Route.on("action", function (ev, attr, oldVal) {
                 if (attr) {
-//removeIf(production)
+                    //removeIf(production)
                     //Note: we are already in a spec at this time.
                     if (testit && attr !== " ") {
                         var actions = ["tools", "test", undefined];
                         expect(actions.indexOf(attr) !== -1).toBe(true);
                     }
-//endRemoveIf(production)                           
+                    //endRemoveIf(production)                           
                     this.dispatch();
                 }
             });
@@ -93,7 +90,7 @@ module.exports = {
                 var options = {};
 
                 if (attr) {
-//removeIf(production)
+                    //removeIf(production)
                     //Note: we are already in a spec at this time.
                     if (testit) {
                         if (Route.data.attr("base")) {
@@ -104,7 +101,7 @@ module.exports = {
                         options.base = Route.data.attr("base");
                         options.selector = Route.data.attr("selector");
                     }
-//endRemoveIf(production)
+                    //endRemoveIf(production)
                     this.index(options);
                 }
             });
@@ -118,7 +115,7 @@ module.exports = {
             Route.register("{controller}/{action}/{id}");
             Route.register("{controller}/{action}");
             Route.register("{controller}");
-            Route.register("", {home: "#!"});
+            Route.register("", { home: "#!" });
 
             Route.start();
         });

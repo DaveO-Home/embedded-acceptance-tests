@@ -1,4 +1,4 @@
-const { timer } = require('rxjs');
+const { timer } = require("rxjs");
 
 module.exports = {
     toolstest: function (Route, Helpers) {
@@ -23,39 +23,39 @@ module.exports = {
                 Helpers.getResource("container", 0, 1)
                     .catch(function (rejected) {
                         fail("The Tools Page did not load within limited time: " + rejected);
-                    }).then(function (resolved) {
+                    }).then(function () {
                         tools = $("#tools");
                         beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                         // Opens the dropdown
-                        selectorObject = $('#dropdown0');
-                        Helpers.fireEvent(selectorObject[0], 'click');
+                        selectorObject = $("#dropdown0");
+                        Helpers.fireEvent(selectorObject[0], "click");
 
                         selectorItem = $("a.dropdown-item.smallerfont");
-                        spyToolsEvent = spyOnEvent(selectorItem[1], 'click');
+                        spyToolsEvent = spyOnEvent(selectorItem[1], "click");
                         done();
                     });
             });
 
             it("setup and click events executed.", function (done) {
-                Helpers.fireEvent(selectorItem[1], 'click');
+                Helpers.fireEvent(selectorItem[1], "click");
 
                 // Note: if page does not refresh, increase the timer time.
                 // Using RxJs instead of Promise.
                 const numbers = timer(50, 50);
                 const observable = numbers.subscribe(timer => {
-                    afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                    afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                     if (afterValue !== beforeValue || timer === 20) {
-                        expect('click').toHaveBeenTriggeredOn(selectorItem[1]);
+                        expect("click").toHaveBeenTriggeredOn(selectorItem[1]);
                         expect(spyToolsEvent).toHaveBeenTriggered();
 
                         expect(tools[0]).toBeInDOM();
-                        expect('.disabled').toBeDisabled();
-                        expect('#dropdown1 a').toHaveLength(3);
+                        expect(".disabled").toBeDisabled();
+                        expect("#dropdown1 a").toHaveLength(3);
                         expect(selectorObject).toBeFocused();
                         observable.unsubscribe();
                         done();
                     }
-                })
+                });
             });
             // Not Working for rollup
             // it("new page loaded on change.", function () {

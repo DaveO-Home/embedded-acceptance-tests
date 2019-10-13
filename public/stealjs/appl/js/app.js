@@ -26,12 +26,11 @@ steal("helpers",
             });
         }
         //!steal-remove-end   
-        const baseScriptsUrl = "~/"
+        // const baseScriptsUrl = "~/";
 
         return {
             controllers: [],
-            init: function (options) {
-                options = options || {};
+            init: function () {
                 this.initPage();
             },
             initPage: function () {
@@ -44,10 +43,10 @@ steal("helpers",
                 return url;
             },
             toScriptsUrl: function (url) {
-                return url
+                return url;
             },
             toViewsUrl: function (url) {
-                return url
+                return url;
             },
             loadController: function (controller, fnLoad, fnError) {
                 var me = this;
@@ -58,7 +57,7 @@ steal("helpers",
                         //!steal-remove-start
                         if (testit) {
                             expect(appController).not.toBe(null);
-                            expect(typeof fnLoad === 'function').toBe(true);
+                            expect(typeof fnLoad === "function").toBe(true);
                         }
                         //!steal-remove-end 
 
@@ -74,7 +73,7 @@ steal("helpers",
 
                     if (options.url) {
                         $.get(resolvedUrl, fnLoad)
-                            .done(function (data) {
+                            .done(function () {
 
                                 if (typeof currentController !== "undefined" && currentController.finish) {
                                     currentController.finish(options);
@@ -120,7 +119,7 @@ steal("helpers",
                 }, "text")
                     .fail(function (data, err) {
                         console.error("Error Loading Template: " + err);
-                        console.log(data);
+                        console.error(data);
                     });
             }
         };

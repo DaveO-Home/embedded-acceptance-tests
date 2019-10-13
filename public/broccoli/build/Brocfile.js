@@ -1,41 +1,41 @@
-const mergeTrees = require('broccoli-merge-trees');
-const funnel = require('broccoli-funnel');
-const concat = require('broccoli-concat');
+const mergeTrees = require("broccoli-merge-trees");
+const funnel = require("broccoli-funnel");
+const concat = require("broccoli-concat");
 //const env = require('broccoli-env').getEnv();
-const uglify = require('broccoli-uglify-sourcemap');
-const WebpackWriter = require('broccoli-webpack');
+const uglify = require("broccoli-uglify-sourcemap");
+const WebpackWriter = require("broccoli-webpack");
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isWatch = process.env.USE_WATCH === 'true';
-const isHMR = process.env.USE_HMR === 'true';
+const isProduction = process.env.NODE_ENV === "production";
+const isWatch = process.env.USE_WATCH === "true";
+const isHMR = process.env.USE_HMR === "true";
 
-let srcDir = '.';
+let srcDir = ".";
 let scriptTree;
-const lib = 'broccoli/appl';
+const lib = "broccoli/appl";
 
 scriptTree = new WebpackWriter([srcDir],
-    require('./webpack.config')
-)
+    require("./webpack.config")
+);
 
-const assets = funnel('../', {
-    files: [isProduction ? './appl/testapp.html' : './appl/testapp_dev.html',
-        './appl/css', './appl/views', './appl/templates', './images', '../README.md'],
-    destDir: '/'
+const assets = funnel("../", {
+    files: [isProduction ? "./appl/testapp.html" : "./appl/testapp_dev.html",
+        "./appl/css", "./appl/views", "./appl/templates", "./images", "../README.md"],
+    destDir: "/"
 });
 
-const vendorCss = concat('../..', {
+const vendorCss = concat("../..", {
     inputFiles: [
-        'node_modules/bootstrap/dist/css/bootstrap.min.css',
-        'node_modules/font-awesome/css/font-awesome.css',
-        'node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css',
-        'node_modules/tablesorter/dist/css/theme.blue.min.css'],
-    outputFile: 'appl/css/vendor.css'
+        "node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "node_modules/font-awesome/css/font-awesome.css",
+        "node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css",
+        "node_modules/tablesorter/dist/css/theme.blue.min.css"],
+    outputFile: "appl/css/vendor.css"
 });
 
-const fonts = funnel('../../node_modules/font-awesome/fonts/', {
+const fonts = funnel("../../node_modules/font-awesome/fonts/", {
     include: [
-        '*.*'],
-    destDir: 'appl/fonts'
+        "*.*"],
+    destDir: "appl/fonts"
 });
 
 scriptTree = isProduction ? uglify(scriptTree, {
@@ -51,4 +51,4 @@ scriptTree = isProduction ? uglify(scriptTree, {
 
 const mergedTrees = mergeTrees([assets, scriptTree, vendorCss, fonts]);
 
-module.exports = mergedTrees
+module.exports = mergedTrees;

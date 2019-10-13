@@ -1,8 +1,8 @@
 define("router", ["app",
     "can-map",
     "can-route",
-    "start"],
-    function (App, Map, Route, Start) {
+    "start", "lodash"],
+    function (App, Map, Route, Start, _) {
         var ApplViewModel = Map.extend({
             init: function () {
                 Start.initMenu();
@@ -46,6 +46,7 @@ define("router", ["app",
                     var viewModel = new ApplViewModel();
 
                     Route.data = viewModel;
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("change", function (ev, attr, how, newVal, oldVal) {
 
                         if (how === "set") {
@@ -53,12 +54,14 @@ define("router", ["app",
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("id", function (ev, attr, oldVal) {
                         if (attr) {
                             this.dispatch();
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("action", function (ev, attr, oldVal) {
                         if (attr) {
                             /* develblock:start */
@@ -72,6 +75,7 @@ define("router", ["app",
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("home", function (ev, attr, oldVal) {
                         var options = {};
 
@@ -93,6 +97,7 @@ define("router", ["app",
                         }
                     });
 
+                    // eslint-disable-next-line no-unused-vars
                     Route.on("controller", function (ev, attr, oldVal) {
                         if (attr && typeof this[attr] === "function") {
                             this[attr]();

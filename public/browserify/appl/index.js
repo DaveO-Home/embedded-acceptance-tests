@@ -1,13 +1,12 @@
 
-window.jQuery = window.$ = require('jquery');
+window.jQuery = window.$ = require("jquery");
 window._bundler = "browserify";
 
 var App = require("b/app"),
 	Router = require("b/router"),
 	Default = require("b/default"),
 	Setup = require("b/setup"),
-	Helpers = require("b/helpers"),
-	Config = require("b/config");
+	Helpers = require("b/helpers");
 require("b/pager");
 
 var dodex = require("dodex").default;
@@ -27,7 +26,7 @@ if ((typeof testit === "undefined" || !testit)) {
 	})
 		.then(function () {
 			// Add in app/personal cards
-			for (var i = 0; i < 3; i++) {
+			for (var i = 0;i < 3;i++) {
 				dodex.addCard(getAdditionalContent());
 			}
 			/* Auto display of widget */
@@ -87,5 +86,5 @@ function getAdditionalContent() {
 				}
 			}
 		}
-	}
+	};
 }

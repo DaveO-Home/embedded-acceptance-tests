@@ -81,5 +81,5 @@ function getAdditionalContent() {
 				}
 			}
 		}
-	}
+	};
 }

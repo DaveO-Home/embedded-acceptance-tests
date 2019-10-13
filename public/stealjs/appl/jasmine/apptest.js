@@ -23,19 +23,19 @@ steal(function () {
                          * Make sure the spa main bootstrap layout is added to the Karma page
                          */
                         $.get("base/stealjs/appl/app_bootstrap.html", function (data) {
-                            $("body").prepend(data)
-                            done()
+                            $("body").prepend(data);
+                            done();
                         }, "html").fail(function (data, err) {
                             console.warn("Error fetching fixture data: " + err);
-                            done()
+                            done();
                         });
-                        spyOn(Route.data, 'index').and.callThrough();
-                        spyOn(Route.data, 'dispatch').and.callThrough();
+                        spyOn(Route.data, "index").and.callThrough();
+                        spyOn(Route.data, "dispatch").and.callThrough();
                     }, 4000);
 
                     afterEach(function () {
                         $(mainContainer).empty();
-                        $(mainContainer).append('<div class="loading-page"></div>');
+                        $(mainContainer).append("<div class=\"loading-page\"></div>");
                     });
 
                     afterAll(function () {
@@ -54,9 +54,7 @@ steal(function () {
 
                         //Waiting for page to load.
                         Helpers.getResource("container", 0)
-                            .catch(resolved => {
-                                fail("The Welcome Page did not load within limited time: " + rejected)
-                            }).then(resolved => {
+                            .then(resolved => {
                                 if (resolved) {
                                     expect(Route.data.index).toHaveBeenCalled();
                                     expect(Route.data.index.calls.count()).toEqual(1);
@@ -67,6 +65,8 @@ steal(function () {
                                 }
 
                                 done();
+                            }).catch((rejected) => {
+                                fail("The Welcome Page did not load within limited time: " + rejected);
                             });
                     });
 
@@ -128,7 +128,7 @@ steal(function () {
                     inputtest(dodex);
 
                     // Start the tests - includes steal based unit tests
-                    window.tests()
+                    window.tests();
 
                     if (testOnly) {
                         it("Testing only", function () {

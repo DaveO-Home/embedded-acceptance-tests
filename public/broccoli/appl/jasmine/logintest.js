@@ -6,7 +6,6 @@ module.exports = {
          */
         describe("Popup Login Form", function () {
             var modal;
-            var closeButton;
             var nameObject;
  
             beforeAll(function (done) {
@@ -20,7 +19,7 @@ module.exports = {
                 setTimeout(function () {
                     modal = $("#modalTemplate");
                     nameObject = $("#inputUsername");
-                    modal.on('shown.bs.modal', function (html) {
+                    modal.on("shown.bs.modal", function () {
                         modal.modal("toggle");
                     });
                     done();
@@ -40,7 +39,7 @@ module.exports = {
                     expect(modal[0]).not.toBeVisible();
                     expect(modal[0]).not.toBeInDOM();
                     $("div .login").remove(); // Just cleaning up page for tdd
-                    done()
+                    done();
                 }, 750);
             });
         });

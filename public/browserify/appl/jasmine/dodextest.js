@@ -1,4 +1,4 @@
-const { timer } = require('rxjs');
+const { timer } = require("rxjs");
 
 module.exports = {
     dodextest: function (dodex, input, content, Start) {
@@ -17,12 +17,12 @@ module.exports = {
             // dialRight,
             // dialLeft,
             mainContainer = "#main_container",
-            mouseEvent = new MouseEvent('mousedown');
+            mouseEvent = new MouseEvent("mousedown");
 
         describe("Dodex Operation Validation", function () {
             beforeAll(function (done) {
                 if (!$(mainContainer)[0]) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
+                    $("body").append("<div id=\"main_container\"><div class=\"loading-page\"></div></div>");
                 }
 
                 dodex.setContentFile("../dodex/data/content.js");
@@ -61,27 +61,27 @@ module.exports = {
                                 observable.unsubscribe();
                                 done();
                             }
-                        })
+                        });
                     });
             });
 
             afterAll(function (done) {
-                done()
+                done();
             });
 
             it("Dodex - loaded and toggle on icon mousedown", function (done) {
                 expect(dodexElement).toBeDefined();
-                expect(isVisible(dodexTopElement)).toBeTruthy();
+                expect(dodexTopElement).toHaveClass("plus-thousand");
                 dodexToggle.onmousedown();
-                expect(isVisible(dodexTopElement)).toBeFalsy();
+                expect(dodexTopElement).toHaveClass("minus-thousand");  // z-index=-1000
                 dodexToggle.onmousedown(); // Make visible again
 
                 done();
             });
 
             it("Dodex - Check that card A is current and flipped on mousedown", function (done) {
-                expect(card1.style.zIndex).toMatch('');
-                expect(card2.style.zIndex).toMatch('');
+                expect(card1.style.zIndex).toMatch("");
+                expect(card2.style.zIndex).toMatch("");
 
                 // Needed to generate proper event.target
                 front1.onmousedown = dodexElement.onmousedown; // Generic dodex handler for all cards.
@@ -122,7 +122,7 @@ module.exports = {
                 back1.onmousedown = dodexElement.onmousedown;
                 back1.dispatchEvent(mouseEvent);
 
-                expect(card1.style.zIndex).toMatch('');
+                expect(card1.style.zIndex).toMatch("");
                 expect(card1.style.transform).toMatch("");
 
                 done();
@@ -131,16 +131,16 @@ module.exports = {
             it("Dodex - Flip multiple cards on tab mousedown", function (done) {
                 // Make sure all cards are in original position
                 var x, card;
-                for (x = 1; x < 14; x++) {
+                for (x = 1;x < 14;x++) {
                     card = getElement(".card" + x);
-                    expect(card.style.zIndex).toBe('');
+                    expect(card.style.zIndex).toBe("");
                 }
 
                 var frontM = getElement(".front13");
                 frontM.onmousedown = dodexElement.onmousedown;
                 frontM.dispatchEvent(mouseEvent);
                 // When tab M is clicked, it and all previous cards should be flipped.
-                for (x = 1; x < 14; x++) {
+                for (x = 1;x < 14;x++) {
                     card = getElement(".card" + x);
                     expect(card.style.transform).toMatch(/rotateX\(-190deg\)/);
                 }
@@ -152,9 +152,9 @@ module.exports = {
                 // front works here because the pseudo tab element does not have a back.
                 front1.dispatchEvent(mouseEvent);
                 // All cards should be back in original position;
-                for (x = 13; x > 0; x--) {
+                for (x = 13;x > 0;x--) {
                     card = getElement(".card" + x);
-                    expect(card.style.transform).toBe('');
+                    expect(card.style.transform).toBe("");
                 }
 
                 done();
@@ -174,7 +174,7 @@ module.exports = {
                 expect(card28).toBeNull();
                 expect(card29).toBeNull();
 
-                for (var i = 0; i < 2; i++) {
+                for (var i = 0;i < 2;i++) {
                     dodex.addCard(content); // content comes from app index.js
                 }
                 card28 = getElement(".card28");
@@ -184,10 +184,10 @@ module.exports = {
                 expect(card29).toHaveClass("card");
 
                 var tab = window.getComputedStyle(
-                    card28.querySelector('.front28'), ':after'
-                ).getPropertyValue('content')
+                    card28.querySelector(".front28"), ":after"
+                ).getPropertyValue("--tab");
 
-                expect(tab).toBe('"F01"');
+                expect(tab).toBe("\"F01\"");
 
                 done();
             });
@@ -195,7 +195,7 @@ module.exports = {
             it("Dodex - Load Login Popup from card1(A)", function (done) {
                 const clickHandler = function (event) {
                     Start["div .login click"](event.target, event);
-                }
+                };
                 var modal, nameObject;
                 var login = front1.querySelector(".login");
                 login.onclick = clickHandler;
@@ -205,7 +205,7 @@ module.exports = {
                     modal = $("#modalTemplate");
                     if ((typeof modal[0] !== "undefined" && modal[0].length !== 0) || timer === 150) {
                         nameObject = document.querySelector("#inputUsername");
-                        modal.on('shown.bs.modal', function (html) {
+                        modal.on("shown.bs.modal", function () {
                             modal.modal("toggle");
                         });
                         expect(modal[0]).toHaveClass("modal");
@@ -214,7 +214,7 @@ module.exports = {
                         observable.unsubscribe();
                         done();
                     }
-                })
+                });
             });
         });
     }
@@ -222,18 +222,4 @@ module.exports = {
 
 function getElement(element) {
     return document.querySelector(element);
-}
-
-function getAllElements(element) {
-    return document.querySelector(".top--dodex").querySelectorAll(element);
-}
-
-function isVisible(elem) {
-    if (getComputedStyle(elem).zIndex === "-1000") {
-        return false;
-    }
-    else {
-        // per jQuery
-        return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
-    }
 }

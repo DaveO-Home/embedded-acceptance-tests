@@ -1,4 +1,4 @@
-const { timer } = require('rxjs');
+const { timer } = require("rxjs");
 
 module.exports = {
     toolstest: function (Route, Helpers) {
@@ -15,7 +15,7 @@ module.exports = {
 
             beforeAll(function (done) {
                 if (!$("#main_container").length) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
+                    $("body").append("<div id=\"main_container\"><div class=\"loading-page\"></div></div>");
                 }
                 //Loading Application Web Page(Treat as a Fixture)
                 Route.data.attr("base", true);
@@ -26,40 +26,40 @@ module.exports = {
                 Helpers.getResource("container", 0, 1)
                     .catch(function (rejected) {
                         fail("The Tools Page did not load within limited time: " + rejected);
-                    }).then(function (resolved) {
+                    }).then(function () {
                         tools = $("#tools");
                         beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
 
-                        selectorObject = $('.jobtype-selector');
-                        spyToolsEvent = spyOnEvent(selectorObject[0], 'change');
+                        selectorObject = $(".jobtype-selector");
+                        spyToolsEvent = spyOnEvent(selectorObject[0], "change");
                         /*
                          *  The can.Component(jobtype-selector) has a change event - we want to test that.
                          */
                         selectorObject.val("cat1");
-                        Helpers.fireEvent(selectorObject[0], 'change');
+                        Helpers.fireEvent(selectorObject[0], "change");
 
                         // Note: if page does not refresh, increase the timer time.
                         // Using RxJs instead of Promise.
                         const numbers = timer(50, 50);
                         const observable = numbers.subscribe(timer => {
-                            afterValue = tools.find('tbody').find('tr:nth-child(1)').find('td:nth-child(2)').text()
+                            afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                             if (afterValue !== beforeValue || timer === 15) {
                                 observable.unsubscribe();
                                 done();
                             }
-                        })
-                    })
+                        });
+                    });
             });
 
             it("setup and change event executed.", function () {
 
                 //jasmine-jquery matchers
-                expect('change').toHaveBeenTriggeredOn(selectorObject[0]);
+                expect("change").toHaveBeenTriggeredOn(selectorObject[0]);
                 expect(spyToolsEvent).toHaveBeenTriggered();
 
                 expect(tools[0]).toBeInDOM();
-                expect('.disabled').toBeDisabled();  //Because of can-event warning, removed all disabled classes for testing
-                expect('.jobtype-selector > option').toHaveLength(4);
+                expect(".disabled").toBeDisabled();  //Because of can-event warning, removed all disabled classes for testing
+                expect(".jobtype-selector > option").toHaveLength(4);
                 //Required for Firefox
                 selectorObject[0] = document.activeElement;
                 expect(selectorObject).toBeFocused();

@@ -5,8 +5,8 @@ module.exports = function (config) {
         global.whichBrowsers = ["ChromeHeadless, FirefoxHeadless"];
     }
     config.set({
-        basePath: '../../',
-        frameworks: ['jasmine-jquery', 'jasmine'],
+        basePath: "../../",
+        frameworks: ["jasmine-jquery", "jasmine"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -24,64 +24,64 @@ module.exports = function (config) {
             //Webcomponents for Firefox - used for link tag with import attribute.
             {pattern: bundler + "/appl/jasmine/webcomponents-hi-sd-ce.js", watched: false},
             //Jasmine tests
-            bundler + '/tests/unit_*.js',
+            bundler + "/tests/unit_*.js",
             //Application and Acceptance specs.
-            bundler + '/appl/testapp_karma.html',
+            bundler + "/appl/testapp_karma.html",
             //Module loader - so we can run steal unit tests - see include-all-tests.js
-            'node_modules/steal/steal.js',
-            {pattern: 'node_modules/steal/**/*.js', watched: false, included: false},
+            "node_modules/steal/steal.js",
+            {pattern: "node_modules/steal/**/*.js", watched: false, included: false},
             // {pattern: 'node_modules/**/*', watched: false, included: false},
-            {pattern: 'node_modules/steal-css/css.js', watched: false, included: false},
-            {pattern: 'node_modules/**/*.map', watched: false, included: false, served: true},
-            {pattern: 'node_modules/bootstrap/**/*.js', watched: false, included: false},
-            {pattern: 'node_modules/popper.js/dist/umd/*', watched: false, included: false},
+            {pattern: "node_modules/steal-css/css.js", watched: false, included: false},
+            {pattern: "node_modules/**/*.map", watched: false, included: false, served: true},
+            {pattern: "node_modules/bootstrap/**/*.js", watched: false, included: false},
+            {pattern: "node_modules/popper.js/dist/umd/*", watched: false, included: false},
             // {pattern: 'node_modules/can/**/*.js', watched: false, included: false},
-            {pattern: 'node_modules/can-*/**/*.js', watched: false, included: false},
-            {pattern: bundler + '/appl/js/**/*.js', included: false},
-            {pattern: bundler + '/appl/css/**/*.js', included: false},
-            {pattern: 'node_modules/**/package.json', watched: false, included: false},
-            {pattern: 'node_modules/jquery/**/*.js', watched: false, served: true, included: false},
-            {pattern: 'node_modules/jasmine-jquery/lib/jasmine-jquery.js', watched: false, served: true, included: false},
-            {pattern: 'node_modules/tablesorter/**/*.js', watched: false, served: true, included: false},
-            {pattern: 'package.json', watched: false, included: false},
-            {pattern: 'node_modules/lodash/**/*js', watched: false, included: false},
-            {pattern: 'node_modules/moment/**/*.js', watched: false, included: false},
-            {pattern: 'node_modules/rxjs/**/*.js', watched: false, included: false},
-            {pattern: 'node_modules/dodex/**/*', watched: false, included: false},
-            {pattern: 'node_modules/dodex-input/**/*', watched: false, included: false},
-            {pattern: bundler + '/appl/dodex/**/*', watched: false, included: false},
-            {pattern: 'node_modules/marked/lib/marked.js', watched: false, included: false},
-            {pattern: 'README.md', included: false},
-            {pattern: bundler + '/appl/**/*.html', included: false},
-            {pattern: 'dev-bundle.js', watched: false, included: false},
+            {pattern: "node_modules/can-*/**/*.js", watched: false, included: false},
+            {pattern: bundler + "/appl/js/**/*.js", included: false},
+            {pattern: bundler + "/appl/css/**/*.js", included: false},
+            {pattern: "node_modules/**/package.json", watched: false, included: false},
+            {pattern: "node_modules/jquery/**/*.js", watched: false, served: true, included: false},
+            {pattern: "node_modules/jasmine-jquery/lib/jasmine-jquery.js", watched: false, served: true, included: false},
+            {pattern: "node_modules/tablesorter/**/*.js", watched: false, served: true, included: false},
+            {pattern: "package.json", watched: false, included: false},
+            {pattern: "node_modules/lodash/**/*js", watched: false, included: false},
+            {pattern: "node_modules/moment/**/*.js", watched: false, included: false},
+            {pattern: "node_modules/rxjs/**/*.js", watched: false, included: false},
+            {pattern: "node_modules/dodex/**/*", watched: false, included: false},
+            {pattern: "node_modules/dodex-input/**/*", watched: false, included: false},
+            {pattern: bundler + "/appl/dodex/**/*", watched: false, included: false},
+            {pattern: "node_modules/marked/lib/marked.js", watched: false, included: false},
+            {pattern: "README.md", included: false},
+            {pattern: bundler + "/appl/**/*.html", included: false},
+            {pattern: "dev-bundle.js", watched: false, included: false},
             //Test suites
-            {pattern: bundler + '/tests/**/steal_unit_*.js', included: false},
-            {pattern: bundler + '/appl/jasmine/**/*test.js', included: false},
-            {pattern: bundler + '/tests/**/include-*.js', included: false},
+            {pattern: bundler + "/tests/**/steal_unit_*.js", included: false},
+            {pattern: bundler + "/appl/jasmine/**/*test.js", included: false},
+            {pattern: bundler + "/tests/**/include-*.js", included: false},
             //end Test suites
-            {pattern: bundler + '/images/*', included: false, watched: false},
-            {pattern: 'node_modules/bootstrap/dist/css/bootstrap.min.css', watched: false, included: false},
-            {pattern: 'node_modules/tablesorter/dist/css/theme.blue.min.css', watched: false, included: false},
-            {pattern: 'node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css', watched: false, included: false},
-            {pattern: bundler + '/appl/templates/stache/*.stache', included: false},
-            {pattern: bundler + '/appl/templates/*.json', included: false},
-            {pattern: bundler + '/appl/views/prod/Test.pdf', included: false},
-            {pattern: bundler + '/appl/css/**/*.css', included: false},
-            {pattern: 'node_modules/steal-css/**/*.js', watched: false, included: false},
-            {pattern: 'node_modules/font-awesome/css/font-awesome.css', watched: false, included: false},
-            {pattern: 'node_modules/font-awesome/fonts/fontawesome-webfont.woff2', watched: false, included: false},
+            {pattern: bundler + "/images/*", included: false, watched: false},
+            {pattern: "node_modules/bootstrap/dist/css/bootstrap.min.css", watched: false, included: false},
+            {pattern: "node_modules/tablesorter/dist/css/theme.blue.min.css", watched: false, included: false},
+            {pattern: "node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", watched: false, included: false},
+            {pattern: bundler + "/appl/templates/stache/*.stache", included: false},
+            {pattern: bundler + "/appl/templates/*.json", included: false},
+            {pattern: bundler + "/appl/views/prod/Test.pdf", included: false},
+            {pattern: bundler + "/appl/css/**/*.css", included: false},
+            {pattern: "node_modules/steal-css/**/*.js", watched: false, included: false},
+            {pattern: "node_modules/font-awesome/css/font-awesome.css", watched: false, included: false},
+            {pattern: "node_modules/font-awesome/fonts/fontawesome-webfont.woff2", watched: false, included: false},
             // Jasmine/Steal tests and starts Karma
-            bundler + '/build/karma.bootstrap.js'
+            bundler + "/build/karma.bootstrap.js"
         ],
         bowerPackages: [
         ],
         plugins: [
-            'karma-chrome-launcher',
-            'karma-firefox-launcher',
-            'karma-opera-launcher',
-            'karma-jasmine',
-            'karma-jasmine-jquery',
-            'karma-mocha-reporter'
+            "karma-chrome-launcher",
+            "karma-firefox-launcher",
+            "karma-opera-launcher",
+            "karma-jasmine",
+            "karma-jasmine-jquery",
+            "karma-mocha-reporter"
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 
@@ -90,13 +90,13 @@ module.exports = function (config) {
         browsers: global.whichBrowsers,
         customLaunchers: {
             ChromeCustom: {
-                base: 'ChromeHeadless',
-                flags: ['--disable-web-security', '--disable-translate', '--disable-extensions'],
+                base: "ChromeHeadless",
+                flags: ["--disable-web-security", "--disable-translate", "--disable-extensions"],
                 debug: false
             },
             FirefoxHeadless: {
-                base: 'Firefox',
-                flags: ['--headless']
+                base: "Firefox",
+                flags: ["--headless"]
             }
         },
         browserNoActivityTimeout: 0,
@@ -105,7 +105,7 @@ module.exports = function (config) {
         // preprocessors: {
         //     '*/**/*.html': []
         // },
-        reporters: ['mocha'],
+        reporters: ["mocha"],
         port: 9876,
         colors: true,
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
@@ -113,7 +113,7 @@ module.exports = function (config) {
         autoWatch: true,
         singleRun: false,
         loggers: [{
-                type: 'console'
+                type: "console"
             }
         ],
         client: {

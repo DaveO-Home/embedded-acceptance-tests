@@ -48,9 +48,9 @@ if (typeof steal !== "undefined") {
 //Code between the ..start and ..end tags will be removed by webpack during the production build.
 //testit is true if running under Karma - see testapp_dev.html
 if (typeof testit !== "undefined" && testit) {
-    var apptest = require("apptests")
+    var apptest = require("apptests");
 	// Run acceptance tests.
-    apptest(Route, Helpers, App , dodex, input, getAdditionalContent())
+    apptest(Route, Helpers, App , dodex, input, getAdditionalContent());
 }
 /* develblock:end */
 
@@ -88,5 +88,5 @@ function getAdditionalContent() {
 				}
 			}
 		}
-	}
+	};
 }

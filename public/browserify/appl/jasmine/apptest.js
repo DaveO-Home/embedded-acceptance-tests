@@ -20,11 +20,11 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
                 done();
             }, "html").fail(function (data, err) {
                 console.warn("Error fetching fixture data: " + err);
-                done()
+                done();
             });
 
-            spyOn(Route.data, 'index').and.callThrough();
-            spyOn(Route.data, 'dispatch').and.callThrough();
+            spyOn(Route.data, "index").and.callThrough();
+            spyOn(Route.data, "dispatch").and.callThrough();
         }, 4000);
 
         afterEach(function () {
@@ -123,7 +123,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
         //Test dodex
         dodexTest(dodex, input, content, Start);
         //Test dodex input
-        inputTest(dodex, input, content, Start);
+        inputTest(dodex);
 
         if (testOnly) {
             it("Testing only", function () {

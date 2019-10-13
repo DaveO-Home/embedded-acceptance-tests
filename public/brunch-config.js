@@ -1,40 +1,40 @@
-const path = require('path')
-const isProduction = process.env.NODE_ENV === 'production'
-const deployDir = isProduction ? 'dist/brunch' : 'dist_test/brunch'
-const fontLocation = isProduction ? '../fonts' : '../fonts'
-const singleRun = process.env.USE_HMR !== 'true' && process.env.USE_TDD !== 'true'
-const htmlFile = isProduction ? 'brunch/appl/testapp.html' : 'brunch/appl/testapp_dev.html'
+const path = require("path");
+const isProduction = process.env.NODE_ENV === "production";
+const deployDir = isProduction ? "dist/brunch" : "dist_test/brunch";
+const fontLocation = isProduction ? "../fonts" : "../fonts";
+const singleRun = process.env.USE_HMR !== "true" && process.env.USE_TDD !== "true";
+const htmlFile = isProduction ? "brunch/appl/testapp.html" : "brunch/appl/testapp_dev.html";
 
 exports.paths = {
   public: deployDir,
-  watched: ['brunch/appl', 'brunch/jasmine']
+  watched: ["brunch/appl", "brunch/jasmine"]
 };
 
 exports.files = {
   javascripts: {
     joinTo: {
-      'vendor.js': /^(?!brunch\/appl)/,
-      'acceptance.js': [/^brunch\/appl/, /^brunch\/jasmine/]
+      "vendor.js": /^(?!brunch\/appl)/,
+      "acceptance.js": [/^brunch\/appl/, /^brunch\/jasmine/]
     }
   },
   templates: {
-    joinTo: 'acceptance.js'
+    joinTo: "acceptance.js"
   },
   stylesheets: {
-    joinTo: 'acceptance.css',
+    joinTo: "acceptance.css",
     order: {
       after: ["brunch/appl/css/site.css"]
     }
   }
 };
 
-pluginsObject = {
+const pluginsObject = {
   stripcode: {
-    start: 'develblock:start',
-    end: 'develblock:end'
+    start: "develblock:start",
+    end: "develblock:end"
   },
   babel: {
-    presets: ['env']
+    presets: ["env"]
   },
   // See README.md for implementation
   //   eslint: {
@@ -43,35 +43,35 @@ pluginsObject = {
   //     fix: true
   //   },
   copycat: {
-    'views': ['brunch/appl/views'],
-    'templates': ['brunch/appl/templates'],
-    './': ['README.md', htmlFile],
-    'images': ['brunch/images'],
-    'dodex': ['brunch/appl/dodex'],
+    "views": ["brunch/appl/views"],
+    "templates": ["brunch/appl/templates"],
+    "./": ["README.md", htmlFile],
+    "images": ["brunch/images"],
+    "dodex": ["brunch/appl/dodex"],
     verbose: false,
     onlyChanged: true
   }
 };
 
-pluginsObject.copycat[fontLocation] = ['node_modules/font-awesome/fonts']
-exports.plugins = pluginsObject
+pluginsObject.copycat[fontLocation] = ["node_modules/font-awesome/fonts"];
+exports.plugins = pluginsObject;
 
 exports.npm = {
   enabled: true,
   globals: {
-    jQuery: 'jquery',
-    $: 'jquery',
-    bootstrap: 'bootstrap',
-    Popper: 'popper.js'
+    jQuery: "jquery",
+    $: "jquery",
+    bootstrap: "bootstrap",
+    Popper: "popper.js"
   },
   styles: {
-    bootstrap: ['dist/css/bootstrap.css'],
-    'font-awesome': ['css/font-awesome.css'],
-    'tablesorter': [
-      'dist/css/jquery.tablesorter.pager.min.css',
-      'dist/css/theme.blue.min.css'
+    bootstrap: ["dist/css/bootstrap.css"],
+    "font-awesome": ["css/font-awesome.css"],
+    "tablesorter": [
+      "dist/css/jquery.tablesorter.pager.min.css",
+      "dist/css/theme.blue.min.css"
     ],
-    dodex: ['dist/dodex.min.css']
+    dodex: ["dist/dodex.min.css"]
   },
   aliases: {
     "handlebars": "handlebars/dist/handlebars.min.js",
@@ -81,23 +81,23 @@ exports.npm = {
 
 exports.server = {
   port: 3080,
-  base: '/',
+  base: "/",
   stripSlashes: true
-}
+};
 
-pluginsObject.karma = require('./brunch/build/karma.conf')
-pluginsObject.karma.singleRun = singleRun
+pluginsObject.karma = require("./brunch/build/karma.conf");
+pluginsObject.karma.singleRun = singleRun;
 
 exports.overrides = {
   production: {
     paths: {
-      watched: ['brunch/appl']
+      watched: ["brunch/appl"]
     },
     conventions: {
-      ignored: ['brunch/jasmine']
+      ignored: ["brunch/jasmine"]
     },
     plugins: {
-      off: ['karma']
+      off: ["karma"]
     }
   }
-}
+};

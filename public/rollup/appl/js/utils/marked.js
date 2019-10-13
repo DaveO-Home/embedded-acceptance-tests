@@ -4,7 +4,7 @@
  * https://github.com/chjj/marked
  */
 
-;(function() {
+(function() {
 
 /**
  * Block-Level Grammar
@@ -29,35 +29,35 @@ var block = {
 
 block.bullet = /(?:[*+-]|\d+\.)/;
 block.item = /^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;
-block.item = replace(block.item, 'gm')
+block.item = replace(block.item, "gm")
   (/bull/g, block.bullet)
   ();
 
 block.list = replace(block.list)
   (/bull/g, block.bullet)
-  ('hr', '\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))')
-  ('def', '\\n+(?=' + block.def.source + ')')
+  ("hr", "\\n+(?=\\1?(?:[-*_] *){3,}(?:\\n+|$))")
+  ("def", "\\n+(?=" + block.def.source + ")")
   ();
 
-block._tag = '(?!(?:'
-  + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
-  + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b';
+block._tag = "(?!(?:"
+  + "a|em|strong|small|s|cite|q|dfn|abbr|data|time|code"
+  + "|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo"
+  + "|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|[^\\w\\s@]*@)\\b";
 
 block.html = replace(block.html)
-  ('comment', /<!--[\s\S]*?-->/)
-  ('closed', /<(tag)[\s\S]+?<\/\1>/)
-  ('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)
+  ("comment", /<!--[\s\S]*?-->/)
+  ("closed", /<(tag)[\s\S]+?<\/\1>/)
+  ("closing", /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)
   (/tag/g, block._tag)
   ();
 
 block.paragraph = replace(block.paragraph)
-  ('hr', block.hr)
-  ('heading', block.heading)
-  ('lheading', block.lheading)
-  ('blockquote', block.blockquote)
-  ('tag', '<' + block._tag)
-  ('def', block.def)
+  ("hr", block.hr)
+  ("heading", block.heading)
+  ("lheading", block.lheading)
+  ("blockquote", block.blockquote)
+  ("tag", "<" + block._tag)
+  ("def", block.def)
   ();
 
 /**
@@ -77,9 +77,9 @@ block.gfm = merge({}, block.normal, {
 });
 
 block.gfm.paragraph = replace(block.paragraph)
-  ('(?!', '(?!'
-    + block.gfm.fences.source.replace('\\1', '\\2') + '|'
-    + block.list.source.replace('\\1', '\\3') + '|')
+  ("(?!", "(?!"
+    + block.gfm.fences.source.replace("\\1", "\\2") + "|"
+    + block.list.source.replace("\\1", "\\3") + "|")
   ();
 
 /**
@@ -131,10 +131,10 @@ Lexer.lex = function(src, options) {
 
 Lexer.prototype.lex = function(src) {
   src = src
-    .replace(/\r\n|\r/g, '\n')
-    .replace(/\t/g, '    ')
-    .replace(/\u00a0/g, ' ')
-    .replace(/\u2424/g, '\n');
+    .replace(/\r\n|\r/g, "\n")
+    .replace(/\t/g, "    ")
+    .replace(/\u00a0/g, " ")
+    .replace(/\u2424/g, "\n");
 
   return this.token(src, true);
 };
@@ -144,7 +144,7 @@ Lexer.prototype.lex = function(src) {
  */
 
 Lexer.prototype.token = function(src, top, bq) {
-  var src = src.replace(/^ +$/gm, '')
+  var src = src.replace(/^ +$/gm, "")
     , next
     , loose
     , cap
@@ -161,7 +161,7 @@ Lexer.prototype.token = function(src, top, bq) {
       src = src.substring(cap[0].length);
       if (cap[0].length > 1) {
         this.tokens.push({
-          type: 'space'
+          type: "space"
         });
       }
     }
@@ -169,11 +169,11 @@ Lexer.prototype.token = function(src, top, bq) {
     // code
     if (cap = this.rules.code.exec(src)) {
       src = src.substring(cap[0].length);
-      cap = cap[0].replace(/^ {4}/gm, '');
+      cap = cap[0].replace(/^ {4}/gm, "");
       this.tokens.push({
-        type: 'code',
+        type: "code",
         text: !this.options.pedantic
-          ? cap.replace(/\n+$/, '')
+          ? cap.replace(/\n+$/, "")
           : cap
       });
       continue;
@@ -183,9 +183,9 @@ Lexer.prototype.token = function(src, top, bq) {
     if (cap = this.rules.fences.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'code',
+        type: "code",
         lang: cap[2],
-        text: cap[3] || ''
+        text: cap[3] || ""
       });
       continue;
     }
@@ -194,7 +194,7 @@ Lexer.prototype.token = function(src, top, bq) {
     if (cap = this.rules.heading.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'heading',
+        type: "heading",
         depth: cap[1].length,
         text: cap[2]
       });
@@ -206,19 +206,19 @@ Lexer.prototype.token = function(src, top, bq) {
       src = src.substring(cap[0].length);
 
       item = {
-        type: 'table',
-        header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
-        align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
-        cells: cap[3].replace(/\n$/, '').split('\n')
+        type: "table",
+        header: cap[1].replace(/^ *| *\| *$/g, "").split(/ *\| */),
+        align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
+        cells: cap[3].replace(/\n$/, "").split("\n")
       };
 
       for (i = 0; i < item.align.length; i++) {
         if (/^ *-+: *$/.test(item.align[i])) {
-          item.align[i] = 'right';
+          item.align[i] = "right";
         } else if (/^ *:-+: *$/.test(item.align[i])) {
-          item.align[i] = 'center';
+          item.align[i] = "center";
         } else if (/^ *:-+ *$/.test(item.align[i])) {
-          item.align[i] = 'left';
+          item.align[i] = "left";
         } else {
           item.align[i] = null;
         }
@@ -237,8 +237,8 @@ Lexer.prototype.token = function(src, top, bq) {
     if (cap = this.rules.lheading.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'heading',
-        depth: cap[2] === '=' ? 1 : 2,
+        type: "heading",
+        depth: cap[2] === "=" ? 1 : 2,
         text: cap[1]
       });
       continue;
@@ -248,7 +248,7 @@ Lexer.prototype.token = function(src, top, bq) {
     if (cap = this.rules.hr.exec(src)) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'hr'
+        type: "hr"
       });
       continue;
     }
@@ -258,10 +258,10 @@ Lexer.prototype.token = function(src, top, bq) {
       src = src.substring(cap[0].length);
 
       this.tokens.push({
-        type: 'blockquote_start'
+        type: "blockquote_start"
       });
 
-      cap = cap[0].replace(/^ *> ?/gm, '');
+      cap = cap[0].replace(/^ *> ?/gm, "");
 
       // Pass `top` to keep the current
       // "toplevel" state. This is exactly
@@ -269,7 +269,7 @@ Lexer.prototype.token = function(src, top, bq) {
       this.token(cap, top, true);
 
       this.tokens.push({
-        type: 'blockquote_end'
+        type: "blockquote_end"
       });
 
       continue;
@@ -281,7 +281,7 @@ Lexer.prototype.token = function(src, top, bq) {
       bull = cap[2];
 
       this.tokens.push({
-        type: 'list_start',
+        type: "list_start",
         ordered: bull.length > 1
       });
 
@@ -298,15 +298,15 @@ Lexer.prototype.token = function(src, top, bq) {
         // Remove the list item's bullet
         // so it is seen as the next token.
         space = item.length;
-        item = item.replace(/^ *([*+-]|\d+\.) +/, '');
+        item = item.replace(/^ *([*+-]|\d+\.) +/, "");
 
         // Outdent whatever the
         // list item contains. Hacky.
-        if (~item.indexOf('\n ')) {
+        if (~item.indexOf("\n ")) {
           space -= item.length;
           item = !this.options.pedantic
-            ? item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '')
-            : item.replace(/^ {1,4}/gm, '');
+            ? item.replace(new RegExp("^ {1," + space + "}", "gm"), "")
+            : item.replace(/^ {1,4}/gm, "");
         }
 
         // Determine whether the next list item belongs here.
@@ -314,7 +314,7 @@ Lexer.prototype.token = function(src, top, bq) {
         if (this.options.smartLists && i !== l - 1) {
           b = block.bullet.exec(cap[i + 1])[0];
           if (bull !== b && !(bull.length > 1 && b.length > 1)) {
-            src = cap.slice(i + 1).join('\n') + src;
+            src = cap.slice(i + 1).join("\n") + src;
             i = l - 1;
           }
         }
@@ -324,26 +324,26 @@ Lexer.prototype.token = function(src, top, bq) {
         // for discount behavior.
         loose = next || /\n\n(?!\s*$)/.test(item);
         if (i !== l - 1) {
-          next = item.charAt(item.length - 1) === '\n';
+          next = item.charAt(item.length - 1) === "\n";
           if (!loose) loose = next;
         }
 
         this.tokens.push({
           type: loose
-            ? 'loose_item_start'
-            : 'list_item_start'
+            ? "loose_item_start"
+            : "list_item_start"
         });
 
         // Recurse.
         this.token(item, false, bq);
 
         this.tokens.push({
-          type: 'list_item_end'
+          type: "list_item_end"
         });
       }
 
       this.tokens.push({
-        type: 'list_end'
+        type: "list_end"
       });
 
       continue;
@@ -354,10 +354,10 @@ Lexer.prototype.token = function(src, top, bq) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: this.options.sanitize
-          ? 'paragraph'
-          : 'html',
+          ? "paragraph"
+          : "html",
         pre: !this.options.sanitizer
-          && (cap[1] === 'pre' || cap[1] === 'script' || cap[1] === 'style'),
+          && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
         text: cap[0]
       });
       continue;
@@ -378,19 +378,19 @@ Lexer.prototype.token = function(src, top, bq) {
       src = src.substring(cap[0].length);
 
       item = {
-        type: 'table',
-        header: cap[1].replace(/^ *| *\| *$/g, '').split(/ *\| */),
-        align: cap[2].replace(/^ *|\| *$/g, '').split(/ *\| */),
-        cells: cap[3].replace(/(?: *\| *)?\n$/, '').split('\n')
+        type: "table",
+        header: cap[1].replace(/^ *| *\| *$/g, "").split(/ *\| */),
+        align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
+        cells: cap[3].replace(/(?: *\| *)?\n$/, "").split("\n")
       };
 
       for (i = 0; i < item.align.length; i++) {
         if (/^ *-+: *$/.test(item.align[i])) {
-          item.align[i] = 'right';
+          item.align[i] = "right";
         } else if (/^ *:-+: *$/.test(item.align[i])) {
-          item.align[i] = 'center';
+          item.align[i] = "center";
         } else if (/^ *:-+ *$/.test(item.align[i])) {
-          item.align[i] = 'left';
+          item.align[i] = "left";
         } else {
           item.align[i] = null;
         }
@@ -398,7 +398,7 @@ Lexer.prototype.token = function(src, top, bq) {
 
       for (i = 0; i < item.cells.length; i++) {
         item.cells[i] = item.cells[i]
-          .replace(/^ *\| *| *\| *$/g, '')
+          .replace(/^ *\| *| *\| *$/g, "")
           .split(/ *\| */);
       }
 
@@ -411,8 +411,8 @@ Lexer.prototype.token = function(src, top, bq) {
     if (top && (cap = this.rules.paragraph.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'paragraph',
-        text: cap[1].charAt(cap[1].length - 1) === '\n'
+        type: "paragraph",
+        text: cap[1].charAt(cap[1].length - 1) === "\n"
           ? cap[1].slice(0, -1)
           : cap[1]
       });
@@ -424,7 +424,7 @@ Lexer.prototype.token = function(src, top, bq) {
       // Top-level should never reach here.
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: 'text',
+        type: "text",
         text: cap[0]
       });
       continue;
@@ -432,7 +432,7 @@ Lexer.prototype.token = function(src, top, bq) {
 
     if (src) {
       throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+        Error("Infinite loop on byte: " + src.charCodeAt(0));
     }
   }
 
@@ -463,12 +463,12 @@ inline._inside = /(?:\[[^\]]*\]|[^\[\]]|\](?=[^\[]*\]))*/;
 inline._href = /\s*<?([\s\S]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
 
 inline.link = replace(inline.link)
-  ('inside', inline._inside)
-  ('href', inline._href)
+  ("inside", inline._inside)
+  ("href", inline._href)
   ();
 
 inline.reflink = replace(inline.reflink)
-  ('inside', inline._inside)
+  ("inside", inline._inside)
   ();
 
 /**
@@ -491,12 +491,12 @@ inline.pedantic = merge({}, inline.normal, {
  */
 
 inline.gfm = merge({}, inline.normal, {
-  escape: replace(inline.escape)('])', '~|])')(),
+  escape: replace(inline.escape)("])", "~|])")(),
   url: /^(https?:\/\/[^\s<]+[^<.,:;"')\]\s])/,
   del: /^~~(?=\S)([\s\S]*?\S)~~/,
   text: replace(inline.text)
-    (']|', '~]|')
-    ('|', '|https?://|')
+    ("]|", "~]|")
+    ("|", "|https?://|")
     ()
 });
 
@@ -505,8 +505,8 @@ inline.gfm = merge({}, inline.normal, {
  */
 
 inline.breaks = merge({}, inline.gfm, {
-  br: replace(inline.br)('{2,}', '*')(),
-  text: replace(inline.gfm.text)('{2,}', '*')()
+  br: replace(inline.br)("{2,}", "*")(),
+  text: replace(inline.gfm.text)("{2,}", "*")()
 });
 
 /**
@@ -522,7 +522,7 @@ function InlineLexer(links, options) {
 
   if (!this.links) {
     throw new
-      Error('Tokens array requires a `links` property.');
+      Error("Tokens array requires a `links` property.");
   }
 
   if (this.options.gfm) {
@@ -556,7 +556,7 @@ InlineLexer.output = function(src, links, options) {
  */
 
 InlineLexer.prototype.output = function(src) {
-  var out = ''
+  var out = ""
     , link
     , text
     , href
@@ -573,13 +573,13 @@ InlineLexer.prototype.output = function(src) {
     // autolink
     if (cap = this.rules.autolink.exec(src)) {
       src = src.substring(cap[0].length);
-      if (cap[2] === '@') {
+      if (cap[2] === "@") {
         text = escape(
-          cap[1].charAt(6) === ':'
+          cap[1].charAt(6) === ":"
           ? this.mangle(cap[1].substring(7))
           : this.mangle(cap[1])
         );
-        href = this.mangle('mailto:') + text;
+        href = this.mangle("mailto:") + text;
       } else {
         text = escape(cap[1]);
         href = text;
@@ -609,7 +609,7 @@ InlineLexer.prototype.output = function(src) {
         ? this.options.sanitizer
           ? this.options.sanitizer(cap[0])
           : escape(cap[0])
-        : cap[0]
+        : cap[0];
       continue;
     }
 
@@ -629,7 +629,7 @@ InlineLexer.prototype.output = function(src) {
     if ((cap = this.rules.reflink.exec(src))
         || (cap = this.rules.nolink.exec(src))) {
       src = src.substring(cap[0].length);
-      link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
+      link = (cap[2] || cap[1]).replace(/\s+/g, " ");
       link = this.links[link.toLowerCase()];
       if (!link || !link.href) {
         out += cap[0].charAt(0);
@@ -686,7 +686,7 @@ InlineLexer.prototype.output = function(src) {
 
     if (src) {
       throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+        Error("Infinite loop on byte: " + src.charCodeAt(0));
     }
   }
 
@@ -701,7 +701,7 @@ InlineLexer.prototype.outputLink = function(cap, link) {
   var href = escape(link.href)
     , title = link.title ? escape(link.title) : null;
 
-  return cap[0].charAt(0) !== '!'
+  return cap[0].charAt(0) !== "!"
     ? this.renderer.link(href, title, this.output(cap[1]))
     : this.renderer.image(href, title, escape(cap[1]));
 };
@@ -714,19 +714,19 @@ InlineLexer.prototype.smartypants = function(text) {
   if (!this.options.smartypants) return text;
   return text
     // em-dashes
-    .replace(/---/g, '\u2014')
+    .replace(/---/g, "\u2014")
     // en-dashes
-    .replace(/--/g, '\u2013')
+    .replace(/--/g, "\u2013")
     // opening singles
-    .replace(/(^|[-\u2014/(\[{"\s])'/g, '$1\u2018')
+    .replace(/(^|[-\u2014/(\[{"\s])'/g, "$1\u2018")
     // closing singles & apostrophes
-    .replace(/'/g, '\u2019')
+    .replace(/'/g, "\u2019")
     // opening doubles
-    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, '$1\u201c')
+    .replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1\u201c")
     // closing doubles
-    .replace(/"/g, '\u201d')
+    .replace(/"/g, "\u201d")
     // ellipses
-    .replace(/\.{3}/g, '\u2026');
+    .replace(/\.{3}/g, "\u2026");
 };
 
 /**
@@ -735,7 +735,7 @@ InlineLexer.prototype.smartypants = function(text) {
 
 InlineLexer.prototype.mangle = function(text) {
   if (!this.options.mangle) return text;
-  var out = ''
+  var out = ""
     , l = text.length
     , i = 0
     , ch;
@@ -743,9 +743,9 @@ InlineLexer.prototype.mangle = function(text) {
   for (; i < l; i++) {
     ch = text.charCodeAt(i);
     if (Math.random() > 0.5) {
-      ch = 'x' + ch.toString(16);
+      ch = "x" + ch.toString(16);
     }
-    out += '&#' + ch + ';';
+    out += "&#" + ch + ";";
   }
 
   return out;
@@ -769,21 +769,21 @@ Renderer.prototype.code = function(code, lang, escaped) {
   }
 
   if (!lang) {
-    return '<pre><code>'
+    return "<pre><code>"
       + (escaped ? code : escape(code, true))
-      + '\n</code></pre>';
+      + "\n</code></pre>";
   }
 
-  return '<pre><code class="'
+  return "<pre><code class=\""
     + this.options.langPrefix
     + escape(lang, true)
-    + '">'
+    + "\">"
     + (escaped ? code : escape(code, true))
-    + '\n</code></pre>\n';
+    + "\n</code></pre>\n";
 };
 
 Renderer.prototype.blockquote = function(quote) {
-  return '<blockquote>\n' + quote + '</blockquote>\n';
+  return "<blockquote>\n" + quote + "</blockquote>\n";
 };
 
 Renderer.prototype.html = function(html) {
@@ -791,100 +791,100 @@ Renderer.prototype.html = function(html) {
 };
 
 Renderer.prototype.heading = function(text, level, raw) {
-  return '<h'
+  return "<h"
     + level
-    + ' id="'
+    + " id=\""
     + this.options.headerPrefix
-    + raw.toLowerCase().replace(/[^\w]+/g, '-')
-    + '">'
+    + raw.toLowerCase().replace(/[^\w]+/g, "-")
+    + "\">"
     + text
-    + '</h'
+    + "</h"
     + level
-    + '>\n';
+    + ">\n";
 };
 
 Renderer.prototype.hr = function() {
-  return this.options.xhtml ? '<hr/>\n' : '<hr>\n';
+  return this.options.xhtml ? "<hr/>\n" : "<hr>\n";
 };
 
 Renderer.prototype.list = function(body, ordered) {
-  var type = ordered ? 'ol' : 'ul';
-  return '<' + type + '>\n' + body + '</' + type + '>\n';
+  var type = ordered ? "ol" : "ul";
+  return "<" + type + ">\n" + body + "</" + type + ">\n";
 };
 
 Renderer.prototype.listitem = function(text) {
-  return '<li>' + text + '</li>\n';
+  return "<li>" + text + "</li>\n";
 };
 
 Renderer.prototype.paragraph = function(text) {
-  return '<p>' + text + '</p>\n';
+  return "<p>" + text + "</p>\n";
 };
 
 Renderer.prototype.table = function(header, body) {
-  return '<table>\n'
-    + '<thead>\n'
+  return "<table>\n"
+    + "<thead>\n"
     + header
-    + '</thead>\n'
-    + '<tbody>\n'
+    + "</thead>\n"
+    + "<tbody>\n"
     + body
-    + '</tbody>\n'
-    + '</table>\n';
+    + "</tbody>\n"
+    + "</table>\n";
 };
 
 Renderer.prototype.tablerow = function(content) {
-  return '<tr>\n' + content + '</tr>\n';
+  return "<tr>\n" + content + "</tr>\n";
 };
 
 Renderer.prototype.tablecell = function(content, flags) {
-  var type = flags.header ? 'th' : 'td';
+  var type = flags.header ? "th" : "td";
   var tag = flags.align
-    ? '<' + type + ' style="text-align:' + flags.align + '">'
-    : '<' + type + '>';
-  return tag + content + '</' + type + '>\n';
+    ? "<" + type + " style=\"text-align:" + flags.align + "\">"
+    : "<" + type + ">";
+  return tag + content + "</" + type + ">\n";
 };
 
 // span level renderer
 Renderer.prototype.strong = function(text) {
-  return '<strong>' + text + '</strong>';
+  return "<strong>" + text + "</strong>";
 };
 
 Renderer.prototype.em = function(text) {
-  return '<em>' + text + '</em>';
+  return "<em>" + text + "</em>";
 };
 
 Renderer.prototype.codespan = function(text) {
-  return '<code>' + text + '</code>';
+  return "<code>" + text + "</code>";
 };
 
 Renderer.prototype.br = function() {
-  return this.options.xhtml ? '<br/>' : '<br>';
+  return this.options.xhtml ? "<br/>" : "<br>";
 };
 
 Renderer.prototype.del = function(text) {
-  return '<del>' + text + '</del>';
+  return "<del>" + text + "</del>";
 };
 
 Renderer.prototype.link = function(href, title, text) {
   if (this.options.sanitize) {
     try {
       var prot = decodeURIComponent(unescape(href))
-        .replace(/[^\w:]/g, '')
+        .replace(/[^\w:]/g, "")
         .toLowerCase();
     } catch (e) {
-      return '';
+      return "";
     }
-    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
-      return '';
+    if (prot.indexOf("javascript:") === 0 || prot.indexOf("vbscript:") === 0 || prot.indexOf("data:") === 0) {
+      return "";
     }
   }
   if (this.options.baseUrl && !originIndependentUrl.test(href)) {
     href = resolveUrl(this.options.baseUrl, href);
   }
-  var out = '<a href="' + href + '"';
+  var out = "<a href=\"" + href + "\"";
   if (title) {
-    out += ' title="' + title + '"';
+    out += " title=\"" + title + "\"";
   }
-  out += '>' + text + '</a>';
+  out += ">" + text + "</a>";
   return out;
 };
 
@@ -892,11 +892,11 @@ Renderer.prototype.image = function(href, title, text) {
   if (this.options.baseUrl && !originIndependentUrl.test(href)) {
     href = resolveUrl(this.options.baseUrl, href);
   }
-  var out = '<img src="' + href + '" alt="' + text + '"';
+  var out = "<img src=\"" + href + "\" alt=\"" + text + "\"";
   if (title) {
-    out += ' title="' + title + '"';
+    out += " title=\"" + title + "\"";
   }
-  out += this.options.xhtml ? '/>' : '>';
+  out += this.options.xhtml ? "/>" : ">";
   return out;
 };
 
@@ -934,7 +934,7 @@ Parser.prototype.parse = function(src) {
   this.inline = new InlineLexer(src.links, this.options, this.renderer);
   this.tokens = src.reverse();
 
-  var out = '';
+  var out = "";
   while (this.next()) {
     out += this.tok();
   }
@@ -965,8 +965,8 @@ Parser.prototype.peek = function() {
 Parser.prototype.parseText = function() {
   var body = this.token.text;
 
-  while (this.peek().type === 'text') {
-    body += '\n' + this.next().text;
+  while (this.peek().type === "text") {
+    body += "\n" + this.next().text;
   }
 
   return this.inline.output(body);
@@ -978,26 +978,26 @@ Parser.prototype.parseText = function() {
 
 Parser.prototype.tok = function() {
   switch (this.token.type) {
-    case 'space': {
-      return '';
+    case "space": {
+      return "";
     }
-    case 'hr': {
+    case "hr": {
       return this.renderer.hr();
     }
-    case 'heading': {
+    case "heading": {
       return this.renderer.heading(
         this.inline.output(this.token.text),
         this.token.depth,
         this.token.text);
     }
-    case 'code': {
+    case "code": {
       return this.renderer.code(this.token.text,
         this.token.lang,
         this.token.escaped);
     }
-    case 'table': {
-      var header = ''
-        , body = ''
+    case "table": {
+      var header = ""
+        , body = ""
         , i
         , row
         , cell
@@ -1005,7 +1005,7 @@ Parser.prototype.tok = function() {
         , j;
 
       // header
-      cell = '';
+      cell = "";
       for (i = 0; i < this.token.header.length; i++) {
         flags = { header: true, align: this.token.align[i] };
         cell += this.renderer.tablecell(
@@ -1018,7 +1018,7 @@ Parser.prototype.tok = function() {
       for (i = 0; i < this.token.cells.length; i++) {
         row = this.token.cells[i];
 
-        cell = '';
+        cell = "";
         for (j = 0; j < row.length; j++) {
           cell += this.renderer.tablecell(
             this.inline.output(row[j]),
@@ -1030,55 +1030,55 @@ Parser.prototype.tok = function() {
       }
       return this.renderer.table(header, body);
     }
-    case 'blockquote_start': {
-      var body = '';
+    case "blockquote_start": {
+      var body = "";
 
-      while (this.next().type !== 'blockquote_end') {
+      while (this.next().type !== "blockquote_end") {
         body += this.tok();
       }
 
       return this.renderer.blockquote(body);
     }
-    case 'list_start': {
-      var body = ''
+    case "list_start": {
+      var body = ""
         , ordered = this.token.ordered;
 
-      while (this.next().type !== 'list_end') {
+      while (this.next().type !== "list_end") {
         body += this.tok();
       }
 
       return this.renderer.list(body, ordered);
     }
-    case 'list_item_start': {
-      var body = '';
+    case "list_item_start": {
+      var body = "";
 
-      while (this.next().type !== 'list_item_end') {
-        body += this.token.type === 'text'
+      while (this.next().type !== "list_item_end") {
+        body += this.token.type === "text"
           ? this.parseText()
           : this.tok();
       }
 
       return this.renderer.listitem(body);
     }
-    case 'loose_item_start': {
-      var body = '';
+    case "loose_item_start": {
+      var body = "";
 
-      while (this.next().type !== 'list_item_end') {
+      while (this.next().type !== "list_item_end") {
         body += this.tok();
       }
 
       return this.renderer.listitem(body);
     }
-    case 'html': {
+    case "html": {
       var html = !this.token.pre && !this.options.pedantic
         ? this.inline.output(this.token.text)
         : this.token.text;
       return this.renderer.html(html);
     }
-    case 'paragraph': {
+    case "paragraph": {
       return this.renderer.paragraph(this.inline.output(this.token.text));
     }
-    case 'text': {
+    case "text": {
       return this.renderer.paragraph(this.parseText());
     }
   }
@@ -1090,56 +1090,56 @@ Parser.prototype.tok = function() {
 
 function escape(html, encode) {
   return html
-    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(!encode ? /&(?!#?\w+;)/g : /&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function unescape(html) {
 	// explicitly match decimal, hex, and named HTML entities
   return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function(_, n) {
     n = n.toLowerCase();
-    if (n === 'colon') return ':';
-    if (n.charAt(0) === '#') {
-      return n.charAt(1) === 'x'
+    if (n === "colon") return ":";
+    if (n.charAt(0) === "#") {
+      return n.charAt(1) === "x"
         ? String.fromCharCode(parseInt(n.substring(2), 16))
         : String.fromCharCode(+n.substring(1));
     }
-    return '';
+    return "";
   });
 }
 
 function replace(regex, opt) {
   regex = regex.source;
-  opt = opt || '';
+  opt = opt || "";
   return function self(name, val) {
     if (!name) return new RegExp(regex, opt);
     val = val.source || val;
-    val = val.replace(/(^|[^\[])\^/g, '$1');
+    val = val.replace(/(^|[^\[])\^/g, "$1");
     regex = regex.replace(name, val);
     return self;
   };
 }
 
 function resolveUrl(base, href) {
-  if (!baseUrls[' ' + base]) {
+  if (!baseUrls[" " + base]) {
     // we can ignore everything in base after the last slash of its path component,
     // but we might need to add _that_
     // https://tools.ietf.org/html/rfc3986#section-3
     if (/^[^:]+:\/*[^/]*$/.test(base)) {
-      baseUrls[' ' + base] = base + '/';
+      baseUrls[" " + base] = base + "/";
     } else {
-      baseUrls[' ' + base] = base.replace(/[^/]*$/, '');
+      baseUrls[" " + base] = base.replace(/[^/]*$/, "");
     }
   }
-  base = baseUrls[' ' + base];
+  base = baseUrls[" " + base];
 
-  if (href.slice(0, 2) === '//') {
-    return base.replace(/:[^]*/, ':') + href;
-  } else if (href.charAt(0) === '/') {
-    return base.replace(/(:\/*[^/]*)[^]*/, '$1') + href;
+  if (href.slice(0, 2) === "//") {
+    return base.replace(/:[^]*/, ":") + href;
+  } else if (href.charAt(0) === "/") {
+    return base.replace(/(:\/*[^/]*)[^]*/, "$1") + href;
   } else {
     return base + href;
   }
@@ -1173,7 +1173,7 @@ function merge(obj) {
  */
 
 function marked(src, opt, callback) {
-  if (callback || typeof opt === 'function') {
+  if (callback || typeof opt === "function") {
     if (!callback) {
       callback = opt;
       opt = null;
@@ -1187,7 +1187,7 @@ function marked(src, opt, callback) {
       , i = 0;
 
     try {
-      tokens = Lexer.lex(src, opt)
+      tokens = Lexer.lex(src, opt);
     } catch (e) {
       return callback(e);
     }
@@ -1225,7 +1225,7 @@ function marked(src, opt, callback) {
 
     for (; i < tokens.length; i++) {
       (function(token) {
-        if (token.type !== 'code') {
+        if (token.type !== "code") {
           return --pending || done();
         }
         return highlight(token.text, token.lang, function(err, code) {
@@ -1246,11 +1246,11 @@ function marked(src, opt, callback) {
     if (opt) opt = merge({}, marked.defaults, opt);
     return Parser.parse(Lexer.lex(src, opt), opt);
   } catch (e) {
-    e.message += '\nPlease report this to https://github.com/chjj/marked.';
+    e.message += "\nPlease report this to https://github.com/chjj/marked.";
     if ((opt || marked.defaults).silent) {
-      return '<p>An error occured:</p><pre>'
-        + escape(e.message + '', true)
-        + '</pre>';
+      return "<p>An error occured:</p><pre>"
+        + escape(e.message + "", true)
+        + "</pre>";
     }
     throw e;
   }
@@ -1277,9 +1277,9 @@ marked.defaults = {
   smartLists: false,
   silent: false,
   highlight: null,
-  langPrefix: 'lang-',
+  langPrefix: "lang-",
   smartypants: false,
-  headerPrefix: '',
+  headerPrefix: "",
   renderer: new Renderer,
   xhtml: false,
   baseUrl: null
@@ -1302,14 +1302,14 @@ marked.inlineLexer = InlineLexer.output;
 
 marked.parse = marked;
 
-if (typeof module !== 'undefined' && typeof exports === 'object') {
+if (typeof module !== "undefined" && typeof exports === "object") {
   module.exports = marked;
-} else if (typeof define === 'function' && define.amd) {
+} else if (typeof define === "function" && define.amd) {
   define(function() { return marked; });
 } else {
   this.marked = marked;
 }
 
 }).call(function() {
-  return this || (typeof window !== 'undefined' ? window : global);
+  return this || (typeof window !== "undefined" ? window : global);
 }());

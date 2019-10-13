@@ -9,7 +9,7 @@ steal("can-stache","can-stache-bindings", function (stache) {
                 setTimeout(function() {
                     $("#top-nav").removeAttr("hidden");
                     $("#side-nav").removeAttr("hidden");
-                }, 250)
+                }, 250);
             });
         }
     };

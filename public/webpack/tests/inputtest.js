@@ -10,12 +10,12 @@
             back1,
             back27,
             mainContainer = "#main_container",
-            dblClickEvent = new MouseEvent('dblclick');
+            dblClickEvent = new MouseEvent("dblclick");
 
         describe("Dodex Input Operation Validation", function () {
             beforeAll(function (done) {
                 if (!$(mainContainer)[0]) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
+                    $("body").append("<div id=\"main_container\"><div class=\"loading-page\"></div></div>");
                 }
                 /**
                  * Note, dodex and dodex-input are already loaded from previous Dodex tests.
@@ -41,12 +41,12 @@
                         observable.unsubscribe();
                         done();
                     }
-                })
+                });
             });
 
             afterAll(function (done) {
                 $(".top--dodex").remove();
-                done()
+                done();
             });
 
             it("Dodex Input - popup on mouse double click", function (done) {
@@ -120,11 +120,11 @@
                         observable.unsubscribe();
                         done();
                     }
-                })
+                });
             });
 
         });
-    }
+    };
 });
 
 function getElement(element) {
@@ -238,4 +238,4 @@ var testContent = `{
 			}
 		}
 	}
-}`
+}`;

@@ -6,8 +6,8 @@ var loginTest = require("./logintest").logintest;
 var toolsTest = require("./toolstest").toolstest;
 var dodexTest = require("./dodextest").dodextest;
 var inputTest = require("./inputtest").inputtest;
-var start = require("../appl/js/controller/start")
-var bootstrapLayout = require("../appl/app_bootstrap")
+var start = require("../appl/js/controller/start");
+var bootstrapLayout = require("../appl/app_bootstrap");
 
 exports.apptest = function (Route, Helpers, App, dodex, input, content) {
     var mainContainer = "#main_container";
@@ -17,10 +17,10 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
             /* Important!
              * Make sure the main spa page is added to the Karma page
              */
-            $("body").prepend(bootstrapLayout.html)
+            $("body").prepend(bootstrapLayout.html);
             
-            spyOn(Route.data, 'index').and.callThrough();
-            spyOn(Route.data, 'dispatch').and.callThrough();
+            spyOn(Route.data, "index").and.callThrough();
+            spyOn(Route.data, "dispatch").and.callThrough();
         }, 2000);
 
         afterEach(function () {

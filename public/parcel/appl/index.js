@@ -11,7 +11,7 @@ var Setup = require("./js/utils/setup");
 var Helpers = require("./js/utils/helpers");
 /* eslint no-unused-vars: 0 */
 var Config = require("./js/config");
-require("pager")
+require("pager");
 
 var dodex = require("dodex").default;
 var input = require("dodex-input").default;
@@ -88,5 +88,5 @@ function getAdditionalContent() {
 				}
 			}
 		}
-	}
+	};
 }

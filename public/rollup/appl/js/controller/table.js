@@ -1,4 +1,3 @@
-/*global module:true*/
 /**
  * Controller to manage tablesorter
  */
@@ -64,5 +63,5 @@ module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Ba
             e.preventDefault();
             this.dropdownEvent(sender);
         },
-        dropdownEvent: function (sender) { }
+        dropdownEvent: function () { }
     }))("#main_container"));

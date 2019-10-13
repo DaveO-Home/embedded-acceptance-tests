@@ -1,10 +1,7 @@
-/*global testit:true module:true Stache:true*/
-/*eslint no-undef: "error"*/
-/*eslint no-console: ["error", { allow: ["warn", "error"] }] */
 
 var Helpers = require("./utils/helpers");
 var Component = require("can-component");
-var DefineMap = require("can-define/map/map")
+var DefineMap = require("can-define/map/map");
 var _ = require("lodash");
 
 require("b/popper");
@@ -26,7 +23,7 @@ if (testit) {
 }
 //endRemoveIf(production)
 
-var baseScriptsUrl = "~/";
+// var baseScriptsUrl = "~/";
 
 module.exports = {
     controllers: [],
@@ -61,7 +58,7 @@ module.exports = {
                 //removeIf(production)
                 if (testit) {
                     expect(appController).not.toBe(null);
-                    expect(typeof fnLoad === 'function').toBe(true);
+                    expect(typeof fnLoad === "function").toBe(true);
                 }
                 //endRemoveIf(production)
 
@@ -88,7 +85,7 @@ module.exports = {
                         if (typeof currentController !== "undefined" && currentController.finish) {
                             currentController.finish(options);
                         }
-                        if (err !== 'success') {
+                        if (err !== "success") {
                             console.error(err);
                         }
                     });

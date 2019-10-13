@@ -3,25 +3,25 @@
  * Tasks are run serially, 'pat'('build-development' -> run acceptance tests) -> ('eslint', 'csslint', 'bootlint') -> 'build'
  */
 
-const { series, parallel, task, src, dest } = require('gulp');
-const Server = require('karma').Server;
-const eslint = require('gulp-eslint');
-const csslint = require('gulp-csslint');
-const exec = require('child_process').exec;
+const { series, parallel, task, src, dest } = require("gulp");
+const Server = require("karma").Server;
+const eslint = require("gulp-eslint");
+const csslint = require("gulp-csslint");
+const exec = require("child_process").exec;
 const noop = require("gulp-noop");
 const log = require("fancy-log");
-const browserify = require('browserify');
+const browserify = require("browserify");
 const copy = require("gulp-copy");
-const source = require('vinyl-source-stream');
-const buffer = require('vinyl-buffer');
-const sourcemaps = require('gulp-sourcemaps');
+const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
+const sourcemaps = require("gulp-sourcemaps");
 // const assign = require('lodash.assign');
-const watchify = require('watchify');
-const removeCode = require('gulp-remove-code');
+const watchify = require("watchify");
+const removeCode = require("gulp-remove-code");
 const stripCode = require("gulp-strip-code");
-const browserSync = require('browser-sync').create("devl");
-const del = require('del');
-const chalk = require('chalk');
+const browserSync = require("browser-sync").create("devl");
+const del = require("del");
+const chalk = require("chalk");
 
 const startComment = "steal-remove-start",
     endComment = "steal-remove-end",
@@ -32,8 +32,8 @@ const startComment = "steal-remove-start",
 let lintCount = 0;
 // let vendors = [];
 let browserifyInited;
-let isProduction = process.env.NODE_ENV == 'production';
-let isWatchify = process.env.USE_WATCH == 'true';
+let isProduction = process.env.NODE_ENV == "production";
+let isWatchify = process.env.USE_WATCH == "true";
 let browsers = process.env.USE_BROWSERS;
 let testDist = "dist_test/browserify";
 let prodDist = "dist/browserify";
@@ -49,7 +49,7 @@ if (browsers) {
  */
 function vendorBuild() {
     isWatchify = false;
-    return browserifyBuild()
+    return browserifyBuild();
 }
 /**
  * Build Development bundle from package.json 
@@ -98,9 +98,9 @@ function patProd() {
  */
 function esLint(cb) {
     dist = prodDist;
-    var stream = src(["../appl/js/**/*.js"])
+    var stream = src(["../appl/**/*.js"])
         .pipe(eslint({
-            configFile: 'eslintConf.json',
+            configFile: "../../.eslintrc.js",
             quiet: 0
         }))
         .pipe(eslint.format())
@@ -110,12 +110,12 @@ function esLint(cb) {
         }))
         .pipe(eslint.failAfterError());
 
-    stream.on('end', function () {
-        log("# javascript files linted: " + lintCount);
-        cb()
+    stream.on("end", function () {
+        log(chalk.blue.bold("# javascript files linted: " + lintCount));
+        cb();
     });
 
-    stream.on('error', function () {
+    stream.on("error", function () {
         process.exit(1);
     });
 
@@ -126,15 +126,15 @@ function esLint(cb) {
  * css linter
  */
 function cssLint(cb) {
-    var stream = src(['../appl/css/site.css'])
+    var stream = src(["../appl/css/site.css"])
         .pipe(csslint())
         .pipe(csslint.formatter());
 
-    stream.on('end', function () {
+    stream.on("end", function () {
         cb();
     });
 
-    stream.on('error', function () {
+    stream.on("error", function () {
         process.exit(1);
     });
 }
@@ -142,7 +142,7 @@ function cssLint(cb) {
  * Bootstrap html linter 
  */
 function bootLint(cb) {
-    exec('npx gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
+    exec("npx gulp --gulpfile Gulpboot.js", function (err, stdout, stderr) {
         log(stdout);
         log(stderr);
         cb(err);
@@ -156,14 +156,14 @@ function clean() {
     isProduction = true;
     dist = prodDist;
     return del([
-        '../../' + prodDist + '/**/*'
+        "../../" + prodDist + "/**/*"
     ], { dryRun: false, force: true });
-};
+}
 /**
  * Resources and content copied to dist directory - for production
  */
 function copyProd() {
-    copyImages()
+    copyImages();
     copyFonts();
     return copySrc();
 }
@@ -173,7 +173,7 @@ function copyProd() {
 function copyTest() {
     isProduction = false;
     dist = testDist;
-    copyImages()
+    copyImages();
     copyFonts();
     return copySrc();
 }
@@ -183,7 +183,7 @@ function copyTest() {
 function browserifyWatch() {
     dist = testDist;
     browserSync.init({ server: "../../", index: "index_b.html", port: 3080, browser: ["google-chrome"] });
-    browserSync.watch('../../' + dist + '/index.js').on('change', browserSync.reload);  //change any file in appl/ to reload app - triggered on watchify results
+    browserSync.watch("../../" + dist + "/index.js").on("change", browserSync.reload);  //change any file in appl/ to reload app - triggered on watchify results
 
     return browserSync;
 }
@@ -214,7 +214,7 @@ function browserifyTdd(cb) {
         global.whichBrowsers = ["Chrome", "Firefox"];
     }
     const serve = new Server({
-        configFile: __dirname + '/karma.conf.js',
+        configFile: __dirname + "/karma.conf.js",
     }, function (result) {
         var exitCode = !result ? 0 : result;
         if (typeof cb === "function") {
@@ -236,7 +236,7 @@ function tddo(done) {
     global.whichBrowsers = ["Opera"];
 
     new Server({
-        configFile: __dirname + '/karma.conf.js',
+        configFile: __dirname + "/karma.conf.js",
     }, done).start();
 }
 
@@ -246,31 +246,31 @@ const hmrRun = series(vendorDevelopment, applicationDevelopment, browserifyHmr);
 const tddRun = series(/*vendorDevelopment, applicationDevelopment,*/ browserifyTdd);
 const rebuildRun = series(vendorDevelopment, applicationDevelopment, applicationExit);
 
-testRun.displayName = "testRun"
+testRun.displayName = "testRun";
 testRun.flags = { node_env: "development" };
 
-prodRun.displayName = "prod"
-prodRun.flags = { node_env: "production" }
+prodRun.displayName = "prod";
+prodRun.flags = { node_env: "production" };
 
-hmrRun.displayName = 'hmr'
-hmrRun.flags = { "isWatchify": "true" }
+hmrRun.displayName = "hmr";
+hmrRun.flags = { "isWatchify": "true" };
 
-tddRun.displayName = 'tdd'
-tddRun.flags = { "isWatchify": "true" }
+tddRun.displayName = "tdd";
+tddRun.flags = { "isWatchify": "true" };
 
-tddRun.displayName = 'rebuild'
+tddRun.displayName = "rebuild";
 
-task(prodRun) // prod task
-exports.default = prodRun
-exports.test = series(testRun, applicationExit)
-exports.hmr = hmrRun
-exports.tdd = tddRun
-exports.server = browserifyWatch
-exports.rebuild = rebuildRun
-exports.acceptance = browserifyTest
-exports.development = parallel(browserifyWatch, hmrRun, tddRun)
-exports.tddo = tddo
-exports.lint = parallel(esLint, cssLint, bootLint)
+task(prodRun); // prod task
+exports.default = prodRun;
+exports.test = series(testRun, applicationExit);
+exports.hmr = hmrRun;
+exports.tdd = tddRun;
+exports.server = browserifyWatch;
+exports.rebuild = rebuildRun;
+exports.acceptance = browserifyTest;
+exports.development = parallel(browserifyWatch, hmrRun, tddRun);
+exports.tddo = tddo;
+exports.lint = parallel( cssLint, bootLint, esLint);
 
 /*
     Build functions follow
@@ -283,54 +283,54 @@ function browserifyBuild() {
 
     var mods = getNPMPackageIds();
     for (var id in mods) {
-        if (mods[id] !== 'font-awesome' && !mods[id].startsWith("can")) {
-            browserifyInited.require(require('resolve').sync(mods[id]), { expose: mods[id] });
+        if (mods[id] !== "font-awesome" && !mods[id].startsWith("can")) {
+            browserifyInited.require(require("resolve").sync(mods[id]), { expose: mods[id] });
         }
-    };
+    }
 
     if (isProduction) {
-        const uglifyes = require('uglify-es');
-        const composer = require('gulp-uglify/composer');
-        const pump = require('pump');
+        const uglifyes = require("uglify-es");
+        const composer = require("gulp-uglify/composer");
+        const pump = require("pump");
 
         minify = composer(uglifyes, console);
     }
 
     var stream = browserifyInited.bundle()
-        .pipe(source('vendor.js'))
+        .pipe(source("vendor.js"))
         .pipe(buffer())
         .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
         .pipe(isProduction ? minify() : noop());
 
     stream = stream.pipe(sourcemaps.init({ loadMaps: !isProduction }))
-        .pipe(sourcemaps.write('../../' + dist + '/maps', { addComment: !isProduction }));
+        .pipe(sourcemaps.write("../../" + dist + "/maps", { addComment: !isProduction }));
 
-    return stream.pipe(dest('../../' + dist));
+    return stream.pipe(dest("../../" + dist));
 }
 
 function getNPMPackageIds() {
-    var ids = JSON.parse('{' +
-        '"aw": "font-awesome",' +
-        '"bo": "bootstrap",' +
-        '"cn": "can",' +
-        '"dx": "dodex",' +
-        '"jq": "jquery",' +
-        '"lo": "lodash",' +
-        '"md": "marked",' +
-        '"mo": "moment",' +
-        '"pd": "pdfjs-dist",' +
-        '"po": "popper.js",' +
-        '"tb": "tablesorter"}');
+    var ids = JSON.parse("{" +
+        "\"aw\": \"font-awesome\"," +
+        "\"bo\": \"bootstrap\"," +
+        "\"cn\": \"can\"," +
+        "\"dx\": \"dodex\"," +
+        "\"jq\": \"jquery\"," +
+        "\"lo\": \"lodash\"," +
+        "\"md\": \"marked\"," +
+        "\"mo\": \"moment\"," +
+        "\"pd\": \"pdfjs-dist\"," +
+        "\"po\": \"popper.js\"," +
+        "\"tb\": \"tablesorter\"}");
     return ids;
 }
 
 function applicationBuild() {
     browserifyInited = browserify({
-        entries: ['../appl/index.js'],
+        entries: ["../appl/index.js"],
         debug: !isProduction,
         transform: ["browserify-css"],
         insertGlobals: true,
-        noParse: ['jquery'],
+        noParse: ["jquery"],
         cache: {},
         packageCache: {}
     });
@@ -338,10 +338,10 @@ function applicationBuild() {
     let modules = [];
     var mods = getNPMPackageIds();
     for (var id in modules) {
-        if (mods[id] !== 'font-awesome' && !mods[id].startsWith("can")) {
+        if (mods[id] !== "font-awesome" && !mods[id].startsWith("can")) {
             modules.push(mods[id]);
         }
-    };
+    }
 
     if (isSplitBundle) {
         browserifyInited.external(modules);
@@ -356,52 +356,52 @@ function applicationBuild() {
  */
 function browserifyApp() {
     if (isProduction && !minify) {
-        const uglifyes = require('uglify-es');
-        const composer = require('gulp-uglify/composer');
-        const pump = require('pump');
+        const uglifyes = require("uglify-es");
+        const composer = require("gulp-uglify/composer");
+        const pump = require("pump");
 
         minify = composer(uglifyes, console);
     }
     var stream = browserifyInited
         .bundle()
-        .pipe(source('index.js'))
+        .pipe(source("index.js"))
         .pipe(removeCode({ production: isProduction }))
         .pipe(buffer())
         .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())  //Strip out Canjs warnings if production.
-        .pipe(isProduction ? minify().on('error', log) : noop());
+        .pipe(isProduction ? minify().on("error", log) : noop());
 
     stream = stream.pipe(sourcemaps.init({ loadMaps: !isProduction }))
-        .pipe(sourcemaps.write('../../' + dist + '/maps', { addComment: !isProduction }));
+        .pipe(sourcemaps.write("../../" + dist + "/maps", { addComment: !isProduction }));
         
-    return stream.pipe(dest('../../' + dist));
+    return stream.pipe(dest("../../" + dist));
 }
 
 function enableWatchify() {
     if (isWatchify) {
         browserifyInited.plugin(watchify);
-        browserifyInited.on('update', applicationBuild);
-        browserifyInited.on('log', log);
+        browserifyInited.on("update", applicationBuild);
+        browserifyInited.on("log", log);
     }
 }
 
 function copySrc() {
-    return src(['../appl/views/**/*', '../appl/templates/**/*', '../appl/dodex/data/**/*', isProduction ? '../appl/testapp.html' : '../appl/testapp_dev.html'])
-        .pipe(copy('../../' + dist + '/appl'));
+    return src(["../appl/views/**/*", "../appl/templates/**/*", "../appl/dodex/data/**/*", isProduction ? "../appl/testapp.html" : "../appl/testapp_dev.html"])
+        .pipe(copy("../../" + dist + "/appl"));
 }
 
 function copyImages() {
-    return src(['../images/*', '../../README.md'])
-        .pipe(copy('../../' + dist + '/appl'));
+    return src(["../images/*", "../../README.md"])
+        .pipe(copy("../../" + dist + "/appl"));
 }
 
 function copyFonts() {
-    return src(['../../node_modules/font-awesome/fonts/*'])
-        .pipe(copy('../../' + dist + '/appl'));
+    return src(["../../node_modules/font-awesome/fonts/*"])
+        .pipe(copy("../../" + dist + "/appl"));
 }
 
 function runKarma(done) {
     new Server({
-        configFile: __dirname + '/karma.conf.js',
+        configFile: __dirname + "/karma.conf.js",
         singleRun: true
     }, function (result) {
         var exitCode = !result ? 0 : result;
@@ -412,7 +412,7 @@ function runKarma(done) {
             process.exit(exitCode);
         }
         else {
-            return 
+            return; 
             // process.exit(0);
         }
     }).start();
@@ -422,12 +422,12 @@ function runKarma(done) {
  * From Stack Overflow - Node (Gulp) process.stdout.write to file
  * @type type
  */
-if (process.env.USE_LOGFILE == 'true') {
-    var fs = require('fs');
+if (process.env.USE_LOGFILE == "true") {
+    var fs = require("fs");
     var origstdout = process.stdout.write,
         origstderr = process.stderr.write,
-        outfile = 'node_output.log',
-        errfile = 'node_error.log';
+        outfile = "node_output.log",
+        errfile = "node_error.log";
 
     if (fs.exists(outfile)) {
         fs.unlink(outfile);
@@ -437,12 +437,12 @@ if (process.env.USE_LOGFILE == 'true') {
     }
 
     process.stdout.write = function (chunk) {
-        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstdout.apply(this, arguments);
     };
 
     process.stderr.write = function (chunk) {
-        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstderr.apply(this, arguments);
     };
 }

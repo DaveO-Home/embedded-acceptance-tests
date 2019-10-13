@@ -17,13 +17,12 @@ define("app", [
             it("is Popper defined", function () {
                 expect(typeof Popper === "function").toBe(true);
             });
-        })
+        });
     }
     /* develblock:end */
     return {
         controllers: [],
-        init: function (options) {
-            options = options || {};
+        init: function () {
             this.initPage();
         },
         initPage: function () {
@@ -41,7 +40,7 @@ define("app", [
         toViewsUrl: function (url) {
             return url;
         },
-        loadController: function (controller, fnLoad, fnError) {
+        loadController: function (controller, fnLoad/*, fnError*/) {
             var me = this;
 
             if (this.controllers[controller]) {
@@ -77,6 +76,7 @@ define("app", [
 
                 if (options.url) {
                     $.get(resolvedUrl, fnLoad)
+                        // eslint-disable-next-line no-unused-vars
                         .done(function (data, err) {
                             if (typeof currentController !== "undefined" && currentController.finish) {
                                 currentController.finish(options);

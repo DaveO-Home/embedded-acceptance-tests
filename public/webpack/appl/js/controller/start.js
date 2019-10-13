@@ -13,7 +13,7 @@ define("start", ["app",
                     Menu.activate("#top-nav div ul li");
                     Menu.activate("#side-nav nav ul li");
                 },
-                index: function (options) {
+                index: function () {
                     var indexUrl = "views/prod/index.html";
                     var markdownUrl = /*(typeof testit !== "undefined" && testit) ? "base/README.md" : */ "../../README.md";
 
@@ -22,7 +22,7 @@ define("start", ["app",
                         urlMd: markdownUrl,
                         fade: true,
                         controller: "Start",
-                        fnLoad: function (el) {
+                        fnLoad: function () {
                         }
                     });
                 },
@@ -49,10 +49,10 @@ define("start", ["app",
                     alert("Not implemented");
                     $(sender).closest(".modal").modal("hide");
                 },
-                "div .modal-footer .contact click": function (sender, e) {
+                "div .modal-footer .contact click": function (sender) {
                     $(sender).closest(".modal").modal("hide");
                 },
-                contact: function (ev) {
+                contact: function () {
                     this.view({
                         url: "views/prod/contact.html",
                         selector: window.rmain_container || "#main_container",
@@ -84,6 +84,7 @@ define("start", ["app",
                                     e.preventDefault();
                                     me.showAlert();
                                     //TODO: do something with collected data
+                                    // eslint-disable-next-line no-unused-vars
                                     var data = $("form.form-modal").serializeArray()
                                         .reduce(function (a, x) {
                                             a[x.name] = x.value;
@@ -107,25 +108,25 @@ define("start", ["app",
                         }
                     });
                 },
-                footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button> \
-                     <button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>',
-                contactFooter: '<div class="modal-footer"> \
-                            <div class="mr-auto contact" > \
-                                <a href="#!contact" ><small class="grey">Contact</small></a> \
+                footer: "<button class=\"btn btn-sm btn-primary submit-modal mr-auto raised submit-login\">{{submit}}</button> \
+                     <button class=\"btn btn-sm close-modal raised\" data-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
+                contactFooter: "<div class=\"modal-footer\"> \
+                            <div class=\"mr-auto contact\" > \
+                                <a href=\"#!contact\" ><small class=\"grey\">Contact</small></a> \
                                         </div> \
-                            </div>',
-                alert: '<div class="alert alert-info alert-dismissible fade show" role="alert"> \
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button> \
+                            </div>",
+                alert: "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\"> \
+                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> \
                                 <strong>Thank You!</strong> Your request is being processed. \
-                    </div>',
+                    </div>",
                 showAlert: function () {
-                    $('form.form-horizontal').append(me.alert);
+                    $("form.form-horizontal").append(me.alert);
                 },
                 finish: function (options) {
                     var marked = require("marked");
                     var mdFunction = function (data) {
                         $(".markdown").append(marked(data));
-                    }
+                    };
                     $.get(options.urlMd, mdFunction, "text");
                 }
             }))(document));

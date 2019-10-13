@@ -1,4 +1,4 @@
- //export default  
+ // eslint-disable-next-line no-undef
  dodexContent = {
 	cards: {
 		card1: {
@@ -113,4 +113,4 @@
 			}
 		}
 	}
-}
+};

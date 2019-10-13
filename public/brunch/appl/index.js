@@ -95,6 +95,6 @@ function getAdditionalContent() {
 				}
 			}
 		}
-	}
+	};
 }
 

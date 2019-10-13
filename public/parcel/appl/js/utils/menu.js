@@ -1,4 +1,4 @@
-var trimStart = require('lodash/trimStart');
+var trimStart = require("lodash/trimStart");
 
 module.exports = {
     //Bootstrap activation
@@ -8,16 +8,16 @@ module.exports = {
         var el = selector instanceof $ ? selector : $(selector);
         //Element is likely a list
         el.each(function () {
-            var href = $('a', this).attr('href');
-            var url = href ? trimStart(href, '#!') : 'none';
-            var hash = trimStart(window.location.hash, '#!');
+            var href = $("a", this).attr("href");
+            var url = href ? trimStart(href, "#!") : "none";
+            var hash = trimStart(window.location.hash, "#!");
 
             if (hash === url) {
-                window.location.hash = '';
+                window.location.hash = "";
 
-                $(this).addClass('active').siblings().removeClass('active');
+                $(this).addClass("active").siblings().removeClass("active");
 
-                window.location.hash = '#!' + hash;
+                window.location.hash = "#!" + hash;
                 activated = true;
 
                 return false;
@@ -25,7 +25,7 @@ module.exports = {
         });
 
         if (!activated) {
-            el.removeClass('active');
+            el.removeClass("active");
         }
     }
 };

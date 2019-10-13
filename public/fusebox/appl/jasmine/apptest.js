@@ -6,6 +6,7 @@ var loginTest = require("logintest").logintest;
 var toolsTest = require("toolstest").toolstest;
 var dodexTest = require("dodextest").dodextest;
 var inputTest = require("./inputtest").inputtest;
+var Start = require("../js/controller/start");
 
 exports.apptest = function (Route, Helpers, App, dodex, input, content) {
     var mainContainer = "#main_container";
@@ -16,15 +17,15 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
              * Make sure the bootstrap layout is added to the Karma page
              */
             $.get("app_bootstrap.html", function (data) {
-                $("body").prepend(data)
-                done()
+                $("body").prepend(data);
+                done();
             }, "html").fail(function (data, err) {
                 console.warn("Error fetching fixture data: " + err);
-                done()
+                done();
             });
 
-            spyOn(Route.data, 'index').and.callThrough();
-            spyOn(Route.data, 'dispatch').and.callThrough();
+            spyOn(Route.data, "index").and.callThrough();
+            spyOn(Route.data, "dispatch").and.callThrough();
         }, 5000);
 
         afterEach(function () {
@@ -119,7 +120,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
         //Test dodex
         dodexTest(dodex, input, content, Route, Helpers, Start);
         //Test dodex input
-        inputTest(dodex, input, content, Start);
+        inputTest(dodex);
 
         if (testOnly) {
             it("Testing only", function () {

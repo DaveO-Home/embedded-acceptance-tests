@@ -15,7 +15,7 @@ steal("app",
                     Menu.activate("#top-nav div ul li");
                     Menu.activate("#side-nav nav ul li");
                 },
-                index: function (options) {
+                index: function () {
                     var indexUrl = "views/prod/index.html";
                     var markdownUrl = System.isEnv("development") ? "/README.md" : "/dist/README.md";
 
@@ -24,19 +24,19 @@ steal("app",
                         urlMd: markdownUrl,
                         fade: true,
                         controller: "Start",
-                        fnLoad: function (el) {
+                        fnLoad: function () {
                         }
                     });
                 },
-                'div .login click': function (sender, e) {
+                "div .login click": function (sender, e) {
                     e.preventDefault();
                     var loginUrl = "views/prod/login.html";
 
                     this.modal({
                         url: loginUrl,
-                        title: 'Account Log In',
-                        submit: 'Login',
-                        submitCss: 'submit-login',
+                        title: "Account Log In",
+                        submit: "Login",
+                        submitCss: "submit-login",
                         widthClass: "modal-lg",
                         width: "30%",
                         foot: me.footer,
@@ -44,16 +44,16 @@ steal("app",
                         contactFooter: me.contactFooter
                     });
                 },
-                '.modal .submit-login click': function (sender, e) {
+                ".modal .submit-login click": function (sender, e) {
                     e.preventDefault();
 
-                    alert('Not implemented');
-                    $(sender).closest('.modal').modal('hide');
+                    alert("Not implemented");
+                    $(sender).closest(".modal").modal("hide");
                 },
-                'div .modal-footer .contact click': function (sender, e) {
-                    $(sender).closest('.modal').modal('hide');
+                "div .modal-footer .contact click": function (sender) {
+                    $(sender).closest(".modal").modal("hide");
                 },
-                contact: function (ev) {
+                contact: function () {
                     this.view({
                         url: "views/prod/contact.html",
                         selector: window.rmain_container || "#main_container",
@@ -85,7 +85,8 @@ steal("app",
                                     e.preventDefault();
                                     me.showAlert();
                                     // TODO: do something with collected data
-                                    var data = $('form.form-modal').serializeArray()
+                                    // eslint-disable-next-line no-unused-vars
+                                    var data = $("form.form-modal").serializeArray()
                                         .reduce(function (a, x) {
                                             a[x.name] = x.value;
                                             return a;
@@ -107,19 +108,19 @@ steal("app",
                         }
                     });
                 },
-                footer: '<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button>' +
-                    '<button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>',
-                contactFooter: '<div class="modal-footer">' +
-                    '<div class="mr-auto contact" >' +
-                    '<a href="#!contact" ><small class="grey">Contact</small></a>' +
-                    '</div>' +
-                    '</div>',
-                alert: '<div class="alert alert-info alert-dismissible fade show" role="alert">' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                    '<strong>Thank You!</strong> Your request is being processed.' +
-                    '</div>',
+                footer: "<button class=\"btn btn-sm btn-primary submit-modal mr-auto raised submit-login\">{{submit}}</button>" +
+                    "<button class=\"btn btn-sm close-modal raised\" data-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
+                contactFooter: "<div class=\"modal-footer\">" +
+                    "<div class=\"mr-auto contact\" >" +
+                    "<a href=\"#!contact\" ><small class=\"grey\">Contact</small></a>" +
+                    "</div>" +
+                    "</div>",
+                alert: "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\">" +
+                    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
+                    "<strong>Thank You!</strong> Your request is being processed." +
+                    "</div>",
                 showAlert: function () {
-                    $('form.form-horizontal').append(me.alert);
+                    $("form.form-horizontal").append(me.alert);
                 },
                 finish: function (options) {
                     var mdFunction = function (data) {

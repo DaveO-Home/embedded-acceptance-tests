@@ -14,7 +14,7 @@ module.exports = {
             beforeAll(function (done) {
 
                 if (!$(mainContainer)[0]) {
-                    $("body").append('<div id="main_container"><div class="loading-page"></div></div>');
+                    $("body").append("<div id=\"main_container\"><div class=\"loading-page\"></div></div>");
                 }
 
                 Route.data.attr("base", "true");
@@ -29,7 +29,7 @@ module.exports = {
                 Helpers.getResource("container", 0, 1)
                     .catch(function (rejected) {
                         fail("Contact Page did not load within limited time: " + rejected);
-                    }).then(function (resolved) {
+                    }).then(function () {
                         contact = $(mainContainer + " form");
                         nameObject = $("#inputName");
                         emailObject = $("#inputEmail");

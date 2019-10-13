@@ -2,21 +2,21 @@
  * Successful acceptance tests & lints start the production build.
  * Tasks are run serially, 'pat' -> 'accept' -> ('eslint', 'csslint') -> 'boot' -> 'build'
  */
-const csslint = require('gulp-csslint');
+const csslint = require("gulp-csslint");
 const env = require("gulp-env");
-const eslint = require('gulp-eslint');
-const exec = require('child_process').exec;
-const spawn = require('child_process').spawn;
-const gulp = require('gulp');
+const eslint = require("gulp-eslint");
+const exec = require("child_process").exec;
+const spawn = require("child_process").spawn;
+const gulp = require("gulp");
 const log = require("fancy-log");
-const Server = require('karma').Server;
-const chalk = require('chalk');
-const del = require('del');
+const Server = require("karma").Server;
+const chalk = require("chalk");
+const del = require("del");
 
-let lintCount = 0
-let dist = "dist_test/brunch"
-let isProduction = false
-let browsers = process.env.USE_BROWSERS
+let lintCount = 0;
+let dist = "dist_test/brunch";
+let isProduction = false;
+let browsers = process.env.USE_BROWSERS;
 if (browsers) {
     global.whichBrowser = browsers.split(",");
 }
@@ -25,49 +25,49 @@ var initialTask;
 /**
  * Default: Production Acceptance Tests 
  */
-gulp.task('pat', ['clean-test'], function (done) {
+gulp.task("pat", ["clean-test"], function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
 
-    var osCommands = 'cd ../..; export NODE_ENV=development; export USE_KARMA=true; export USE_HMR=false; ';
+    var osCommands = "cd ../..; export NODE_ENV=development; export USE_KARMA=true; export USE_HMR=false; ";
 
     if (isWindows) {
-        osCommands = 'cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=true & set USE_HMR=false & ';
+        osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=true & set USE_HMR=false & ";
     }
-    log(chalk.cyan('E2E Testing - please wait......'))
+    log(chalk.cyan("E2E Testing - please wait......"));
 
-    let cmd = exec(osCommands + 'npm run bt');
-    cmd.stdout.on('data', (data) => {
+    let cmd = exec(osCommands + "npm run bt");
+    cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
             console.log(data.trim());
         }
     });
-    cmd.stderr.on('data', (data) => {
+    cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            console.log(data.trim())
+            console.log(data.trim());
     });
-    return cmd.on('exit', (code) => {
-        done()
+    return cmd.on("exit", (code) => {
+        done();
         console.log(`Child exited with code ${code}`);
         if(code > 1) {
-            process.exit(code)
+            process.exit(code);
         }
     });
 });
-gulp.task('clean-test', () => {
-    log(chalk.cyan('Cleaning dist_test/brunch......'))
+gulp.task("clean-test", () => {
+    log(chalk.cyan("Cleaning dist_test/brunch......"));
     return del([
-        dist + '/**/*',
+        dist + "/**/*",
     ], { dryRun: false, force: true });
-})
+});
 /*
  * javascript linter
  */
-gulp.task('eslint', ['pat'], () => {
+gulp.task("eslint", ["pat"], () => {
     var stream = gulp.src(["../appl/js/**/*.js"])
             .pipe(eslint({
-                configFile: 'eslintConf.json',
+                configFile: "eslintConf.json",
                 quiet: 1,
             }))
             .pipe(eslint.format())
@@ -77,10 +77,10 @@ gulp.task('eslint', ['pat'], () => {
             }))
             .pipe(eslint.failAfterError());
 
-    stream.on('end', function () {
+    stream.on("end", function () {
         log("# javascript files linted: " + lintCount);
     });
-    stream.on('error', function () {
+    stream.on("error", function () {
         process.exit(1);
     });
     return stream;
@@ -88,13 +88,13 @@ gulp.task('eslint', ['pat'], () => {
 /*
  * css linter
  */
-gulp.task('csslint', ['pat'], function () {
-    var stream = gulp.src(['../appl/css/site.css'
+gulp.task("csslint", ["pat"], function () {
+    var stream = gulp.src(["../appl/css/site.css"
     ])
             .pipe(csslint())
             .pipe(csslint.formatter());
 
-    stream.on('error', function () {
+    stream.on("error", function () {
         process.exit(1);
     });
 });
@@ -102,94 +102,94 @@ gulp.task('csslint', ['pat'], function () {
 /*
  * Build the application to the production distribution 
  */
-gulp.task('build', ['boot'], function (cb) { // ['boot'],
-    var osCommands = 'cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ';
+gulp.task("build", ["boot"], function (cb) { // ['boot'],
+    var osCommands = "cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ";
 
     if (isWindows) {
-        osCommands = 'cd ..\\ & set NODE_ENV=production & set USE_KARMA=false & set USE_HMR=false & ';
+        osCommands = "cd ..\\ & set NODE_ENV=production & set USE_KARMA=false & set USE_HMR=false & ";
     }
-    log(chalk.cyan('Building Production - please wait......'))
-    let cmd = exec(osCommands + 'npm run bp');
-    cmd.stdout.on('data', (data) => {
+    log(chalk.cyan("Building Production - please wait......"));
+    let cmd = exec(osCommands + "npm run bp");
+    cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
             console.log(data.trim());
         }
     });
-    cmd.stderr.on('data', (data) => {
-        log(chalk.red('Production build failed'))
+    cmd.stderr.on("data", (data) => {
+        log(chalk.red("Production build failed"));
         if (data && data.length > 0)
-            console.log(data.trim())
+            console.log(data.trim());
         if(data && data.length > 1)
             process.exit(1);
     });
-    return cmd.on('exit', (code) => {
-        cb()
-        log(chalk.green('Production build a success: ' + code))
+    return cmd.on("exit", (code) => {
+        cb();
+        log(chalk.green("Production build a success: " + code));
     });
 });
 
 /*
  * Bootstrap html linter 
  */
-gulp.task('boot', ['eslint', 'csslint'], function (cb) {
-    return exec('gulp --gulpfile Gulpboot.js', function (err, stdout, stderr) {
-        log(stdout)
-        log(stderr)
+gulp.task("boot", ["eslint", "csslint"], function (cb) {
+    return exec("gulp --gulpfile Gulpboot.js", function (err, stdout, stderr) {
+        log(stdout);
+        log(stderr);
         if (err) {
             log("ERROR", err);
         } else {
-            log(chalk.green('Bootstrap linting a success'))
+            log(chalk.green("Bootstrap linting a success"));
         }
-        cb()
+        cb();
     });
 });
 /*
  * Build the application to run karma acceptance tests with hmr
  */
-gulp.task('brunch-watch', function (cb) {
-    var osCommands = 'cd ../..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=true; ';
+gulp.task("brunch-watch", function (cb) {
+    var osCommands = "cd ../..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=true; ";
 
     if (isWindows) {
-        osCommands = 'cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=true & ';
+        osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=true & ";
     }
-    log(chalk.cyan('Watching for code changes....\n'));
-    let cmd = exec(osCommands + 'npm run bw');
-    cmd.stdout.on('data', (data) => {
+    log(chalk.cyan("Watching for code changes....\n"));
+    let cmd = exec(osCommands + "npm run bw");
+    cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
             log(data.trim());
         }
     });
-    cmd.stderr.on('data', (data) => {
+    cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            log(data.trim())
+            log(data.trim());
     });
-    return cmd.on('exit', (code) => {
+    return cmd.on("exit", (code) => {
         log(chalk.green(`Watch exited with code ${code}`));
-        cb()
+        cb();
     });
 });
 /*
  * Build the application to run node express so font-awesome is resolved
  */
-gulp.task('brunch-rebuild', function (cb) {
-    var osCommands = 'cd ../..; export NODE_ENV=development; unset USE_TDD; export USE_KARMA=false; export USE_HMR=false; ';
+gulp.task("brunch-rebuild", function (cb) {
+    var osCommands = "cd ../..; export NODE_ENV=development; unset USE_TDD; export USE_KARMA=false; export USE_HMR=false; ";
 
     if (isWindows) {
-        osCommands = 'cd ..\\..\\ & set NODE_ENV=development & set USE_TDD & set USE_KARMA=false & set USE_HMR=false & ';
+        osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_TDD & set USE_KARMA=false & set USE_HMR=false & ";
     }
-    log(chalk.cyan('Re-building Development - please wait......'))
-    let cmd = exec(osCommands + 'brunch build');
-    cmd.stdout.on('data', (data) => {
+    log(chalk.cyan("Re-building Development - please wait......"));
+    let cmd = exec(osCommands + "brunch build");
+    cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
             console.log(data.trim());
         }
     });
-    cmd.stderr.on('data', (data) => {
+    cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            console.log(data.trim())
+            console.log(data.trim());
     });
-    return cmd.on('exit', (code) => {
-        cb()
+    return cmd.on("exit", (code) => {
+        cb();
         console.log(`Watch exited with code ${code}`);
     });
 });
@@ -197,49 +197,49 @@ gulp.task('brunch-rebuild', function (cb) {
 /**
  * Continuous testing - test driven development.  
  */
-gulp.task('brunch-tdd', function (done) { //,['accept']
+gulp.task("brunch-tdd", function (done) { //,['accept']
     if (!browsers) {
         global.whichBrowser = ["Chrome", "Firefox"];
     }
 
-    var osCommands = 'cd ../..; export NODE_ENV=development; export USE_TDD=true; export USE_KARMA=true; export USE_HMR=false; ';
+    var osCommands = "cd ../..; export NODE_ENV=development; export USE_TDD=true; export USE_KARMA=true; export USE_HMR=false; ";
     if (isWindows) {
-        osCommands = 'cd ..\\..\\ & set NODE_ENV=development & set USE_TDD=true; set USE_KARMA=true & set USE_HMR=false & ';
+        osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_TDD=true; set USE_KARMA=true & set USE_HMR=false & ";
     }
 
-    log(chalk.cyan('Test Driven Development - please wait......'))
-    let cmd = exec(osCommands + 'brunch build --env test');
-    cmd.stdout.on('data', (data) => {
+    log(chalk.cyan("Test Driven Development - please wait......"));
+    let cmd = exec(osCommands + "brunch build --env test");
+    cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
             console.log(data.trim());
         }
     });
-    cmd.stderr.on('data', (data) => {
+    cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            console.log(data.trim())
+            console.log(data.trim());
     });
-    return cmd.on('exit', (code) => {
-        done()
+    return cmd.on("exit", (code) => {
+        done();
         console.log(`Test Driven Development exited with code ${code}`);
     });
 });
 
-gulp.task('default', ['pat', 'eslint', 'csslint', 'boot', 'build']);
-gulp.task('prod', ['pat', 'eslint', 'csslint', 'boot', 'build']);
-gulp.task('test', ['pat']);
-gulp.task('tdd', ['brunch-tdd']);
-gulp.task('watch', ['brunch-watch']);
-gulp.task('rebuild', ['brunch-rebuild']);
-gulp.task('acceptance', ['pat']);
+gulp.task("default", ["pat", "eslint", "csslint", "boot", "build"]);
+gulp.task("prod", ["pat", "eslint", "csslint", "boot", "build"]);
+gulp.task("test", ["pat"]);
+gulp.task("tdd", ["brunch-tdd"]);
+gulp.task("watch", ["brunch-watch"]);
+gulp.task("rebuild", ["brunch-rebuild"]);
+gulp.task("acceptance", ["pat"]);
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
-if (process.env.USE_LOGFILE == 'true') {
-    var fs = require('fs');
-    var proc = require('process');
+if (process.env.USE_LOGFILE == "true") {
+    var fs = require("fs");
+    var proc = require("process");
     var origstdout = process.stdout.write,
             origstderr = process.stderr.write,
-            outfile = 'node_output.log',
-            errfile = 'node_error.log';
+            outfile = "node_output.log",
+            errfile = "node_error.log";
 
     if (fs.exists(outfile)) {
         fs.unlink(outfile);
@@ -249,12 +249,12 @@ if (process.env.USE_LOGFILE == 'true') {
     }
 
     process.stdout.write = function (chunk) {
-        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstdout.apply(this, arguments);
     };
 
     process.stderr.write = function (chunk) {
-        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ''));
+        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
         origstderr.apply(this, arguments);
     };
 }

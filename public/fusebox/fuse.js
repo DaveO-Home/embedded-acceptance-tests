@@ -70,7 +70,7 @@ const fuse = FuseBox.init({
             copy: [{ from: "appl/views/**/*", to: distDir + "/appl/views" },
             { from: "appl/templates/**/*", to: distDir + "/appl/templates" },
             { from: "appl/dodex/data/**/*", to: distDir + "/appl/dodex/data" },
-            { from: "images/*", to: distDir + "/images" },
+            { from: "images/**/*", to: distDir },
             { from: "../README.md", to: distDir }
             ]
         }),

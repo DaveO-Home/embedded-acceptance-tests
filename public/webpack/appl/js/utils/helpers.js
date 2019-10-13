@@ -105,7 +105,7 @@ define("helpers", [
                 }
 
                 var options = "<option value=''></option>";
-                for (i = 0; i < keys.length; i++) {
+                for (let i = 0; i < keys.length; i++) {
                     options = options + "<option value='" + values[i] + "'>" + keys[i] + "</option>";
                 }
 
@@ -143,7 +143,7 @@ define("helpers", [
                     controller.on();
 
                     helper.scrollTop();
-                }
+                };
             }
             /* develblock:start */
             ,
@@ -175,12 +175,12 @@ define("helpers", [
             },
             getResource (selector, startCount, childrenLength) {
                 return new Promise((resolve, reject) => {
-                    this.isResolved(resolve, reject, selector, startCount, childrenLength)
+                    this.isResolved(resolve, reject, selector, startCount, childrenLength);
                 }).catch(rejected => {
-                    fail(`The ${selector} Page did not load within limited time: ${rejected}`)
+                    fail(`The ${selector} Page did not load within limited time: ${rejected}`);
                 }).then(resolved => {
-                    return resolved
-                })
+                    return resolved;
+                });
             },
             //Per Stack Overflow - Fire a click event in raw javascript
             fireEvent: function () {
@@ -211,7 +211,7 @@ define("helpers", [
 
                 if (arguments.length > 2) {
                     if ((typeof arguments[2]) === "object") {
-                        change(einstellungen, arguments[2]);
+                        this.change(einstellungen, arguments[2]);
                     }
                 }
 
@@ -234,6 +234,7 @@ define("helpers", [
                     einstellungen.clientX = einstellungen.pointerX;
                     einstellungen.clientY = einstellungen.pointerY;
                     event = document.createEventObject();
+                    // eslint-disable-next-line no-undef
                     event = extend(event, einstellungen);
                     arguments[0].fireEvent("on" + arguments[1], event);
                 }
