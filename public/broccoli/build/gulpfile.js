@@ -181,7 +181,7 @@ const broc_test = function (done) {
     runKarma("single", done);
 };
 
-const prodRun = series(broc_rebuild, parallel(esLint, cssLint, bootLint), build);
+const prodRun = series(broc_rebuild, broc_test, parallel(esLint, cssLint, bootLint), build);
 prodRun.displayName = "prod";
 
 task(prodRun);

@@ -90,6 +90,7 @@ pluginsObject.karma.singleRun = singleRun;
 
 exports.overrides = {
   production: {
+    optimize: false,
     paths: {
       watched: ["brunch/appl"]
     },
@@ -97,7 +98,7 @@ exports.overrides = {
       ignored: ["brunch/jasmine"]
     },
     plugins: {
-      off: ["karma"]
+      off: ["karma"],
     }
   }
 };

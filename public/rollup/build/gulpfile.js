@@ -4,12 +4,12 @@
  */
 
 const { series, parallel, task, src, dest } = require("gulp");
+var fs = require("fs");
 const Server = require("karma").Server;
 const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
 const copy = require("gulp-copy");
-const sourcemaps = require("gulp-sourcemaps");
 const removeCode = require("gulp-remove-code");
 const stripCode = require("gulp-strip-code");
 const chalk = require("chalk");
@@ -19,15 +19,12 @@ const noop = require("gulp-noop");
 const log = require("fancy-log");
 
 const rollup = require("rollup");
-const gulpRollup = require("gulp-rollup");
 const livereload = require("rollup-plugin-livereload");
 const serve = require("rollup-plugin-serve");
-const commonjs = require("rollup-plugin-commonjs");
-const alias = require("rollup-plugin-alias");
-const resolve = require("rollup-plugin-node-resolve");
+const commonjs = require("@rollup/plugin-commonjs");
+const alias = require("@rollup/plugin-alias");
+const resolve = require("@rollup/plugin-node-resolve");
 const postcss = require("rollup-plugin-postcss");
-const cssnano = require("cssnano");
-const rollupBabel = require("rollup-plugin-babel");
 const progress = require("rollup-plugin-progress");
 const rename = require("gulp-rename");
 const buble = require("rollup-plugin-buble");
@@ -43,8 +40,7 @@ let lintCount = 0,
     browsers = process.env.USE_BROWSERS,
     testDist = "dist_test/rollup",
     prodDist = "dist/rollup",
-    dist = isProduction ? prodDist : testDist,
-    env = process.env.NODE_ENV;
+    dist = isProduction ? prodDist : testDist;
 
 if (browsers) {
     global.whichBrowsers = browsers.split(",");
@@ -53,14 +49,14 @@ if (browsers) {
 /**
  * Build Development bundle from package.json 
  */
-const buildDevelopment = function (cb) {
-    return rollupBuild(cb);
+const buildDevelopment = async function (cb) {
+    return await rollupBuild(cb);
 };
 /**
  * Production Rollup 
  */
-const build = function (cb) {
-    return rollupBuild(cb);
+const build = async function (cb) {
+    return await rollupBuild(cb);
 };
 /**
  * Default: Production Acceptance Tests 
@@ -231,7 +227,7 @@ const tddo = function (done) {
 
 const watch_rollup = function () {
     const watchOptions = {
-        allowRealFiles: true,
+        // allowRealFiles: true,
         input: "../appl/index.js",
         plugins: [
             commonjs(),
@@ -241,10 +237,6 @@ const watch_rollup = function () {
             progress({
                 clearLine: true
             }),
-            //            rollupBabel({
-            //                presets: [["env", {targets: {"uglify":false}, modules: false}]],
-            //                plugins: ["external-helpers"]
-            //            }),
             serve({
                 open: false,
                 verbose: true,
@@ -306,6 +298,7 @@ prodRun.displayName = "prod";
 
 task(prodRun);
 exports.default = prodRun;
+exports.prd = series(clean, parallel(copyprod_fonts, copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
 exports.test = testRun;
 exports.acceptance = pat;
 exports.rebuild = series(testCopy, buildDevelopment);
@@ -315,68 +308,101 @@ exports.development = parallel(tdd_rollup, watch_rollup);
 exports.tcopy = testCopy;
 exports.lint = lintRun;
 
-function rollupBuild(cb) {
-    return src(["../appl/index.js"])
-        .pipe(removeCode({ production: isProduction }))
-        .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
-        .pipe(gulpRollup({
-            allowRealFiles: true,
+async function rollupBuild(cb) {
+        await rollup.rollup({
             input: "../appl/index.js",
-            output: {
-                format: "iife",
-                name: "acceptance",
-                // intro: ""
-            },
+            treeshake: isProduction,
+            perf: isProduction, 
             plugins: [
-                commonjs(),
                 alias(aliases()),
                 resolve(),
+                commonjs(),
                 postcss({minimize: true}),
-                cssnano(),
                 progress({
                     clearLine: isProduction ? false : true
                 }),
-                buble(),
-                rollupBabel({
-                    presets: [["env", {/*targets: {"uglify":true},*/ modules: false }]],
-                    plugins: ["external-helpers"]
-                })
+                buble()
             ],
-        }))
-        .pipe(rename("bundle.js"))
-        .pipe(isProduction ? uglify() : noop())
-        // .pipe(sourcemaps.init({ loadMaps: !isProduction }))
-        // .pipe(sourcemaps.write('../dist_test/rollup/maps'))
-        .pipe(dest("../../" + dist))
-        .on("error", log)
-        .on("end", function () {
-            cb();
+        }).then(async bundle => {
+            await bundle.write({
+                file: `../../${dist}/bundle_temp.js`,
+                format: "iife",
+                name: "bundle_temp",
+                sourcemap: isProduction === false
+            }).then(async () => {
+                src([`../../${dist}/bundle_temp.js`])
+                    .pipe(removeCode({ production: isProduction }))
+                    .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
+                    .pipe(isProduction ? uglify() : noop())
+                    .pipe(rename("bundle.js"))
+                    .pipe(dest(`../../${dist}`))
+                    .on("error", log)
+                    .on("end", function () {
+                        del.sync([
+                            `../../${dist}/bundle_temp.js`
+                        ], { dryRun: false, force: true });
+                    });
+                });
         });
+        return new Promise((resolve, reject) => {
+                checkFile(resolve, reject);
+            }).then(() => {
+                cb();
+            }).catch(rejected => {
+                log(chalk.red.bold(`Failed: ${rejected}`));
+                cb();
+                process.exit(1);
+            });
 }
+let count = 0;
+function checkFile(resolve, reject) {
+    try {
+        if (fs.existsSync(`../../${dist}/bundle.js`)) {
+            resolve("Found File");
+            count = 0;
+        } else {
+            count++;
+            if(count > 10) {
+                reject("Bundle bundle.js Not found");
+            } else {
+                setTimeout(function() {checkFile(resolve, reject);}, 1000);
+                if(count === 1) {
+                    log(chalk.blue.bold("waiting..."));
+                } 
+            }
+        }
+    } catch(err) {
+        console.error(err);
+        reject("Bundle bundle.js Not found");
+    }
+}
+
 
 function aliases() {
     return {
-        "setglobal": "./js/utils/set.global",
-        "app": "./app",
-        "router": "../router",
-        "config": "./config",
-        "helpers": "./helpers",
-        "setup": "./utils/setup",
-        "menu": "./utils/menu",
-        "default": "./utils/default",
-        "basecontrol": "./utils/base.control",
-        "start": "./controller/start",
-        "pdf": "./controller/pdf",
-        "table": "./controller/table",
-        "pager": "./js/utils/pager.js",
-        "apptest": "./jasmine/apptest.js",
-        "contacttest": "./contacttest.js",
-        "domtest": "./domtest.js",
-        "logintest": "./logintest.js",
-        "routertest": "./routertest.js",
-        "toolstest": "./toolstest.js",
-        "dodextest": "./dodextest.js",
-        "inputtest": "./inputtest.js"
+        entries: [
+            {find: "setglobal", replacement: "./js/utils/set.global"},
+            {find: "app", replacement: "./app"},
+            {find: "router", replacement: "../router"},
+            {find: "config", replacement: "./config"},
+            {find: "helpers", replacement: "./helpers"},
+            {find: "setup", replacement: "./utils/setup"},
+            {find: "menu", replacement: "./utils/menu"},
+            {find: "default", replacement: "./utils/default"},
+            {find: "basecontrol", replacement: "./utils/base.control"},
+            {find: "start", replacement: "./controller/start"},
+            {find: "pdf", replacement: "./controller/pdf"},
+            {find: "table", replacement: "./controller/table"},
+            {find: "pager", replacement: "./js/utils/pager.js"},
+            {find: "apptest", replacement: "./jasmine/apptest.js"},
+            {find: "contacttest", replacement: "./contacttest.js"},
+            {find: "domtest", replacement: "./domtest.js"},
+            {find: "logintest", replacement: "./logintest.js"},
+            {find: "routertest", replacement: "./routertest.js"},
+            {find: "toolstest", replacement: "./toolstest.js"},
+            {find: "dodextest", replacement: "./dodextest.js"},
+            {find: "inputtest", replacement: "./inputtest.js"}
+        ]
     };
 }
 
@@ -442,7 +468,6 @@ function millisToMinutesAndSeconds(millis) {
  * @type type
  */
 if (process.env.USE_LOGFILE == "true") {
-    var fs = require("fs");
     var origstdout = process.stdout.write,
         origstderr = process.stderr.write,
         outfile = "node_output.log",

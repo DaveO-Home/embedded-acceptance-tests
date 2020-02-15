@@ -1,3 +1,4 @@
+.cache
 /.*/**/*
 public/parcel/build/.cache/*
 public/.cache/*

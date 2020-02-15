@@ -229,7 +229,7 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 * `cd public/brunch/build`
 * `gulp tdd`
 
-  While the Brunch watcher is running, tests are re-run when code are changed. 
+  While the Brunch watcher is running, tests are re-run when code are changed.
   
   __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
