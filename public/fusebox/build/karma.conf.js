@@ -1,5 +1,5 @@
 var bundler = "fusebox";
-var startupHtml = bundler + "/appl/testapp_karma.html";
+var startupHtml = "dist_test/" + bundler + "/appl/testapp_dev.html";
 // Karma configuration
 module.exports = function (config) {
     //whichBrowser to use from gulp task.
@@ -17,10 +17,11 @@ module.exports = function (config) {
             "/templates": "/base/" + bundler + "/appl/templates",
             "/app_bootstrap.html": "/base/" + bundler + "/appl/app_bootstrap.html",
             "/README.md": "/base/README.md",
-            "../../../dodex/": "/base/dodex/",
+            // "../../../dodex/": "/base/dodex/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "fusebox/appl/": "/base/" + bundler + "/appl/",
-            "/resources/": "/base/dist_test/" + bundler + "/resources/",
+            "/resources/": "/base/dist_test/" + bundler + "/appl/resources/",
+            "/styles/": "/base/dist_test/" + bundler + "/styles/",
             "/images/": "/base/dist_test/" + bundler + "/images/"
         },
         // list of files / patterns to load in the browser
@@ -36,11 +37,12 @@ module.exports = function (config) {
             {pattern: "package.json", watched: false, included: false},
             {pattern: "README.md", included: false},
             //Looking for changes via HMR - tdd should run with Fusebox Hot Moudule Reload.
-            {pattern: "dist_test/" + bundler + "/vendor.js", included: false, watched: false},
             //Looking for changes to the client bundle
-            {pattern: "dist_test/" + bundler + "/acceptance.js", included: false, watched: true, served: true},
-            {pattern: "dist_test/" + bundler + "/resources/*", included: false, watched: false},
-            {pattern: "dist_test/" + bundler + "/images/*", included: false, watched: false},
+            {pattern: "dist_test/" + bundler + "/*app.js", included: false, watched: true},
+            // {pattern: "dist_test/" + bundler + "/acceptance.js", included: false, watched: true, served: true},
+            // {pattern: "dist_test/" + bundler + "/*.js", included: false, watched: false, served: true},
+            {pattern: "dist_test/" + bundler + "/**/*", included: false, watched: false },
+            // {pattern: "dist_test/" + bundler + "/images/*", included: false, watched: false},
             //Jasmine/Loader tests and starts Karma
             bundler + "/build/karma.bootstrap.js"
         ],
@@ -75,7 +77,7 @@ module.exports = function (config) {
         port: 9876,
         colors: true,
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_WARN,
+        logLevel: config.LOG_INFO,
         autoWatch: true,
         // Continuous Integration mode
         singleRun: false,

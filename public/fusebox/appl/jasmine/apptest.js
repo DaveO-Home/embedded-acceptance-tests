@@ -1,10 +1,10 @@
 
-var routerTest = require("routertest").routertest;
-var domTest = require("domtest").domtest;
-var contactTest = require("contacttest").contacttest;
-var loginTest = require("logintest").logintest;
-var toolsTest = require("toolstest").toolstest;
-var dodexTest = require("dodextest").dodextest;
+var routerTest = require("./routertest").routertest;
+var domTest = require("./domtest").domtest;
+var contactTest = require("./contacttest").contacttest;
+var loginTest = require("./logintest").logintest;
+var toolsTest = require("./toolstest").toolstest;
+var dodexTest = require("./dodextest").dodextest;
 var inputTest = require("./inputtest").inputtest;
 var Start = require("../js/controller/start");
 

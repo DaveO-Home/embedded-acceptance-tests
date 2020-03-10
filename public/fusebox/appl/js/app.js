@@ -5,7 +5,8 @@ var Map = require("can-map");
 var _ = require("lodash");
 
 require("bootstrap");
-require("tablesorter");
+require("tablesorter/dist/js/jquery.tablesorter.combined.min");
+// require("tablesorter");
 
 // Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
@@ -16,17 +17,11 @@ if (typeof testit !== "undefined" && testit) {
         });
 
         it("is Popper defined", function () {
-            expect(typeof Popper === "function").toBe(true);
+            expect(typeof Popper === "object").toBe(true);
         });
     });
 }
 /* develblock:end */
-
-// var baseScriptsUrl = "~/";
-// pathName = window.location.pathname,
-// baseUrl = pathName
-// ? pathName.substring(0, pathName.substring(1, pathName.length).indexOf("/") + 1) + "/appl"
-// : "/base/" + window._bundler + "/appl/";
 
 module.exports = {
     controllers: [],

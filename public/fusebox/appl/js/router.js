@@ -3,7 +3,7 @@ var App = require("./app");
 var Map = require("can-map");
 var Route = require("can-route");
 var _ = require("lodash");
-var Start = require("start");
+var Start = require("./controller/start");
 
 var ApplViewModel = Map.extend({
     init: function () {
@@ -66,9 +66,9 @@ function getController(controllerName) {
 
     switch (controllerName.toLowerCase()) {
         case "table":
-            return require("table");
+            return require("./controller/table");
         case "pdf":
-            return require("pdf");
+            return require("./controller/pdf");
         default:
             break;
     }

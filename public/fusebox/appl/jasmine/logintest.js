@@ -1,4 +1,4 @@
-const Start = require("start");
+const Start = require("../js/controller/start");
 const { timer } = require("rxjs");
 
 module.exports = {

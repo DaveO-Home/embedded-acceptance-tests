@@ -7,13 +7,14 @@ window._bundler = "fusebox";
 
 window.Popper = require("popper.js");
 
-var App = require("app");
-var Router = require("router");
-var Default = require("default");
-var Setup = require("setup");
-var Helpers = require("helpers");
-require("config");
-require("pager");
+var App = require("./js/app");
+var Router = require("./js/router");
+var Default = require("./js/utils/default");
+var Setup = require("./js/utils/setup");
+var Helpers = require("./js/utils/helpers");
+require("./js/config");
+require("tablesorter/dist/js/extras/jquery.tablesorter.pager.min");
+// require("pager");
 
 var dodex = require("dodex").default;
 var input = require("dodex-input").default;
@@ -50,8 +51,7 @@ Setup.init();
 //Code between the ..start and ..end tags will be removed by the BlockStrip plugin during the production build.
 //testit is true if running under Karma - see testapp_dev.html
 if (testit) { 
-    var apptest = require("apptest").apptest;
-
+    var apptest = require("./jasmine/apptest").apptest;
     //Run acceptance tests. - To run only unit tests, comment the apptest call.
     apptest(Route, Helpers, App, dodex, input, getAdditionalContent());
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;

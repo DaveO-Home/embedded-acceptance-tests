@@ -107,17 +107,17 @@ module.exports = App.controllers.Start ||
                     }
                 });
             },
-            footer: "<button class=\"btn btn-sm btn-primary submit-modal mr-auto raised submit-login\">{{submit}}</button> \
-                                 <button class=\"btn btn-sm close-modal raised\" data-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
-            contactFooter: "<div class=\"modal-footer\"> \
-                                        <div class=\"mr-auto contact\" > \
-                                            <a href=\"#!contact\" ><small class=\"grey\">Contact</small></a> \
-                                        </div> \
-                                        </div>",
-            alert: "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\"> \
-                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> \
-                                <strong>Thank You!</strong> Your request is being processed. \
-                                </div>",
+            footer: `<button class="btn btn-sm btn-primary submit-modal mr-auto raised submit-login">{{submit}}</button>
+                                 <button class="btn btn-sm close-modal raised" data-dismiss="modal" aria-hidden="true">{{close}}</button>`,
+            contactFooter: `<div class="modal-footer">
+                                        <div class="mr-auto contact" >
+                                            <a href="#!contact" ><small class="grey">Contact</small></a>
+                                        </div>
+                                        </div>`,
+            alert: `<div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Thank You!</strong> Your request is being processed.
+                                </div>`,
             showAlert: function () {
                 $("form.form-horizontal").append(me.alert);
             },
