@@ -232,7 +232,10 @@ const watch_rollup = function () {
         plugins: [
             commonjs(),
             alias(aliases()),
-            resolve(),
+            resolve({
+                browser:true,
+                main: true,
+            }),
             postcss(),
             progress({
                 clearLine: true
@@ -315,7 +318,10 @@ async function rollupBuild(cb) {
             perf: isProduction, 
             plugins: [
                 alias(aliases()),
-                resolve(),
+                resolve({
+                  browser: true,
+                  main: true,
+                }),
                 commonjs(),
                 postcss({minimize: true}),
                 progress({

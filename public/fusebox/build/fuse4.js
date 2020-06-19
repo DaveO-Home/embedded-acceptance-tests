@@ -59,7 +59,7 @@ const run = function (mode, configure, debug, cb) {
                 .dest(`${copyDir}`, "appl")
                 .exec();
             await src(path.join(__dirname, `../images/*.*`))
-                .dest(`${copyDir}/..`, "fusebox")
+                .dest(`${copyDir}/../..`, "public")
                 .exec();
             await src(path.join(__dirname, `../appl/app_bootstrap.html`))
                 .dest(`${copyDir}`, "appl")
@@ -70,16 +70,16 @@ const run = function (mode, configure, debug, cb) {
             await src(path.join(__dirname, `../../README.md`))
                 .dest(`${copyDir}/../..`, "public")
                 .exec();
-            // if (isProduction) {
+            if (isProduction) {
                 await src(path.join(__dirname, `../index.html`))
-                    .dest(`${copyDir}/..`, "fusebox")
+                    .dest(`${copyDir}/../..`, "public")
                     .exec();
-            // } 
-            // else {
-            //     await src(path.join(__dirname, `../static/index.html`))
-            //         .dest(`${copyDir}/..`, "static")
-            //         .exec();
-            // }
+            } 
+            else {
+                await src(path.join(__dirname, `../static/index.html`))
+                    .dest(`${copyDir}/../..`, "public")
+                    .exec();
+            }
             await src(path.join(__dirname, `../appl/dodex/data/**/**.*`))
                 .dest(`${copyDir}`, "appl")
                 .exec();
@@ -121,21 +121,6 @@ const run = function (mode, configure, debug, cb) {
             });
         });
     });
-
-        // fuse.runDev(handler => {
-        //     handler.onComplete(output => {
-        //         if (typeof cb === "function") {
-        //             if (!config.cache.FTL) { // We may be doing tdd (gulp development)
-        //                 setTimeout(function () { // The build finishes before resources are completed.
-        //                     cb();
-        //                 }, 500);
-        //             } else {
-        //                 cb(); // restart gulp task, tests will start
-        //             }
-        //         }
-        //     });
-        // });
-   // });
 
     task("preview", async context => {
         devServe.httpServer.root = distDir;
@@ -186,9 +171,6 @@ const run = function (mode, configure, debug, cb) {
                 }
             });
         });    
-        // if (typeof cb === "function") {
-        //     cb();
-        // }
     });
 
     task("default", context => {
