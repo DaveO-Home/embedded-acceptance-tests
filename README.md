@@ -310,7 +310,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 1\. ***Development Server Window*** -
 
-***Important:*** Upgraded Karma from 4.4.1 to 5.1.0 - StealJs opens too many files so downgrade Karma to 4.4.1.
+***Important:*** Upgraded Karma from 4.4.1 to 5.1.0 - StealJs may open too many files so downgrade Karma to 4.4.1 or change your `ulimit`.
 
 * `cd public/stealjs/build`
 * `gulp server`
