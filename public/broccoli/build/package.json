@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "broccoli": "^3.2.0",
+    "broccoli": "^3.4.2",
     "broccoli-cli": "^1.0.0",
     "broccoli-concat": "^3.7.5",
     "broccoli-env": "0.0.1",
@@ -24,7 +24,7 @@
     "broccoli-merge-trees": "^3.0.2",
     "broccoli-uglify-sourcemap": "^3.2.0",
     "broccoli-webpack": "^1.0.0",
-    "chokidar": "^3.3.1",
+    "chokidar": "^3.4.2",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.6.0",
     "extract-text-webpack-plugin": "^3.0.2",

@@ -3,8 +3,7 @@ var Helpers = require("./utils/helpers");
 var Component = require("can-component");
 var DefineMap = require("can-define/map/map");
 var _ = require("lodash");
-
-require("b/popper");
+window.Popper = require("popper.js");
 require("bootstrap");
 require("tablesorter");
 

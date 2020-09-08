@@ -1,4 +1,6 @@
 .cache
+public/broccoli/build/outdated.dat
+public/fusebox/es*
 /.*/**/*
 public/parcel/build/.cache/*
 public/.cache/*
