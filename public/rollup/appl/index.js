@@ -7,11 +7,13 @@ var Setup = require("./js/utils/setup");
 var Helpers = require("./js/utils/helpers");
 require("./js/config");
 require("../../node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js"); 
-
-var dodex = require("dodex").default;
-var input = require("dodex-input").default;
+window.JSONEditor = require("jsoneditor");
+var dodex = require("dodex");
+var input = require("dodex-input");
+var mess = require("dodex-mess");
 
 if ((typeof testit === "undefined" || !testit)) {
+	const server = window.location.hostname + (window.location.port.length > 0 ? ":" + window.location.port : "");
 	// Content for cards A-Z and static card
 	dodex.setContentFile("./dodex/data/content.js");
 	dodex.init({
@@ -20,8 +22,10 @@ if ((typeof testit === "undefined" || !testit)) {
 		left: "50%",
 		top: "100px",
 		input: input,    	// required if using frontend content load
-		private: "full", // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
-		replace: true    	// append to or replace default content - default false(append only)
+		private: "full",	// frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+		replace: true,    	// append to or replace default content - default false(append only)
+		mess: mess,         // requires a server backed by a database, see "node_modules/dodex-mess/server"
+		server:server		// configured websocket server for mess
 	})
 		.then(function () {
 			// Add in app/personal cards

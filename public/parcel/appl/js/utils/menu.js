@@ -1,4 +1,4 @@
-var trimStart = require("lodash/trimStart");
+import trimStart from "lodash/trimStart";
 
 module.exports = {
     //Bootstrap activation

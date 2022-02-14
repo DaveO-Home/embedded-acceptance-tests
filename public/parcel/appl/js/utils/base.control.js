@@ -1,7 +1,7 @@
 
-var App = require("../app");
-var Helpers = require("./helpers");
-var Control = require("can-control");
+import App from "../app";
+import Helpers from "./helpers";
+import Control from "can-control";
 
 module.exports = Control.extend({
     defaults: {

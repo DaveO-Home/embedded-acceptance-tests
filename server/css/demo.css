@@ -1,0 +1,32 @@
+/* per https://freefrontend.com/css-border-examples/ */
+.demo div{
+  margin-top:5%; 
+  text-align:center;
+}
+.demo  p{
+  display:inline-block;
+  margin:5% auto;
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  padding:1em;
+  line-height:1.5em;
+  background:hsla(67, 95%, 95%, 1);
+}
+#one {
+  border:solid 2px hsla(0, 95%, 35%, 1);
+}
+#two{
+  border:dotted 5px hsla(0, 95%, 35%, 1);
+}
+#three{
+  border:dashed 5px hsla(0, 95%, 35%, 1);
+}
+
+.dodex-footer {
+  background-color: #f5f5f5;
+  bottom: 0;
+  height: 20px;
+  line-height: 10px;
+  position: absolute;
+  width: 95%;
+}
+  

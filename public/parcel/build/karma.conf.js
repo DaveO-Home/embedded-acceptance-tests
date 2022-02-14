@@ -1,5 +1,5 @@
 var bundler = "parcel";
-var startupHtml = "/testapp_dev.html";
+var startupHtml = "/appl/testapp_dev.html";
 // Karma configuration
 //whichBrowser to use from gulp task.
 module.exports = function (config) {
@@ -10,7 +10,7 @@ module.exports = function (config) {
 
     config.set({
         basePath: "../../",
-        frameworks: ["jasmine-jquery", "jasmine"],
+        frameworks: ["jasmine-jquery"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -19,7 +19,7 @@ module.exports = function (config) {
             "parcel/appl/": "/base/" + bundler + "/appl/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "/images/": "/base/dist_test/" + bundler + "/images/",
-            "/": "/base/dist_test/" + bundler + "/"
+            "/": "/base/dist_test/parcel/appl/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.
@@ -31,7 +31,7 @@ module.exports = function (config) {
             {pattern: bundler + "/appl/**/*.*", included: false, watched: false},
             {pattern: "package.json", watched: false, included: false},
             {pattern: "README.md", included: false},
-            {pattern: "dist_test/" + bundler + "/appl.*.*", included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
+            {pattern: "dist_test/" + bundler + "/appl/*.*", included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: "dist_test/" + bundler + "/**/*.*", included: false, watched: false},
             //Karma/Jasmine/Loader
             bundler + "/build/karma.bootstrap.js"
@@ -39,12 +39,8 @@ module.exports = function (config) {
         bowerPackages: [
         ],
         plugins: [
-            "karma-chrome-launcher",
-            "karma-firefox-launcher",
-            "karma-opera-launcher",
-            "karma-jasmine",
-            "karma-jasmine-jquery",
-            "karma-mocha-reporter"
+            "karma-*",
+            "@metahub/karma-jasmine-jquery"
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 
@@ -54,7 +50,7 @@ module.exports = function (config) {
         customLaunchers: {
             FirefoxHeadless: {
                 base: "Firefox",
-                flags: ["--headless", " --safe-mode"]
+                flags: ["--headless"]
             }
         },
         browserNoActivityTimeout: 0,
@@ -82,7 +78,7 @@ module.exports = function (config) {
                 random: false
             }
         },
-        urlRoot: "/test/",
+        urlRoot: "/",
         concurrency: 5
     });
 };

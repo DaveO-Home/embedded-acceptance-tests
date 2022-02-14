@@ -11,7 +11,7 @@ module.exports = function (config) {
         basePath: "../../",
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ["jasmine-jquery", "jasmine"],
+        frameworks: ["jasmine-jquery"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -39,22 +39,15 @@ module.exports = function (config) {
             //Looking for changes via HMR - tdd should run with Fusebox Hot Moudule Reload.
             //Looking for changes to the client bundle
             {pattern: "dist_test/" + bundler + "/*app.js", included: false, watched: true},
-            // {pattern: "dist_test/" + bundler + "/acceptance.js", included: false, watched: true, served: true},
-            // {pattern: "dist_test/" + bundler + "/*.js", included: false, watched: false, served: true},
             {pattern: "dist_test/" + bundler + "/**/*", included: false, watched: false },
-            // {pattern: "dist_test/" + bundler + "/images/*", included: false, watched: false},
             //Jasmine/Loader tests and starts Karma
             bundler + "/build/karma.bootstrap.js"
         ],
         bowerPackages: [
         ],
         plugins: [
-            "karma-chrome-launcher",
-            "karma-firefox-launcher",
-            "karma-opera-launcher",
-            "karma-jasmine",
-            "karma-jasmine-jquery",
-            "karma-mocha-reporter"
+            "karma-*",
+            "@metahub/karma-jasmine-jquery",
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 

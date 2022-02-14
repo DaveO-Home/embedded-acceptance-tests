@@ -62,6 +62,10 @@ let webpackConfig = {
                 exclude: /node_modules/,
                 loader: "babel-loader",
             },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=image/svg+xml&name=/dist_test/broccoli/appl/css/img/[name].[ext]'
+            },
             setJsonLoader(version)
         ]
     },
@@ -69,7 +73,7 @@ let webpackConfig = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            Popper: ["popper.js", "default"]
+            // Popper: ["popper.js", "default"]
         }),
         new webpack.DefinePlugin({
             "process.env": {

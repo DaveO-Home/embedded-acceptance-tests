@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../index.css">
+    <title>Test Application</title>
+</head>
+
+<body class="d-flex flex-column vh-100 vw-100 overflow-hidden body-bg">
+    <script type='text/javascript'>
+
+        window.testit = (typeof __karma__ !== 'undefined');
+        //true will generate a fatal error, only jasmine specs are run.
+        window.testOnly = false;
+    </script>
+
+    <nav id="top-nav" class="navbar navbar-expand-sm navbar-light fixed-top rounded nav-bar-bg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Test</a>
+            <ul class="navbar-nav me-auto mb-md-0">
+                <div class="nav-item">
+                    <div class="dodex--open">
+                        <img src="../images/dodex_g.ico">
+                    </div>
+                </div>
+            </ul>
+            <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"></button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse" aria-controls="navbarCollapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <div id="root-collapse"></div>
+                </div>
+            </div>
+            <div class="nav-login">
+                <small><a href="#" class="login">Log in</a></small>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-fluid pb-1 flex-grow-1 d-flex flex-column flex-sm-row overflow-auto pmain">
+        <div class="row flex-grow-sm-1 flex-grow-0 w-100">
+            <div class="col-sm-2 flex-grow-sm-1 flex-shrink-1 flex-grow-0 pb-sm-0 pb-3">
+                <div class="bg-light pmain rounded-3 p-1 h-100">
+                    <h6 class="d-none d-sm-block text-muted">Views</h6>
+                    <ul class="nav nav-pills flex-sm-column flex-row mb-auto justify-content-between text-truncate">
+                        <ul class="nav navbar-collapse">
+                            <li class="nav-header nav-item">
+                                <div class="collapse small show" id="submenu1" aria-expanded="true">
+                                    <ul class="flex-column nav pl-4">
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="#!">
+                                                <i class="fa fa-fw fa-home"></i> Home
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="#!pdf/test">
+                                                <i class="fa fa-fw far fa-file-pdf"></i> PDF View
+                                            </a>
+                                        </li>
+                                        <li class="nav-header nav-item">Statistics</li>
+                                        <li class="nav-item">
+                                            <a class="nav-link p-0" href="#!table/tools">
+                                                <i class="fa fa-fw fa-table"></i> Tabular View
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm overflow-auto pmain h-100">
+                <div class="page-bg border rounded-3 p-0">
+                    <div id="container"></div>
+                    <div id="main_container">
+                        <div class="loading-page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-footer">
+        <div class="container">
+            <span class="ml-5 small text-muted">Karma, Jasmine, esbuild and Canjs Acceptance Test and Build Demo</span>
+            <span class="contact  float-end">
+                <a href="#contact">
+                    <small class="grey">Contact</small>
+                </a>
+            </span>
+        </div>
+    </footer>
+    <div id="jsoneditor" class="editor"></div>
+    <script type="text/javascript" src="../index.js"></script>
+</body>
+
+</html>

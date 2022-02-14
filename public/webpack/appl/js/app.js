@@ -1,12 +1,11 @@
 
 define("app", [
-    "jquery",
     "helpers",
     "lodash",
     "bootstrap",
     "tablesorter",
     "tablepager"
-], function ($, Helpers, _) {
+], function (Helpers, _) {
     /* develblock:start */
     // Specs can be inserted at module initialization(before karma is started).
     if (testit) {
@@ -14,8 +13,9 @@ define("app", [
             it("is JQuery defined", function () {
                 expect(typeof $ === "function").toBe(true);
             });
+
             it("is Popper defined", function () {
-                expect(typeof Popper === "function").toBe(true);
+                expect(typeof createPopper === "function").toBe(true);
             });
         });
     }

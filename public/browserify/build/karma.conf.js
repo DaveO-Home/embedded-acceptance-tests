@@ -8,7 +8,7 @@ module.exports = function (config) {
 
     config.set({
         basePath: "../../",
-        frameworks: ["jasmine-jquery", "jasmine"],
+        frameworks: ["jasmine-jquery"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -33,20 +33,14 @@ module.exports = function (config) {
             {pattern: "dist_test/" + bundler + "/index.js", included: false, watched: true, served: true},  //watching bundle to get changes during tdd/test
             {pattern: "dist_test/" + bundler + "/**/*.*", included: false, watched: false},
             {pattern: bundler + "/images/*.ico", included: false, watched: false},
-            {pattern: "node_modules/font-awesome/css/font-awesome.css", watched: false, included: false},
-            {pattern: "node_modules/font-awesome/fonts/fontawesome-webfont.woff2", watched: false, included: false},
             //Karma/Jasmine/Loader
             bundler + "/build/karma.bootstrap.js"
         ],
         bowerPackages: [
         ],
         plugins: [
-            "karma-chrome-launcher",
-            "karma-firefox-launcher",
-            "karma-opera-launcher",
-            "karma-jasmine",
-            "karma-jasmine-jquery",
-            "karma-mocha-reporter"
+            "karma-*",
+            "@metahub/karma-jasmine-jquery"
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 

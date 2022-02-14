@@ -1,7 +1,6 @@
 const path = require("path");
 const isProduction = process.env.NODE_ENV === "production";
 const deployDir = isProduction ? "dist/brunch" : "dist_test/brunch";
-const fontLocation = isProduction ? "../fonts" : "../fonts";
 const singleRun = process.env.USE_HMR !== "true" && process.env.USE_TDD !== "true";
 const htmlFile = isProduction ? "brunch/appl/testapp.html" : "brunch/appl/testapp_dev.html";
 
@@ -34,7 +33,7 @@ const pluginsObject = {
     end: "develblock:end"
   },
   babel: {
-    presets: ["env"]
+    presets: ["@babel/env"]
   },
   // See README.md for implementation
   //   eslint: {
@@ -43,17 +42,18 @@ const pluginsObject = {
   //     fix: true
   //   },
   copycat: {
-    "views": ["brunch/appl/views"],
-    "templates": ["brunch/appl/templates"],
-    "./": ["README.md", htmlFile],
+    "appl/views": ["brunch/appl/views"],
+    "appl/templates": ["brunch/appl/templates"],
+    "./": ["README.md"],
     "images": ["brunch/images"],
-    "dodex": ["brunch/appl/dodex"],
+    "appl/dodex": ["brunch/appl/dodex"],
+    "appl": [htmlFile],
+    "img": ["node_modules/jsoneditor/dist/img/jsoneditor-icons.svg"],
     verbose: false,
     onlyChanged: true
   }
 };
 
-pluginsObject.copycat[fontLocation] = ["node_modules/font-awesome/fonts"];
 exports.plugins = pluginsObject;
 
 exports.npm = {
@@ -62,16 +62,16 @@ exports.npm = {
     jQuery: "jquery",
     $: "jquery",
     bootstrap: "bootstrap",
-    Popper: "popper.js"
+    Popper: "@popperjs/core"
   },
   styles: {
     bootstrap: ["dist/css/bootstrap.css"],
-    "font-awesome": ["css/font-awesome.css"],
     "tablesorter": [
       "dist/css/jquery.tablesorter.pager.min.css",
       "dist/css/theme.blue.min.css"
     ],
-    dodex: ["dist/dodex.min.css"]
+    dodex: ["dist/dodex.min.css"],
+    jsoneditor: ["dist/jsoneditor.min.css", "dist/img/jsonedior-icons.svg"]
   },
   aliases: {
     "handlebars": "handlebars/dist/handlebars.min.js",
@@ -85,8 +85,8 @@ exports.server = {
   stripSlashes: true
 };
 
-pluginsObject.karma = require("./brunch/build/karma.conf");
-pluginsObject.karma.singleRun = singleRun;
+pluginsObject.karmat = require("./brunch/build/karma.conf");
+pluginsObject.karmat.singleRun = singleRun;
 
 exports.overrides = {
   production: {
@@ -98,7 +98,7 @@ exports.overrides = {
       ignored: ["brunch/jasmine"]
     },
     plugins: {
-      off: ["karma"],
+      off: ["karmat"],
     }
   }
 };

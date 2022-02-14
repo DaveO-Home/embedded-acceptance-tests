@@ -1,4 +1,5 @@
 var bundler = "webpack";
+var startupHtml = "dist_test/" + bundler + "/appl/testapp_dev.html";
 //var webpackConfig = require('../webpack.config.js');
 
 // Karma configuration
@@ -11,7 +12,7 @@ module.exports = function (config) {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: "../../",
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ["jasmine-jquery", "jasmine"],
+        frameworks: ["jasmine-jquery"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -26,7 +27,7 @@ module.exports = function (config) {
             //Webcomponents for Firefox - used for link tag with rel="import" attribute.
             {pattern: bundler + "/tests/webcomponents-hi-sd-ce.js", watched: false},
             //Application and Acceptance specs.
-            bundler + "/appl/testapp_karma.html",
+            startupHtml,
             //Jasmine tests
             bundler + "/tests/unit_tests*.js",
             {pattern: bundler + "/appl/**/*.*", included: false, watched: false},
@@ -42,13 +43,8 @@ module.exports = function (config) {
         bowerPackages: [
         ],
         plugins: [
-            "karma-chrome-launcher",
-            "karma-firefox-launcher",
-            "karma-opera-launcher",
-            "karma-jasmine",
-            "karma-jasmine-jquery",
-            "karma-mocha-reporter",
-            "karma-webpack"
+            "karma-*",
+            "@metahub/karma-jasmine-jquery",
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 

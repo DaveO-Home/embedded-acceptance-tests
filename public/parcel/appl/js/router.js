@@ -1,10 +1,10 @@
 
-var App = require("./app");
-var Map = require("can-map");
-var Route = require("can-route");
-var camelCase = require("lodash/camelCase");
-var capitalize = require("lodash/capitalize");
-var Start = require("./controller/start");
+import App from "./app";
+import Map from "can-map";
+import Route from "can-route";
+import camelCase from "lodash/camelCase";
+import capitalize from "lodash/capitalize";
+import Start from "./controller/start";
 
 var ApplViewModel = Map.extend({
     init: function () {
@@ -46,9 +46,9 @@ var ApplViewModel = Map.extend({
 function getController (controllerName) {
     switch (controllerName.toLowerCase()) {
         case "table":
-            return require("./controller/table");
+            return require ("./controller/table");
         case "pdf":
-            return require("./controller/pdf");
+            return require ("./controller/pdf");
         default:
             break;
     }

@@ -3,8 +3,10 @@ steal("helpers",
     "can-component",
     "can-map",
     "lodash",
-    "popper",
-    "bootstrap",
+    "awesall",
+    "awesfree",
+    // "@popperjs/core",
+    // "bootstrap",
     "tablesorter",
     "tablepager",
     "tablewidgets",
@@ -21,7 +23,7 @@ steal("helpers",
                 });
 
                 it("is Popper defined", function () {
-                    expect(typeof Popper === "function").toBe(true);
+                    // expect(typeof Popper === "function").toBe(true);
                 });
             });
         }

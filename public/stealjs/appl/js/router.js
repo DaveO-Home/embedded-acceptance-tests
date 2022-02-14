@@ -1,4 +1,4 @@
-
+// import { route } from "can";
 steal("app",
     "can-map",
     "can-route",

@@ -5,7 +5,8 @@
 
 const { series, parallel, task, src, dest } = require("gulp");
 var fs = require("fs");
-const Server = require("karma").Server;
+const karma = require("karma");
+const path = require("path");
 const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
@@ -23,11 +24,13 @@ const livereload = require("rollup-plugin-livereload");
 const serve = require("rollup-plugin-serve");
 const commonjs = require("@rollup/plugin-commonjs");
 const alias = require("@rollup/plugin-alias");
-const resolve = require("@rollup/plugin-node-resolve");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
+
 const postcss = require("rollup-plugin-postcss");
 const progress = require("rollup-plugin-progress");
 const rename = require("gulp-rename");
 const buble = require("rollup-plugin-buble");
+const css = require("rollup-plugin-css-only");
 
 const startComment = "steal-remove-start",
     endComment = "steal-remove-end",
@@ -63,9 +66,9 @@ const build = async function (cb) {
  */
 const pat = function (done) {
     if (!browsers) {
-        global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
+        global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    runKarma(done);
+    karmaServer(done, true, false);
 };
 /*
  * javascript linter
@@ -197,20 +200,18 @@ const copy_fonts = function () {
  */
 const r_test = function (done) {
     if (!browsers) {
-        global.whichBrowsers = [/*"ChromeHeadless",*/ "FirefoxHeadless"];
+        global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    runKarma(done);
+    karmaServer(done, true, false);
 };
 /**
  * Continuous testing - test driven development.  
  */
 const tdd_rollup = function (done) {
     if (!browsers) {
-        global.whichBrowsers = [/*"Chrome",*/ "Firefox"];
+        global.whichBrowsers = ["Chrome", "Firefox"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    karmaServer(done, false, true);
 };
 /**
  * Karma testing under Opera. -- needs configuation  
@@ -219,10 +220,7 @@ const tddo = function (done) {
     if (!browsers) {
         global.whichBrowsers = ["Opera"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
-
+    karmaServer(done, false, true);
 };
 
 const watch_rollup = function () {
@@ -230,13 +228,12 @@ const watch_rollup = function () {
         // allowRealFiles: true,
         input: "../appl/index.js",
         plugins: [
-            commonjs(),
             alias(aliases()),
-            resolve({
-                browser:true,
-                main: true,
+            nodeResolve({
+                extensions: [".js", ".ts"]
             }),
-            postcss(),
+            commonjs(),
+            css({output: "bundle.css"}),
             progress({
                 clearLine: true
             }),
@@ -293,7 +290,7 @@ const watch_rollup = function () {
 
 const testCopy = series(cleant, parallel(copy_fonts, copy_css, copy_node_css, copy_images, copy_src));
 const testRun = series(testCopy, buildDevelopment, pat);
-const lintRun = parallel(esLint, cssLint, bootLint);
+const lintRun = parallel(esLint, cssLint/*, bootLint*/);
 const prodRun = series(testRun, lintRun, clean, parallel(copyprod_fonts, copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
 const tddRun = series(testCopy, buildDevelopment, tdd_rollup);
 
@@ -314,20 +311,21 @@ exports.lint = lintRun;
 async function rollupBuild(cb) {
         await rollup.rollup({
             input: "../appl/index.js",
-            treeshake: isProduction,
-            perf: isProduction, 
+            treeshake: isProduction,           
             plugins: [
                 alias(aliases()),
-                resolve({
-                  browser: true,
-                  main: true,
+                nodeResolve({
+                    extensions: [".js", ".ts"],
+                    browser: true
                 }),
-                commonjs(),
-                postcss({minimize: true}),
+                css({output: "bundle.css"}),
                 progress({
-                    clearLine: isProduction ? false : true
+                    clearLine: isProduction ? true : true
                 }),
-                buble()
+                commonjs({}),
+                // buble(),
+                
+
             ],
         }).then(async bundle => {
             await bundle.write({
@@ -387,6 +385,7 @@ function checkFile(resolve, reject) {
 function aliases() {
     return {
         entries: [
+            {find: "bootstrap", replacement: "../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"},
             {find: "setglobal", replacement: "./js/utils/set.global"},
             {find: "app", replacement: "./app"},
             {find: "router", replacement: "../router"},
@@ -438,10 +437,8 @@ function copyCss() {
 }
 
 function copyNodeCss() {
-    return src(["../../node_modules/bootstrap/dist/css/bootstrap.min.css", "../../node_modules/font-awesome/css/font-awesome.css",
-        "../../node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css", "../../node_modules/tablesorter/dist/css/theme.blue.min.css",
-        "../../node_modules/dodex/dist/dodex.min.css"])
-        .pipe(copy("../../" + dist + "/appl/data/data"));
+        return src(["../../node_modules/jsoneditor/dist/img/jsoneditor-icons.svg"])
+            .pipe(dest("../../" + dist + "/img"));
 }
 
 function copyFonts() {
@@ -449,19 +446,31 @@ function copyFonts() {
         .pipe(copy("../../" + dist + "/appl/data/data"));
 }
 
-function runKarma(done) {
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: true
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        if (typeof done === "function") {
-            done();
-        }
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-    }).start();
+function karmaServer(done, singleRun = false, watch = true) {
+    const parseConfig = karma.config.parseConfig;
+    const Server = karma.Server;
+
+    parseConfig(
+        path.resolve("./karma.conf.js"),
+        { port: 9876, singleRun: singleRun, watch: watch },
+        { promiseConfig: true, throwErrors: true },
+    ).then(
+        (karmaConfig) => {
+            if(!singleRun) {
+                done();
+            }
+            new Server(karmaConfig, function doneCallback(exitCode) {
+                console.warn("Karma has exited with " + exitCode);
+                if(singleRun) {
+                    done();
+                }
+                if(exitCode > 0) {
+                    process.exit(exitCode);
+                }
+            }).start();
+        },
+        (rejectReason) => { console.error(rejectReason); }
+    );
 }
 //per stackoverflow - Converting milliseconds to minutes and seconds with Javascript
 function millisToMinutesAndSeconds(millis) {

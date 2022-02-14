@@ -94,14 +94,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
+-bs            </div>
             <h3>Filter Hint:</h3>
             <div class="modal-body">
                 <p>To filter rows enter a value from the Tool column. To filter a group of rows enter one of the values that is in parentheses.</p>
             </div>
             <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Close</button>
+                <button class="btn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

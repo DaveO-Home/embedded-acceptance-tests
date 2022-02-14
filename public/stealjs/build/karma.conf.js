@@ -6,7 +6,7 @@ module.exports = function (config) {
     }
     config.set({
         basePath: "../../",
-        frameworks: ["jasmine-jquery", "jasmine"],
+        frameworks: ["jasmine-jquery"],
         proxies: {
             "/views/": "/base/" + bundler + "/appl/views/",
             "/templates": "/base/" + bundler + "/appl/templates",
@@ -30,12 +30,10 @@ module.exports = function (config) {
             //Module loader - so we can run steal unit tests - see include-all-tests.js
             "node_modules/steal/steal.js",
             {pattern: "node_modules/steal/**/*.js", watched: false, included: false},
-            // {pattern: 'node_modules/**/*', watched: false, included: false},
             {pattern: "node_modules/steal-css/css.js", watched: false, included: false},
             {pattern: "node_modules/**/*.map", watched: false, included: false, served: true},
             {pattern: "node_modules/bootstrap/**/*.js", watched: false, included: false},
-            {pattern: "node_modules/popper.js/dist/umd/*", watched: false, included: false},
-            // {pattern: 'node_modules/can/**/*.js', watched: false, included: false},
+            {pattern: "node_modules/@popperjs/core/dist/umd/*", watched: false, included: false},
             {pattern: "node_modules/can-*/**/*.js", watched: false, included: false},
             {pattern: bundler + "/appl/js/**/*.js", included: false},
             {pattern: bundler + "/appl/css/**/*.js", included: false},
@@ -54,19 +52,21 @@ module.exports = function (config) {
             {pattern: "node_modules/jquery/package.json", watched: false, included: false},
             {pattern: "node_modules/**/package.json", watched: false, included: false},
             {pattern: "node_modules/jquery/dist/jquery.js", watched: false, served: true, included: false},            
-            {pattern: "node_modules/jasmine-jquery/lib/jasmine-jquery.js", watched: false, served: true, included: false},
             {pattern: "node_modules/tablesorter/dist/js/jquery.tablesorter.min.js", watched: false, served: true, included: false},
             {pattern: "node_modules/tablesorter/dist/js/extras/jquery.tablesorter.pager.min.js", watched: false, served: true, included: false},
             {pattern: "node_modules/tablesorter/dist/js/jquery.tablesorter.widgets.min.js", watched: false, served: true, included: false},
+            {pattern: "node_modules/jsoneditor/dist/jsoneditor.min.js", watched: false, served: true, included: false},
+            {pattern: "node_modules/jsoneditor/dist/jsoneditor.min.css", watched: false, served: true, included: false},
             {pattern: "package.json", watched: false, included: false},
             {pattern: "node_modules/lodash/lodash.min.js", watched: false, included: false},
             {pattern: "node_modules/moment/moment.js", watched: false, included: false},
-            {pattern: "node_modules/rxjs/index.js", watched: false, included: false},
-            {pattern: "node_modules/rxjs/internal/**/*.js", watched: false, included: false}, 
+            {pattern: "node_modules/rxjs/dist/bundles/rxjs.umd.min.js", watched: false, included: false},
             {pattern: "node_modules/dodex/**/*", watched: false, included: false},
             {pattern: "node_modules/dodex-input/**/*", watched: false, included: false},
+            {pattern: "node_modules/dodex-mess/*", watched: false, included: false},
+            {pattern: "node_modules/dodex-mess/dist/*", watched: false, included: false},
             {pattern: bundler + "/appl/dodex/**/*", watched: false, included: false},
-            {pattern: "node_modules/marked/lib/marked.js", watched: false, included: false},
+            {pattern: "node_modules/marked/marked.min.js", watched: false, included: false},
             {pattern: "README.md", included: false},
             {pattern: bundler + "/appl/**/*.html", included: false},
             {pattern: "dev-bundle.js", watched: false, included: false},
@@ -83,21 +83,16 @@ module.exports = function (config) {
             {pattern: bundler + "/appl/templates/*.json", included: false},
             {pattern: bundler + "/appl/views/prod/Test.pdf", included: false},
             {pattern: bundler + "/appl/css/**/*.css", included: false},
-            // {pattern: "node_modules/steal-css/**/*.js", watched: false, included: false},
-            {pattern: "node_modules/font-awesome/css/font-awesome.css", watched: false, included: false},
-            {pattern: "node_modules/font-awesome/fonts/fontawesome-webfont.woff2", watched: false, included: false},
+            {pattern: "node_modules/@fortawesome/fontawesome-free/js/all.js", watched: false, included: false},
+            {pattern: "node_modules/@fortawesome/fontawesome-free/js/fontawesome.js", watched: false, included: false},
             // Jasmine/Steal tests and starts Karma
             bundler + "/build/karma.bootstrap.js"
         ],
         bowerPackages: [
         ],
         plugins: [
-            "karma-chrome-launcher",
-            "karma-firefox-launcher",
-            "karma-opera-launcher",
-            "karma-jasmine",
-            "karma-jasmine-jquery",
-            "karma-mocha-reporter"
+            "karma-*",
+            "@metahub/karma-jasmine-jquery",
         ],
         /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.
          * This test demo will work with Chrome/ChromeHeadless by default - Webcomponents included above, so FirefoxHeadless should work also. 

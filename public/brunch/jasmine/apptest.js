@@ -32,7 +32,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
         });
 
         afterAll(function () {
-            $("#remove").remove();
+            $("body").remove();
         });
 
         it("Is Welcome Page Loaded", function (done) {

@@ -10,7 +10,7 @@ function pluginStripCode(a, b) {
                 /node_modules/.test("can")) {
                 return;
             }
-            ctx.log.info("pluginStripCode", "stripping code in $file \n", {
+            ctx.log.info("pluginStripCode", "stripping code in $file", {
                 file: module.publicPath
             });
             var startComment = opts.start || "develblock:start";

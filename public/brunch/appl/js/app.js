@@ -6,7 +6,7 @@ var Component = require("can-component");
 var Map = require("can-map");
 var startsWith = require("lodash/startsWith");
 var capitalize = require("lodash/capitalize");
-
+var { createPopper } = require("@popperjs/core");
 require("bootstrap");
 require("tablesorter");
 
@@ -19,7 +19,7 @@ if (testit) {
         });
 
         it("is Popper defined", function () {
-            expect(typeof Popper === "function").toBe(true);
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }

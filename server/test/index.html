@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dodex</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel='stylesheet' href='../css/demo.css'>
+  <link rel='stylesheet' href='../../node_modules/dodex/dist/dodex.min.css'>
+  <link href="../../node_modules/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+  <style>
+    .editor {
+      width: 80%; height: 400px; position: fixed;	bottom: 0; left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="dodex--open">
+    <img src="../../node_modules/dodex/images/dodex_g.ico">
+  </div>
+  
+  <div id="jsoneditor" class="editor"></div>
+
+  <script src="../../node_modules/dodex/dist/dodex.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/dodex-input/dist/dodex-input.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/dodex-mess/dist/dodex-mess.min.js" type="text/javascript"></script>
+  <script src="../../node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
+  
+  <script>
+    const dodex = window.doDex;
+    const input = window.doDexInput;
+    const mess = window.doDexMess;
+    const server = window.location.hostname + (window.location.port.length > 0 ? ":" + window.location.port : "");
+    dodex.setContentFile("../../node_modules/dodex-mess/data/content.server.json");
+    dodex.init({/*width:550, height:250, left: "25%", top: "150px"*/
+      input: input,       // required if using frontend content load
+      private: "full",    // frontend load of private content, "none", "full", "partial"(only cards 28-52) - default none
+      replace: true,      // append to or replace default content - default false(append only)
+      mess: mess,         // required if using messaging
+      server: server // configured websocket server - example in node_modules/dodex-mess, koa.js
+    })
+      .then(function () {
+        for (var i = 0; i < 3; i++) {
+          dodex.addCard(content);
+        }
+
+        /* Auto display of widget */
+        dodex.openDodex();
+      });
+
+    var content = {
+      cards: {
+        card28: {
+          tab: "F01999", //Only first 3 characters will show on the tab.
+          front: {
+            content: `<h1 style="font-size: 10px;">Friends</h1>
+            <address style="width:385px">
+              <strong>Charlie Brown</strong> 	111 Ace Ave. Pet Town
+              <abbr title="phone"> : </abbr>555 555-1212<br>
+              <abbr title="email" class="mr-1"></abbr><a href="mailto:cbrown@pets.com">cbrown@pets.com</a>
+            </address>
+            `
+          },
+          back: {
+            content: `<h1 style="font-size: 10px;">More Friends</h1>
+            <address style="width:385px">
+              <strong>Lucy</strong> 113 Ace Ave. Pet Town
+              <abbr title="phone"> : </abbr>555 555-1255<br>
+              <abbr title="email" class="mr-1"></abbr><a href="mailto:lucy@pets.com">lucy@pets.com</a>
+            </address>
+            `
+          }
+        },
+        card29: {
+          tab: "F02",
+          front: {
+            content: "<h1 style=\"font-size: 14px;\">My New Card Front</h1>"
+          },
+          back: {
+            content: "<h1 style=\"font-size: 14px;\">My New Card Back</h1>"
+          }
+        }
+      }
+    };
+  </script>
+</body>
+
+</html>

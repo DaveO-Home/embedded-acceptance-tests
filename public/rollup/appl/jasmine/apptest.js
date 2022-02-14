@@ -36,7 +36,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
         });
 
         afterAll(function () {
-            $(mainContainer).remove();
+            $("body").remove();
         }, 5000);
 
         it("Is Welcome Page Loaded", function (done) {

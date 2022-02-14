@@ -32,7 +32,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
         });
 
         afterAll(function () {
-            $("#remove").remove();
+            $("body").remove();
         });
 
         it("Is Welcome Page Loaded", function (done) {
@@ -47,6 +47,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
             Helpers.getResource("container", 0, 1)
                 .catch(function (rejected) {
                     fail("The Welcome Page did not load within limited time: " + rejected);
+                    done();
                 }).then(function (resolved) {
                     if (resolved) {
                         expect(Route.data.index).toHaveBeenCalled();
@@ -69,6 +70,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
             Helpers.getResource("container", 0, 1)
                 .catch(function (rejected) {
                     fail("The Tools Page did not load within limited time: " + rejected);
+                    done();
                 }).then(function (resolved) {
                     if (resolved) {
                         expect(App.controllers["Table"]).not.toBeUndefined();
@@ -90,6 +92,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
             Helpers.getResource("container", 0, 0)
                 .catch(function (rejected) {
                     fail("The Pdf Page did not load within limited time: " + rejected);
+                    done();
                 }).then(function (resolved) {
                     if (resolved) {
                         expect(Route.data.dispatch.calls.count()).not.toEqual(count);
@@ -101,7 +104,7 @@ exports.apptest = function (Route, Helpers, App, dodex, input, content) {
                     done();
                 });
         });
-
+        
         routerTest(Route, "pdf", "test", null);
 
         //Executing here makes sure the tests are run in sequence.

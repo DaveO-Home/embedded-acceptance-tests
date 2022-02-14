@@ -22,7 +22,7 @@
 			card3: {
 				tab: "C",
 				back: {
-					"content": `<h1>Best's Contact Form</h1><a href="#!contact"><i class="fa fa-fw fa-phone pr-4"></i>Contact</a>`
+					"content": `<h1>Best's Contact Form</h1><a href="#!contact"><i class="fa fa-fw fa-phone"></i>Contact</a>`
 				},
 				front: {
 					content: `<h1>Lorem Ipsum</h1><a href="https://www.yahoo.com" target="_">Yahoo</a>`
@@ -58,7 +58,7 @@
 			"card16": {
 				tab: "P",
 				front: {
-					content: "<h1>Test Pdf</h1><a href=\"#!pdf/test\"><i class=\"fa fa-fw fa-file-pdf-o pr-4\"></i>PDF View</a>"
+					content: "<h1>Test Pdf</h1><a href=\"#!pdf/test\"><i class=\"fa fa-fw far fa-file-pdf\"></i>PDF View</a>"
 				},
 				back: {
 					content: "<h1>Lorem Ipsum</h1><a href=\"https://www.yahoo.com\" target=\"_\">Yahoo16</a>"

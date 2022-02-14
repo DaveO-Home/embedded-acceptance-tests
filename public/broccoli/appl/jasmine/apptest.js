@@ -4,10 +4,12 @@ var domTest = require("./domtest").domtest;
 var contactTest = require("./contacttest").contacttest;
 var loginTest = require("./logintest").logintest;
 var toolsTest = require("./toolstest").toolstest;
+var dodexTest = require("./dodextest").dodextest;
+var inputTest = require("./inputtest").inputtest;
 var start = require("../js/controller/start");
 var bootstrapLayout = require("../app_bootstrap");
 
-exports.apptest = function (Route, Helpers, App) {
+exports.apptest = function (Route, Helpers, App, dodex, input, content) {
     var mainContainer = "#main_container";
 
     describe("Application Unit test suite - AppTest", function () {
@@ -30,8 +32,8 @@ exports.apptest = function (Route, Helpers, App) {
         });
 
         afterAll(function () {
-            $("#remove").remove();
-        }, 5000);
+            $("body").remove();
+        }, 1000);
 
         it("Is Welcome Page Loaded", function (done) {
             /*  
@@ -113,6 +115,10 @@ exports.apptest = function (Route, Helpers, App) {
         contactTest(Route, Helpers);
         //Verify modal form
         loginTest(start);
+        //Test dodex
+        dodexTest(dodex, input, content, Route, Helpers, start);
+        //Test dodex input
+        inputTest(dodex);
 
         if (testOnly) {
             it("Testing only", function () {

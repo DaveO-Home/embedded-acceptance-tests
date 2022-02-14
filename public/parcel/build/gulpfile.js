@@ -4,14 +4,15 @@
  */
 
 const { series, parallel, task, src, dest } = require("gulp");
-const Server = require("karma").Server;
+const path = require("path");
+const Parcel = require("@parcel/core").default;
+const karma = require("karma");
 const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
 const copy = require("gulp-copy");
 const del = require("del");
 const log = require("fancy-log");
-const Bundler = require("parcel-bundler");
 const flatten = require("gulp-flatten");
 const chalk = require("chalk");
 const browserSync = require("browser-sync");
@@ -50,7 +51,7 @@ task("pat", function (done) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
 
-    return runKarma(done);
+    return karmaServer(done, true, false);
 });
 /*
  * javascript linter
@@ -159,9 +160,7 @@ task("tdd-parcel", function (done) {
     if (!browsers) {
         global.whichBrowsers = ["Chrome", "Firefox"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    karmaServer(done, false, true);
 });
 /**
  * Karma testing under Opera. -- needs configuation  
@@ -170,9 +169,8 @@ task("tddo", function (done) {
     if (!browsers) {
         global.whichBrowsers = ["Opera"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    
+    karmaServer(done, false, true);
 });
 /**
  * Using BrowserSync Middleware for HMR  
@@ -194,10 +192,24 @@ task("watch-parcel", function (cb) {
     return parcelBuild(true, cb);
 });
 
+const watch_parcel = function (cb) {
+    return parcelBuild(true, cb, false);
+};
+
+const serve_parcel = function (cb) {
+    return parcelBuild(false, cb, true);
+};
+
+const delCache = function (cb) {
+    return del([
+        ".cache/**/*"
+    ], { dryRun: false, force: true }, cb);
+};
+
 const testRun = series("cleant", parallel("copy-readme", "copy"), "build-development", "pat");
 const copyRun = series("clean", parallel("copyprod-readme", "copyprod"));
-const logSeperator = function (cb) { log("\n\n\n\n\n\n\n\n"); cb(); };  // parcel clears too many lines
-const prodRun = series(testRun, parallel("eslint", "csslint", "bootlint"), copyRun, logSeperator, "build");
+const prodRun = series(testRun, parallel("eslint", "csslint"/*, "bootlint"*/), copyRun, "build");
+const prdRun = series(parallel("eslint", "csslint"), copyRun, "build");
 const acceptanceRun = series("pat");
 const rebuildRun = series("cleant", parallel("copy-readme", "copy"), "build-development");
 const watchRun = series(parallel("copy-readme", "copy"), "watch-parcel", "sync", "watcher");
@@ -208,87 +220,122 @@ prodRun.displayName = "prod";
 
 task(prodRun);
 exports.default = prodRun;
+exports.prd=prdRun;
 exports.test = testRun;
 exports.acceptance = acceptanceRun;
 exports.rebuild = rebuildRun;
-exports.watch = watchRun;
+exports.watch = series("cleant", parallel("copy-readme", "copy"), watch_parcel); // watchRun;
+exports.serve = series("cleant", parallel("copy-readme", "copy"), delCache, serve_parcel);
 exports.tdd = tddRun;
 exports.development = devRun;
-exports.lint = parallel("csslint", "bootlint", "eslint");
+exports.lint = parallel("csslint", "eslint");
 
-function parcelBuild(watch, cb) {
+function parcelBuild(watch, cb, serve = false) {
     if (bundleTest && bundleTest === "false") {
         return cb();
     }
     const file = isProduction ? "../appl/testapp.html" : "../appl/testapp_dev.html";
+    const port = 3080;
     // Bundler options
     const options = {
-        production: isProduction,
-        outDir: "../../" + dist,
-        outFile: isProduction ? "testapp.html" : "testapp_dev.html",
-        publicUrl: "./",
-        watch: watch,
-        cache: !isProduction,
+        mode: isProduction? "production": "development",
+        entryRoot: "../appl",
+        entries: file,
+        shouldDisableCache: !isProduction,
+        shouldAutoInstall: true,
+        shouldProfile: false,
         cacheDir: ".cache",
-        minify: isProduction,
-        target: "browser",
-        https: false,
-        logLevel: 3, // 3 = log everything, 2 = log warnings & errors, 1 = log errors
-        // hmrPort: 3080,
-        sourceMaps: !isProduction,
-        // hmrHostname: 'localhost',
-        detailedReport: isProduction
+        shouldContentHash: isProduction,
+        logLevel: "info", // 'none' | 'error' | 'warn' | 'info' | 'verbose'
+        detailedReport: isProduction,
+        defaultConfig: require.resolve("@parcel/config-default"),
+        shouldPatchConsole: false,
+        additionalReporters: [
+           { packageName: "@parcel/reporter-cli", resolveFrom: __filename },
+           // { packageName: "@parcel/reporter-dev-server", resolveFrom: __filename }
+        ],
+        defaultTargetOptions: {
+            shouldOptimize: isProduction,
+            shouldScopeHoist: false,
+            sourceMaps: isProduction,
+            publicUrl: "./",
+            distDir: "../../" + dist + "/appl",
+          },
     };
 
-    // Initialises a bundler using the entrypoint location and options provided
-    const bundler = new Bundler(file, options);
-    let isBundled = false;
-
-    bundler.on("bundled", () => {
-        isBundled = true;
-    });
-    bundler.on("buildEnd", () => {
-        if (isBundled) {
-            log(chalk.green("Build Successful"));
+    return ( async () => {
+        const parcel = new Parcel(options);
+        if (serve || watch) {
+            options.hmrOptions = {
+                port: port,
+                host: "localhost"
+            };
+            options.serveOptions = {
+                host: "localhost",
+                port: port,
+                https: false
+            };
+            await parcel.watch(err => {
+                if (err) throw err;
+            });
+            cb();
+        } else {
+        try {
+                await parcel.run(err => {
+                    console.error(err, err.diagnostics[0]? err.diagnostics[0].codeFrame: "");
+                });
+        } catch(e) { 
+            console.error(e);
+            process.exit(1);	
         }
-        else {
-            log(chalk.red("Build Failed"));
-            process.exit(1);
+            cb();
         }
-    });
-    // Run the bundler, this returns the main bundle
-    return bundler.bundle();
+    })();
 }
 
 function copySrc() {
     return src(["../appl/view*/**/*", "../appl/temp*/**/*"])
         .pipe(flatten({ includeParents: -2 })
-            .pipe(dest("../../" + dist + "/")));
+            .pipe(dest("../../" + dist + "/appl")));
 }
 
 function copyDodex() {
+    src(["../images/*"])
+        .pipe(dest("../../" + dist + "/images"));
     return src(["../appl/dodex/**/*"])
-        .pipe(dest("../../" + dist + "/dodex"));
+        .pipe(dest("../../" + dist + "/appl/dodex"));
 }
 
 function copyReadme() {
     return src(["../../README.m*"])
-        .pipe(copy("../../" + dist + "/appl/data"));
+        .pipe(copy("../../" + dist + "/appl/data/data"));
 }
 
-function runKarma(done) {
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: true
-    }, result => {
-        var exitCode = !result ? 0 : result;
-        if (typeof done === "function") {
-            done();
-        }
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-    }).start();
+function karmaServer(done, singleRun = false, watch = true) {
+    const parseConfig = karma.config.parseConfig;
+    const Server = karma.Server;
+
+    parseConfig(
+        path.resolve("./karma.conf.js"),
+        { port: 9876, singleRun: singleRun, watch: watch },
+        { promiseConfig: true, throwErrors: true },
+    ).then(
+        (karmaConfig) => {
+            if(!singleRun) {
+                done();
+            }
+            new Server(karmaConfig, function doneCallback(exitCode) {
+                console.warn("Karma has exited with " + exitCode);
+                if(singleRun) {
+                    done();
+                }
+                if(exitCode > 0) {
+                    process.exit(exitCode);
+                }
+            }).start();
+        },
+        (rejectReason) => { console.error(rejectReason); }
+    );
 }
 
 /*

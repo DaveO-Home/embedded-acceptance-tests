@@ -4,7 +4,8 @@
  */
 
 const { series, parallel, task, src, dest } = require("gulp");
-const Server = require("karma").Server;
+const karma = require("karma");
+const path = require("path");
 const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
@@ -82,7 +83,7 @@ function pat(done) {
     if (!browsers) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    return runKarma(done);
+    return karmaServer(done, true, false);
 }
 /**
  * Default: Production Acceptance Tests 
@@ -91,7 +92,7 @@ function patProd() {
     if (!browsers) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    runKarma();
+    karmaServer(done, true, false);
 }
 /*
  * javascript linter
@@ -196,7 +197,7 @@ function browserifyTest(cb) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
 
-    return runKarma(cb);
+    return  karmaServer(cb, true, false);
 }
 /**
  * Run watch(HMR)
@@ -213,20 +214,7 @@ function browserifyTdd(cb) {
     if (!browsers) {
         global.whichBrowsers = ["Chrome", "Firefox"];
     }
-    const serve = new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        if (typeof cb === "function") {
-            cb();
-        }
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-        else {
-            process.exit(0);
-        }
-    }).start();
+    karmaServer(cb, false, true);
 }
 /**
  * Karma testing under Opera. -- needs configuation  
@@ -235,13 +223,11 @@ function tddo(done) {
 
     global.whichBrowsers = ["Opera"];
 
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    karmaServer(done, false, true);
 }
 
 const testRun = series(vendorDevelopment, applicationDevelopment, copyTest, pat);
-const prodRun = series(testRun, parallel(esLint, cssLint, bootLint), clean, applicationBuild, vendorBuild, copyProd, applicationExit);
+const prodRun = series(testRun, parallel(esLint, cssLint/*, bootLint*/), clean, applicationBuild, vendorBuild, copyProd, applicationExit);
 const hmrRun = series(vendorDevelopment, applicationDevelopment, browserifyHmr);
 const tddRun = series(/*vendorDevelopment, applicationDevelopment,*/ browserifyTdd);
 const rebuildRun = series(vendorDevelopment, applicationDevelopment, applicationExit);
@@ -264,13 +250,13 @@ task(prodRun); // prod task
 exports.default = prodRun;
 exports.test = series(testRun, applicationExit);
 exports.hmr = hmrRun;
-exports.tdd = tddRun;
+exports.tdd = browserifyTdd; // tddRun;
 exports.server = browserifyWatch;
 exports.rebuild = rebuildRun;
 exports.acceptance = browserifyTest;
 exports.development = parallel(browserifyWatch, hmrRun, tddRun);
 exports.tddo = tddo;
-exports.lint = parallel( cssLint, bootLint, esLint);
+exports.lint = parallel( cssLint, esLint);
 
 /*
     Build functions follow
@@ -283,7 +269,7 @@ function browserifyBuild() {
 
     var mods = getNPMPackageIds();
     for (var id in mods) {
-        if (mods[id] !== "font-awesome" && !mods[id].startsWith("can")) {
+        if (mods[id] !== "@fortawesome/fontawesome-free" && !mods[id].startsWith("can")) {
             browserifyInited.require(require("resolve").sync(mods[id]), { expose: mods[id] });
         }
     }
@@ -310,7 +296,7 @@ function browserifyBuild() {
 
 function getNPMPackageIds() {
     var ids = JSON.parse("{" +
-        "\"aw\": \"font-awesome\"," +
+        "\"aw\": \"@fortawesome/fontawesome-free\"," +
         "\"bo\": \"bootstrap\"," +
         "\"cn\": \"can\"," +
         "\"dx\": \"dodex\"," +
@@ -318,8 +304,8 @@ function getNPMPackageIds() {
         "\"lo\": \"lodash\"," +
         "\"md\": \"marked\"," +
         "\"mo\": \"moment\"," +
-        "\"pd\": \"pdfjs-dist\"," +
-        "\"po\": \"popper.js\"," +
+        "\"po\": \"@popperjs/core\"," +
+        "\"je\": \"jsoneditor\"," +
         "\"tb\": \"tablesorter\"}");
     return ids;
 }
@@ -395,27 +381,35 @@ function copyImages() {
 }
 
 function copyFonts() {
-    return src(["../../node_modules/font-awesome/fonts/*"])
+    return src([/*"../../node_modules/font-awesome/fonts/*",*/ "../../node_modules/jsoneditor/dist/img/jsoneditor-icons.svg"])
         .pipe(copy("../../" + dist + "/appl"));
 }
 
-function runKarma(done) {
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: true
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        if (typeof done === "function") {
-            done();
-        }
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-        else {
-            return; 
-            // process.exit(0);
-        }
-    }).start();
+function karmaServer(done, singleRun = false, watch = true) {
+    const parseConfig = karma.config.parseConfig;
+    const Server = karma.Server;
+
+    parseConfig(
+        path.resolve(__dirname + "/karma.conf.js"),
+        { port: 9876, singleRun: singleRun, watch: watch },
+        { promiseConfig: true, throwErrors: true },
+    ).then(
+        (karmaConfig) => {
+            if(!singleRun) {
+                done();
+            }
+            new Server(karmaConfig, function doneCallback(exitCode) {
+                console.warn("Karma has exited with " + exitCode);
+                if(singleRun) {
+                    done();
+                }
+                if(exitCode > 0) {
+                    process.exit(exitCode);
+                }
+            }).start();
+        },
+        (rejectReason) => { console.error(rejectReason); }
+    );
 }
 
 /*
@@ -424,25 +418,14 @@ function runKarma(done) {
  */
 if (process.env.USE_LOGFILE == "true") {
     var fs = require("fs");
-    var origstdout = process.stdout.write,
-        origstderr = process.stderr.write,
-        outfile = "node_output.log",
-        errfile = "node_error.log";
-
-    if (fs.exists(outfile)) {
-        fs.unlink(outfile);
-    }
-    if (fs.exists(errfile)) {
-        fs.unlink(errfile);
-    }
-
-    process.stdout.write = function (chunk) {
-        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
-        origstdout.apply(this, arguments);
+    var util = require("util");
+    var logFile = fs.createWriteStream("log.txt", { flags: "w" });
+    // Or "w" to truncate the file every time the process starts.
+    var logStdout = process.stdout;
+    /* eslint no-console: 0 */
+    console.log = function () {
+        logFile.write(util.format.apply(null, arguments) + "\n");
+        logStdout.write(util.format.apply(null, arguments) + "\n");
     };
-
-    process.stderr.write = function (chunk) {
-        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
-        origstderr.apply(this, arguments);
-    };
+    console.error = console.log;
 }

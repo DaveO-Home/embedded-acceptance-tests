@@ -1,11 +1,11 @@
 
-var Helpers = require("./utils/helpers");
-var Component = require("can-component");
-var Map = require("can-map");
-var capitalize = require("lodash/capitalize");
-
-require("bootstrap");
-require("tablesorter");
+import Helpers from "./utils/helpers";
+import Component from "can-component";
+import Map from "can-map";
+import capitalize from "lodash/capitalize";
+import { createPopper } from "@popperjs/core";
+import "bootstrap";
+import "tablesorter";
 
 // Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
@@ -16,8 +16,7 @@ if (testit) {
         });
 
         it("is Popper defined", function () {
-            // expect(typeof window.Popper === 'function').toBe(true);
-            expect(Popper).toBeDefined();
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }
@@ -30,7 +29,7 @@ module.exports = {
         this.initPage(options);
     },
     initPage: function () {
-        $("[data-toggle=collapse]").click(function (e) {
+        $("[data-toggle=collapse]").trigger("click", (e) => {
             e.preventDefault();  //Don't change the hash
             $(this).find("i").toggleClass("fa-chevron-right fa-chevron-down");
         });

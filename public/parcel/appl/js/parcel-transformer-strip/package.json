@@ -1,0 +1,10 @@
+{
+  "name": "parcel-transform-strip",
+  "version": "0.2.1",
+  "private": true,
+  "engines": {
+    "parcel": "^2.0.0-nightly"
+  },
+  "peerDependencies": {
+  }
+}

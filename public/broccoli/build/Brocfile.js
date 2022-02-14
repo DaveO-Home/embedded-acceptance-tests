@@ -19,23 +19,18 @@ scriptTree = new WebpackWriter([srcDir],
 
 const assets = funnel("../", {
     files: [isProduction ? "./appl/testapp.html" : "./appl/testapp_dev.html",
-        "./appl/css", "./appl/views", "./appl/templates", "./images", "../README.md"],
+        "./appl/css", "./appl/views", "./appl/templates", "./images", "../README.md", "./appl/dodex"],
     destDir: "/"
 });
 
 const vendorCss = concat("../..", {
     inputFiles: [
         "node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "node_modules/font-awesome/css/font-awesome.css",
         "node_modules/tablesorter/dist/css/jquery.tablesorter.pager.min.css",
-        "node_modules/tablesorter/dist/css/theme.blue.min.css"],
+        "node_modules/tablesorter/dist/css/theme.blue.min.css",
+        "node_modules/jsoneditor/dist/jsoneditor.min.css",
+        "node_modules/dodex/dist/dodex.min.css"],
     outputFile: "appl/css/vendor.css"
-});
-
-const fonts = funnel("../../node_modules/font-awesome/fonts/", {
-    include: [
-        "*.*"],
-    destDir: "appl/fonts"
 });
 
 scriptTree = isProduction ? uglify(scriptTree, {
@@ -49,6 +44,6 @@ scriptTree = isProduction ? uglify(scriptTree, {
     concurrency: 3 // number of parallel workers, defaults to number of CPUs - 1
 }) : scriptTree;
 
-const mergedTrees = mergeTrees([assets, scriptTree, vendorCss, fonts]);
+const mergedTrees = mergeTrees([assets, scriptTree, vendorCss]);
 
 module.exports = mergedTrees;

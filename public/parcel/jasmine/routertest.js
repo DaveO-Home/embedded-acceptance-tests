@@ -7,7 +7,6 @@ module.exports = {
                 it("controller set: " + controller, function () {
                     expect(Route.data.controller).toBe(controller);
                 });
-
                 it("action set: " + action, function () {
                     expect(Route.data.action).toBe(action);
                 });

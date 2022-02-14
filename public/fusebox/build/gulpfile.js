@@ -7,7 +7,7 @@ const { task, series, parallel, src, /*dest*/ } = require("gulp");
 
 const runFusebox = require("./fuse4.js");
 const path = require("path");
-const Server = require("karma").Server;
+const karma = require("karma");
 const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
@@ -41,17 +41,7 @@ const pat = function (done) {
     if (!browsers) {
         global.whichBrowser = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: true
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        done();
-
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-    }).start();
+    karmaServer(done, true, false);
 };
 /*
  * javascript linter
@@ -266,10 +256,7 @@ const fuseboxTdd = function (done) {
     if (!browsers) {
         global.whichBrowser = ["Chrome", "Firefox"];
     }
-
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    karmaServer(done, false, true);
 };
 
 /**
@@ -279,14 +266,12 @@ const tddo = function (done) {
     if (!browsers) {
         global.whichBrowser = ["Opera"];
     }
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-    }, done).start();
+    karmaServer(done, false, true);
 };
 
 const testRun = series(testBuild, pat); // series(accept, pat);
-const prodRun = series(testRun, parallel(esLint, cssLint, bootLint), clean, build);
-const prdRun = series(cleanOnly, build); // series(cleanOnly, buildOnly);
+const prodRun = series(testRun, parallel(esLint, cssLint/*, bootLint*/), clean, build);
+const prdRun = series(parallel(esLint, cssLint), cleanOnly, build); // series(cleanOnly, buildOnly);
 const tddRun = fuseboxTdd;
 const hmrRun = fuseboxHmr;
 const rebuildRun = fuseboxRebuild;
@@ -304,7 +289,7 @@ exports.hmr = hmrRun;
 exports.rebuild = rebuildRun;
 exports.acceptance = acceptanceRun;
 exports.development = devRun;
-exports.lint = parallel(esLint, cssLint, bootLint);
+exports.lint = parallel(esLint, cssLint);
 exports.copy = copy;
 exports.preview = preview;
 exports.tddo = tddo;
@@ -363,6 +348,33 @@ function fuseboxConfig(mode, props) {
         }
     };
     return configure;
+}
+
+function karmaServer(done, singleRun = false, watch = true) {
+    const parseConfig = karma.config.parseConfig;
+    const Server = karma.Server;
+
+    parseConfig(
+        path.resolve("./karma.conf.js"),
+        { port: 9876, singleRun: singleRun, watch: watch },
+        { promiseConfig: true, throwErrors: true },
+    ).then(
+        (karmaConfig) => {
+            if(!singleRun) {
+                done();
+            }
+            new Server(karmaConfig, function doneCallback(exitCode) {
+                console.warn("Karma has exited with " + exitCode);
+                if(singleRun) {
+                    done();
+                }
+                if(exitCode > 0) {
+                    process.exit(exitCode);
+                }
+            }).start();
+        },
+        (rejectReason) => { console.error(rejectReason); }
+    );
 }
 
 //From Stack Overflow - Node (Gulp) process.stdout.write to file

@@ -1,7 +1,6 @@
 
-var moment = require("moment");
-var callbacks = require("can-view-callbacks");
-
+import moment from "moment";
+import callbacks from "can-view-callbacks";
 module.exports = {
     scrollTop: function () {
         $("html, body").animate({

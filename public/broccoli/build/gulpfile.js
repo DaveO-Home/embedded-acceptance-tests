@@ -5,12 +5,13 @@
 const packageDep = require("./package.json");
 let version = Number(/\d/.exec(packageDep.devDependencies.webpack)[0]);
 
-const { series, parallel, task, src } = require("gulp");
+const { series, parallel, task, src, dest } = require("gulp");
 const csslint = require("gulp-csslint");
 const eslint = require("gulp-eslint");
 const exec = require("child_process").exec;
 const log = require("fancy-log");
-const Server = require("karma").Server;
+const karma = require("karma");
+const path = require("path");
 const chalk = require("chalk");
 
 const isWindows = /^win/.test(process.platform);
@@ -93,6 +94,7 @@ const build = function (cb) {
         if (code > 0) {
             log(chalk.red("Production build failed:" + code));
         } else {
+            copySvg("dist");
             log(chalk.green("Production build a success"));
         }
     });
@@ -133,6 +135,7 @@ const broc_watch = function (cb) {
             log(data.trim());
     });
     return cmd.on("exit", (code) => {
+        copySvg("dist_test");
         cb();
         log(chalk.cyan(`Test build exited with code ${code}`));
     });
@@ -141,6 +144,7 @@ const broc_watch = function (cb) {
  * Build the application to run node express so font-awesome is resolved
  */
 const broc_rebuild = function (cb) {
+    
     var osCommands = "export W_VERSION=\"" + version + "\"; export NODE_ENV=development; unset USE_TDD; export USE_KARMA=false; export USE_HMR=false; ";
 
     if (isWindows) {
@@ -158,6 +162,7 @@ const broc_rebuild = function (cb) {
             log(data.trim());
     });
     return cmd.on("exit", (code) => {
+        copySvg("dist_test");
         cb();
         log(chalk.cyan(`Test build exited with code ${code}`));
     });
@@ -169,7 +174,7 @@ const broc_tdd = function (done) {
     if (!browsers) {
         global.whichBrowser = ["Chrome", "Firefox"];
     }
-    runKarma("continuous", done);
+    karmaServer(done, false, true);
 };
 /**
  * Run karma/jasmine tests once and exit without rebuilding(requires a previous build)
@@ -178,10 +183,10 @@ const broc_test = function (done) {
     if (!browsers) {
         global.whichBrowsers = ["ChromeHeadless", "FirefoxHeadless"];
     }
-    runKarma("single", done);
+    karmaServer(done, true, false);
 };
 
-const prodRun = series(broc_rebuild, broc_test, parallel(esLint, cssLint, bootLint), build);
+const prodRun = series(broc_rebuild, broc_test, parallel(esLint, cssLint/*, bootLint*/), build);
 prodRun.displayName = "prod";
 
 task(prodRun);
@@ -192,23 +197,39 @@ exports.watch = broc_watch;
 exports.rebuild = broc_rebuild;
 exports.acceptance = broc_rebuild;
 exports.development = parallel(broc_watch, broc_tdd);
-exports.lint = parallel(cssLint, bootLint, esLint);
+exports.lint = parallel(cssLint,/* bootLint,*/ esLint);
 
-function runKarma(single, done) {
-    new Server({
-        configFile: __dirname + "/karma.conf.js",
-        singleRun: single === "single"
-    }, function (result) {
-        var exitCode = !result ? 0 : result;
-        if (typeof done === "function") {
-            done();
-        }
-        if (exitCode > 0) {
-            process.exit(exitCode);
-        }
-    }).start();
+function karmaServer(done, singleRun = false, watch = true) {
+    const parseConfig = karma.config.parseConfig;
+    const Server = karma.Server;
+
+    parseConfig(
+        path.resolve(__dirname + "/karma.conf.js"),
+        { port: 9876, singleRun: singleRun, watch: watch },
+        { promiseConfig: true, throwErrors: true },
+    ).then(
+        (karmaConfig) => {
+            if(!singleRun) {
+                done();
+            }
+            new Server(karmaConfig, function doneCallback(exitCode) {
+                console.warn("Karma has exited with " + exitCode);
+                if(singleRun) {
+                    done();
+                }
+                if(exitCode > 0) {
+                    process.exit(exitCode);
+                }
+            }).start();
+        },
+        (rejectReason) => { console.error(rejectReason); }
+    );
 }
 
+function copySvg(dist) {
+    return src(["../../node_modules/jsoneditor/dist/img/jsoneditor-icons.svg"])
+        .pipe(dest("../../" +  dist + "/broccoli/appl/css/img"));
+}
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == "true") {
     var fs = require("fs");

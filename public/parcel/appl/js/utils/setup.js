@@ -1,6 +1,7 @@
 
-window.Stache = require("can-stache");
-require("can-stache-bindings");
+import Stache from "can-stache";
+import "can-stache-bindings";
+window.Stache = Stache;
 
 module.exports = {
     init: function () {

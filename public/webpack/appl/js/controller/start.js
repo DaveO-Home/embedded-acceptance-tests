@@ -36,8 +36,8 @@ define("start", ["app",
                         title: "Account Log In",
                         submit: "Login",
                         submitCss: "submit-login",
-                        widthClass: "modal-lg",
-                        width: "30%",
+                        widthClass: "modal-md",
+                        width: "50%",
                         foot: me.footer,
                         close: "Close",
                         contactFooter: me.contactFooter
@@ -109,14 +109,14 @@ define("start", ["app",
                     });
                 },
                 footer: "<button class=\"btn btn-sm btn-primary submit-modal mr-auto raised submit-login\">{{submit}}</button> \
-                     <button class=\"btn btn-sm close-modal raised\" data-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
+                     <button class=\"btn btn-sm close-modal raised\" data-bs-dismiss=\"modal\" aria-hidden=\"true\">{{close}}</button>",
                 contactFooter: "<div class=\"modal-footer\"> \
                             <div class=\"mr-auto contact\" > \
                                 <a href=\"#!contact\" ><small class=\"grey\">Contact</small></a> \
                                         </div> \
                             </div>",
                 alert: "<div class=\"alert alert-info alert-dismissible fade show\" role=\"alert\"> \
-                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> \
+                    <button type=\"button\" class=\"close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button> \
                                 <strong>Thank You!</strong> Your request is being processed. \
                     </div>",
                 showAlert: function () {
@@ -125,7 +125,7 @@ define("start", ["app",
                 finish: function (options) {
                     var marked = require("marked");
                     var mdFunction = function (data) {
-                        $(".markdown").append(marked(data));
+                        $(".markdown").append(marked.parse(data));
                     };
                     $.get(options.urlMd, mdFunction, "text");
                 }

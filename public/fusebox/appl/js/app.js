@@ -4,9 +4,9 @@ var Component = require("can-component");
 var Map = require("can-map");
 var _ = require("lodash");
 
+var { createPopper } = require("@popperjs/core");
 require("bootstrap");
 require("tablesorter/dist/js/jquery.tablesorter.combined.min");
-// require("tablesorter");
 
 // Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
@@ -17,7 +17,7 @@ if (typeof testit !== "undefined" && testit) {
         });
 
         it("is Popper defined", function () {
-            expect(typeof Popper === "object").toBe(true);
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }

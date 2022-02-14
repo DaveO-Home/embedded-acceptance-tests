@@ -16,7 +16,7 @@ export function pluginStripCode(a?: IPluginStripProps | string | RegExp, b?: IPl
       }
       
 
-      ctx.log.info("pluginStripCode", "stripping code in $file \n", {
+      ctx.log.info("pluginStripCode", "stripping code in $file", {
         file: module.publicPath,
       });
 

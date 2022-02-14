@@ -20,9 +20,9 @@ module.exports = {
     basePath: ".",
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ["jasmine-jquery", "jasmine"],
+    frameworks: ["jasmine-jquery"],
     proxies: {
-        "/dodex/": "/base/dist_test/" + bundler + "/dodex/",
+        "/dodex/": "/base/dist_test/" + bundler + "/appl/dodex/",
         "/images/": "/base/dist_test/" + bundler + "/images/",
     },
     // list of files / patterns to load in the browser
@@ -43,9 +43,7 @@ module.exports = {
         { pattern: "dist_test/" + bundler + "/acceptance.js", included: false, watched: true, served: true },
         { pattern: "dist_test/" + bundler + "/*.css", included: false, watched: false },
         { pattern: "dist_test/" + bundler + "/*.map", included: false, watched: false },
-        { pattern: "dist_test/" + bundler + "/*.map", included: false, watched: false },
-        { pattern: "dist_test/"  + "fonts/*", included: false, watched: false },
-        { pattern: "dist_test/" + bundler + "/dodex/data/*", included: false, watched: false },
+        { pattern: "dist_test/" + bundler + "/appl/dodex/data/*", included: false, watched: false },
         { pattern: "dist_test/" + bundler + "/images/*", included: false, watched: false },
         //Jasmine/Loader tests and starts Karma
         bundler + "/build/karma.bootstrap.js"
@@ -53,11 +51,11 @@ module.exports = {
     bowerPackages: [
     ],
     plugins: [
+        "@metahub/karma-jasmine-jquery",
         "karma-chrome-launcher",
         "karma-firefox-launcher",
         "karma-opera-launcher",
         "karma-jasmine",
-        "karma-jasmine-jquery",
         "karma-mocha-reporter"
     ],
     /* Karma uses <link href="/base/appl/testapp_dev.html" rel="import"> -- you will need webcomponents polyfill to use browsers other than Chrome.

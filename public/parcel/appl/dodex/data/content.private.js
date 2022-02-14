@@ -23,7 +23,7 @@
 			card3: {
 				tab: "C",
 				back: {
-					"content": `<h1>Best's Contact Form</h1><a href="#!contact"><i class="fa fa-fw fa-phone pr-4"></i>Contact</a>`
+					"content": `<h1>Best's Contact Form</h1><a href="#!contact"><i class="fa fa-fw fa-phone "></i>Contact</a>`
 				},
 				front: {
 					content: `<h1>Lorem Ipsum</h1><a href="https://www.yahoo.com" target="_">Yahoo</a>`
@@ -59,7 +59,7 @@
 			"card16": {
 				tab: "P",
 				front: {
-					content: "<h1>Test Pdf</h1><a href=\"#!pdf/test\"><i class=\"fa fa-fw fa-file-pdf-o pr-4\"></i>PDF View</a>"
+					content: "<h1>Test Pdf</h1><a href=\"#!pdf/test\"><i class=\"fa fa-fw far fa-file-pdf \"></i>PDF View</a>"
 				},
 				back: {
 					content: "<h1>Lorem Ipsum</h1><a href=\"https://www.yahoo.com\" target=\"_\">Yahoo16</a>"
@@ -68,7 +68,7 @@
 			card20: {
 				tab: "T",
 				back: {
-					content: "<h1>Test Table</h1><a href=\"#!table/tools\"><i class=\"fa fa-fw fa-table pr-4\"></i>Table View</a>"
+					content: "<h1>Test Table</h1><a href=\"#!table/tools\"><i class=\"fa fa-fw fa-table \"></i>Table View</a>"
 				},
 				front: {
 					content: "<h1>Lorem Ipsum</h1><a href=\"https://www.yahoo.com\" target=\"_\">Yahoo20</a>"
@@ -77,7 +77,7 @@
 			card8: {
 				tab: "H",
 				front: {
-					content: "<h1>Description</h1><a href=\"#!\"><i class=\"fa fa-fw fa-home pr-4\"></i>Home</a>"
+					content: "<h1>Description</h1><a href=\"#!\"><i class=\"fa fa-fw fa-home \"></i>Home</a>"
 				},
 				back: {
 					content: "<h1>Lorem Ipsum</h1><a href=\"https://www.yahoo.com\" target=\"_\">Yahoo8</a>"

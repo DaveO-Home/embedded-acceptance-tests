@@ -1,4 +1,8 @@
+deploy
 .cache
+audit-vul
+dodex.sqlite3
+log
 public/broccoli/build/outdated.dat
 public/fusebox/es*
 /.*/**/*

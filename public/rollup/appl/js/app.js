@@ -1,6 +1,6 @@
 
 var capitalize = require("lodash/capitalize");
-
+var  { createPopper } = require("@popperjs/core");
 require("bootstrap");
 require("tablesorter");
 
@@ -12,7 +12,7 @@ if (typeof testit !== "undefined" && testit) {
             expect(typeof $ === "function").toBe(true);
         });
         it("is Popper defined", function () {
-            expect(typeof Popper === "function").toBe(true);
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }
@@ -29,8 +29,8 @@ module.exports = {
                 icon: "check"
             }, options);
             return this.each(function () {
-                var $element = $(this);
-                var icon = "<i class='fa fa-" + options.icon + "'> </i>";
+                const $element = $(this.target ? this.target : this);
+                const icon = `<i class='fa fa-${options.icon}'> </i>`;
                 $(icon).appendTo($element);
             });
         };
@@ -104,7 +104,6 @@ module.exports = {
     renderTools: function (options, render) {
         var currentController = this.controllers[capitalize(options.controller)];
         var template;
-
         var jsonUrl = "templates/tools_ful.json";
 
         // fixture({url: "/listools"}, "templates/tools_ful.json");
@@ -116,7 +115,6 @@ module.exports = {
                 //                var osKeys = ["Combined", "Category1", "Category2"];
                 //                var values = ["ful", "cat1", "cat2"];
                 //                Helpers.setJobTypeSelector(Component, CanMap, osKeys, values, template);
-
                 render(template(data));
                 currentController.decorateTable(options.template.split(".")[0]);
 
@@ -125,20 +123,23 @@ module.exports = {
                     var values = ["ful", "cat1", "cat2"];
                     var tbodyTemplate = template;
                     var toolsUrl = "templates/tools_";
-                    var selectedJobType = getValue(sender.text, osKeys, values);
+                    var selectedJobType = getValue(sender.target.innerText, osKeys, values);
+                    if (typeof selectedJobType === "undefined") {
+                        return;
+                    }
                     $.get(toolsUrl + selectedJobType + ".json", function (data) {
                         if (selectedJobType == "ful") {
                             data.all = false;
                         }
                         var tbody = tbodyTemplate(data);
                         $(".tablesorter tbody").html(tbody).trigger("update");
-                        $("#dropdown1 a i").each(function () {
-                            this.remove();
+                        $("#dropdown1 a svg").each(function () { 
+                            this.remove(); 
                         });
                         $(sender).fa({ icon: "check" });
                     }, "json").fail(function (data, err) {
 
-                        console.error("Error fetching fixture data: " + err);
+                        console.error("Error fetching fixture data: " + err, data);
 
                     });
                     function getValue(item, keys, values) {
@@ -149,6 +150,7 @@ module.exports = {
                     }
                 };
                 currentController.dropdownEvent = updateTable;
+                $("#dropdown1").on("click", currentController.dropdownEvent);
             }, "json").fail(function (data, err) {
                 console.error("Error fetching json data: " + err);
             });

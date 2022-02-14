@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+export NODE_ENV=production
+export USE_LOGFILE=true
+unset USE_WATCH

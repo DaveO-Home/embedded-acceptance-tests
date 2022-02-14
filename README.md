@@ -12,12 +12,13 @@ The basic idea is to build a production application ensuring consistent and stab
 
 > 1. [Browserify](#i-browserify)
 > 1. [Brunch](#ii-brunch)
-> 1. [Fusebox](#iii-fusebox)
-> 1. [Parcel](#iv-parcel)
-> 1. [Rollup](#v-rollup)
-> 1. [Steal](#vi-stealjs)
-> 1. [Webpack](#vii-webpack)
-> 1. [Broccoli](#viii-broccoli)
+> 1. [esbuild](#iii-esbuild)
+> 1. [Fusebox](#iv-fusebox)
+> 1. [Parcel](#v-parcel)
+> 1. [Rollup](#vi-rollup)
+> 1. [Steal](#vii-stealjs)
+> 1. [Webpack](#viii-webpack)
+> 1. [Broccoli](#ix-broccoli)
 
 [Installation](#installation)
 
@@ -79,6 +80,7 @@ To generate a build "cd to `public/<bundler>/build` and type `gulp` or `gulp pro
   cd public/fusebox/build
   gulp
 ```
+__Note;__ All gulp tasks can be run from the `.../public` directory by using the `bm` script. Simply execute `bm <bundler> <tast>`.
 
 If the tests succeed then the build should complete.
 
@@ -175,7 +177,7 @@ SUMMARY:
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
-__Note__; When modifying project assets(.stache, .html, etc.) you can execute `gulp copy` from the `public/<bundler>/build` directory to preview changes. This is not required for __StealJs__.
+__Note;__ All gulp tasks can be run from the `../public` directory by using the `bm` script. Simply execute `bm <bundler> <tast>`. Also, when modifying project assets(.stache, .html, etc.) you can execute `gulp copy` from the `public/<bundler>/build` directory or use the `bm` script to preview changes. This is not required for __StealJs__.
 
 __A word on developing tests__; You can write and execute tests quicker by using the rebuild process of a given bundler and running the `acceptance` gulp task after the auto-rebuild, e.g. with __Rollup__ you can;
 
@@ -242,7 +244,30 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
     __Note:__ Don't forget to install Brunch using `npm install brunch -g`.
 
-### III. **Fusebox**
+### III. **esbuild**
+
+[Top](#embedded-acceptance-testing-with-karma-and-jasmine)
+
+1\. ***Hot Module Reload(HMR) Server Window*** -
+
+* `cd public/esbuild/build` or run `bm esbuild hmr` in `public`
+* `gulp hmr`
+* HMR will start a web server with port 3080, a watcher will also start that rebuilds the bundle on code change.
+
+  HMR is using `browser-sync` so a web page will start at: `localhost:3080/dist_test/esbuild/appl/testapp_dev.html`.  Any changes to the source code(\*.js|*.jsx) files should be reflected in the browser auto reload. Also, the browser will reload when changing static content by executing `gulp copy` or `bm esbuild copy` from `public`.
+
+  For development and testing, the normal tasks; `gulp test`, `gulp acceptance`, `gulp rebuild` can be executed when needed. Or use `bm esbuild <task>` from `public`.
+
+2\. ***Test Driven Development(tdd) Window*** -
+
+* `cd public/esbuild/build` or use the `bm` script from `public`
+* `gulp tdd`
+
+  You must use `gulp build` and not gulp rebuild with `gulp tdd` running. Tdd will fail with gulp rebuild because it cleans the test directory.
+
+  The HMR Server must be running if you want tests to rerun as source code(*.js) are changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
+
+### IV. **Fusebox**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
@@ -262,7 +287,7 @@ __Note__; The test url is `localhost:3080` since Brunch by default uses 'config.
 
    __Note__; You can upgrade Fuse-Box to version 3 without changes to the configuration, however, you must be using Nodejs 8+. Verified fuse-box 3.2.2.
 
-### IV. **Parcel**
+### V. **Parcel**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
@@ -284,7 +309,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
   __Note__; tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### V. **Rollup**
+### VI. **Rollup**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
@@ -304,7 +329,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### VI. **Stealjs**
+### VII. **Stealjs**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
@@ -336,7 +361,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
    Tests will rerun as source code(*.js) is changed. Note, tests can be added or removed as code is developed. Both Chrome and Firefox are the default browsers. This can be overridden with an environment variable, `export USE_BROWSERS=Opera`.
 
-### VII. **Webpack**
+### VIII. **Webpack**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
@@ -361,7 +386,7 @@ At this point you can start a browser and enter `localhost:3080/dist_test/parcel
 
 __\*\*\*__ Webpack defaults to v4.x.
 
-### VIII. **Broccoli**
+### IX. **Broccoli**
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 

@@ -1,8 +1,8 @@
 /**
  * Controller to manage tablesorter
  */
-var App = require("../app.js");
-var Base = require("../utils/base.control.js");
+import App from "../app.js";
+import Base from "../utils/base.control.js";
 
 module.exports = App.controllers["Table"] || (App.controllers["Table"] = new (Base.extend({
     defaults: {

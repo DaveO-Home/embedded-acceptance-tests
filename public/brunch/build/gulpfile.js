@@ -28,25 +28,26 @@ const pat = function (done) {
     }
 
     var osCommands = "cd ../..; export NODE_ENV=development; export USE_KARMA=true; export USE_HMR=false; ";
-
+    osCommands = osCommands + "export NODE_NO_WARNINGS=1; ";
     if (isWindows) {
         osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=true & set USE_HMR=false & ";
+        osCommands = osCommands + "set NODE_NO_WARNINGS=1 & ";
     }
     log(chalk.cyan("E2E Testing - please wait......"));
 
     let cmd = exec(osCommands + "npm run bt");
     cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
-            console.log(data.trim());
+             log(data.trim());
         }
     });
     cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            console.log(data.trim());
+             log(data.trim());
     });
     return cmd.on("exit", (code) => {
         done();
-        console.log(`Child exited with code ${code}`);
+         log(`Child exited with code ${code}`);
         if (code > 1) {
             process.exit(code);
         }
@@ -105,9 +106,10 @@ const cssLint = function (cb) {
  */
 const build = function (cb) {
     var osCommands = "cd ..; export NODE_ENV=production; export USE_KARMA=false; export USE_HMR=false; ";
-
+    osCommands = osCommands + "export NODE_NO_WARNINGS=1; ";
     if (isWindows) {
         osCommands = "cd ..\\ & set NODE_ENV=production & set USE_KARMA=false & set USE_HMR=false & ";
+        osCommands = osCommands + "set NODE_NO_WARNINGS=1 & ";
     }
     log(chalk.cyan("Building Production - please wait......"));
     let cmd = exec(osCommands + "npm run bp");
@@ -152,9 +154,10 @@ const bootLint = function (cb) {
  */
 const brunch_watch = function (cb) {
     var osCommands = "cd ../..; export NODE_ENV=development; export USE_KARMA=false; export USE_HMR=true; ";
-
+    osCommands = osCommands + "export NODE_NO_WARNINGS=1; ";
     if (isWindows) {
         osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_KARMA=false & set USE_HMR=true & ";
+        osCommands = osCommands + "set NODE_NO_WARNINGS=1 & ";
     }
     log(chalk.cyan("Watching for code changes....\n"));
     let cmd = exec(osCommands + "npm run bw");
@@ -177,9 +180,10 @@ const brunch_watch = function (cb) {
  */
 const brunch_rebuild = function (cb) {
     var osCommands = "cd ../..; export NODE_ENV=development; unset USE_TDD; export USE_KARMA=false; export USE_HMR=false; ";
-
+    osCommands = osCommands + "export NODE_NO_WARNINGS=1; ";
     if (isWindows) {
         osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_TDD & set USE_KARMA=false & set USE_HMR=false & ";
+        osCommands = osCommands + "set NODE_NO_WARNINGS=1 & ";
     }
     log(chalk.cyan("Re-building Development - please wait......"));
     let cmd = exec(osCommands + "brunch build");
@@ -206,29 +210,31 @@ const brunch_tdd = function (done) {
     }
 
     var osCommands = "cd ../..; export NODE_ENV=development; export USE_TDD=true; export USE_KARMA=true; export USE_HMR=false; ";
+    osCommands = osCommands + "export NODE_NO_WARNINGS=1; ";
     if (isWindows) {
         osCommands = "cd ..\\..\\ & set NODE_ENV=development & set USE_TDD=true; set USE_KARMA=true & set USE_HMR=false & ";
+        osCommands = osCommands + "set NODE_NO_WARNINGS=1 & ";
     }
 
     log(chalk.cyan("Test Driven Development - please wait......"));
     let cmd = exec(osCommands + "brunch build --env test");
     cmd.stdout.on("data", (data) => {
         if (data && data.length > 0) {
-            console.log(data.trim());
+             log(data.trim());
         }
     });
     cmd.stderr.on("data", (data) => {
         if (data && data.length > 0)
-            console.log(data.trim());
+             log(data.trim());
     });
     return cmd.on("exit", (code) => {
         done();
-        console.log(`Test Driven Development exited with code ${code}`);
+         log(`Test Driven Development exited with code ${code}`);
     });
 };
 
 const testRun = series(clean_test, pat);
-const lintRun = parallel(esLint, cssLint, bootLint);
+const lintRun = parallel(esLint, cssLint/*, bootLint*/);
 
 exports.default = series(testRun, lintRun, build);
 exports.prod = series(testRun, lintRun, build);
@@ -243,26 +249,14 @@ exports.lint = lintRun;
 //From Stack Overflow - Node (Gulp) process.stdout.write to file
 if (process.env.USE_LOGFILE == "true") {
     var fs = require("fs");
-    var proc = require("process");
-    var origstdout = process.stdout.write,
-        origstderr = process.stderr.write,
-        outfile = "node_output.log",
-        errfile = "node_error.log";
-
-    if (fs.exists(outfile)) {
-        fs.unlink(outfile);
-    }
-    if (fs.exists(errfile)) {
-        fs.unlink(errfile);
-    }
-
-    process.stdout.write = function (chunk) {
-        fs.appendFile(outfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
-        origstdout.apply(this, arguments);
+    var util = require("util");
+    var logFile = fs.createWriteStream("log.txt", { flags: "w" });
+    // Or "w" to truncate the file every time the process starts.
+    var logStdout = process.stdout;
+    /* eslint no-console: 0 */
+    console.log = function () {
+        logFile.write(util.format.apply(null, arguments) + "\n");
+        logStdout.write(util.format.apply(null, arguments) + "\n");
     };
-
-    process.stderr.write = function (chunk) {
-        fs.appendFile(errfile, chunk.replace(/\x1b\[[0-9;]*m/g, ""));
-        origstderr.apply(this, arguments);
-    };
+    console.error = console.log;
 }

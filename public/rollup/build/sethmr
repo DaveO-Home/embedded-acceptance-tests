@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+export NODE_ENV=development
+export USE_WATCH=true

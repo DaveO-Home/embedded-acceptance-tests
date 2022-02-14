@@ -1,5 +1,5 @@
-var App = require("../app");
-var Base = require("../utils/base.control");
+import App from "../app";
+import Base from "../utils/base.control";
 
 module.exports = App.controllers.Pdf || (App.controllers.Pdf = new (Base.extend({
     finish: function (options) {

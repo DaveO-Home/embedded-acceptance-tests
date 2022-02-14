@@ -3,7 +3,7 @@ var Helpers = require("./utils/helpers");
 var Component = require("can-component");
 var DefineMap = require("can-define/map/map");
 var _ = require("lodash");
-window.Popper = require("popper.js");
+var { createPopper } = require("@popperjs/core");
 require("bootstrap");
 require("tablesorter");
 
@@ -16,7 +16,7 @@ if (testit) {
         });
 
         it("is Popper defined", function () {
-            expect(typeof Popper === "function").toBe(true);
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }

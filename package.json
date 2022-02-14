@@ -1,9 +1,9 @@
 {
   "name": "acceptance-test",
-  "version": "1.0.0",
-  "description": "Karma/Jasmine/StealJS Testing",
+  "version": "2.0.0",
+  "description": "Karma/Jasmine/Bundlers Testing",
   "scripts": {
-    "start": "node appExpress.js"
+    "start": "node koa"
   },
   "keywords": [
     "karma",
@@ -13,8 +13,26 @@
   "author": "Ace",
   "license": "ISC",
   "dependencies": {
-    "express": "3.21.2",
-    "jade": "1.11.0",
-    "less-middleware": "0.1.15"
+    "@vscode/sqlite3": "^5.0.7",
+    "bookshelf": "^1.2.0",
+    "bs-platform": "^9.0.2",
+    "concurrently": "^7.0.0",
+    "del": "^6.0.0",
+    "dodex": "^1.4.0",
+    "dodex-input": "^1.4.0",
+    "dodex-mess": "^1.3.1",
+    "jsoneditor": "^9.7.2",
+    "knex": "^1.0.3",
+    "koa": "^2.13.4",
+    "koa-combine-routers": "^4.0.2",
+    "koa-cors": "^0.0.16",
+    "koa-favicon": "^2.1.0",
+    "koa-router": "^10.1.1",
+    "koa-static": "^5.0.0",
+    "pg": "^8.7.3",
+    "uuid": "^8.3.2",
+    "winston": "^3.6.0",
+    "winston-daily-rotate-file": "^4.6.0",
+    "ws": "^8.5.0"
   }
 }

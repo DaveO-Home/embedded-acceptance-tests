@@ -5,8 +5,9 @@ var Map = require("can-map");
 var startsWith = require("lodash/startsWith");
 var capitalize = require("lodash/capitalize");
 
-require("bootstrap");
+// require("bootstrap/dist/js/bootstrap.bundle.min.js");
 require("tablesorter");
+var { createPopper } = require("@popperjs/core");
 
 // Specs can be inserted anywhere in the application at initialization before __karma__.start()           
 /* develblock:start */
@@ -17,7 +18,7 @@ if (testit) {
         });
 
         it("is Popper defined", function () {
-            expect(typeof Popper === "function").toBe(true);
+            expect(typeof createPopper === "function").toBe(true);
         });
     });
 }

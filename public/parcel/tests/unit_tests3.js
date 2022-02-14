@@ -1,4 +1,4 @@
-"use strict"
+
 describe("Unit Tests - doDex", function () {
     
     it("Remove a class from an element", function () {
