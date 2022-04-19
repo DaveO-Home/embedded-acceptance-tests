@@ -1,6 +1,6 @@
 {
   "name": "acceptance-test",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Karma/Jasmine/Bundlers Testing",
   "scripts": {
     "start": "node koa"
@@ -13,16 +13,16 @@
   "author": "Ace",
   "license": "ISC",
   "dependencies": {
-    "@vscode/sqlite3": "^5.0.7",
+    "@vscode/sqlite3": "^5.0.8",
     "bookshelf": "^1.2.0",
     "bs-platform": "^9.0.2",
-    "concurrently": "^7.0.0",
+    "concurrently": "^7.1.0",
     "del": "^6.0.0",
-    "dodex": "^1.4.0",
-    "dodex-input": "^1.4.0",
-    "dodex-mess": "^1.3.1",
-    "jsoneditor": "^9.7.2",
-    "knex": "^1.0.3",
+    "dodex": "^1.4.1",
+    "dodex-input": "^1.4.1",
+    "dodex-mess": "^1.3.2",
+    "jsoneditor": "^9.7.4",
+    "knex": "^1.0.7",
     "koa": "^2.13.4",
     "koa-combine-routers": "^4.0.2",
     "koa-cors": "^0.0.16",
@@ -31,8 +31,8 @@
     "koa-static": "^5.0.0",
     "pg": "^8.7.3",
     "uuid": "^8.3.2",
-    "winston": "^3.6.0",
-    "winston-daily-rotate-file": "^4.6.0",
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1",
     "ws": "^8.5.0"
   }
 }
