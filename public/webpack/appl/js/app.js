@@ -8,6 +8,7 @@ define("app", [
 ], function (Helpers, _) {
     /* develblock:start */
     // Specs can be inserted at module initialization(before karma is started).
+
     if (testit) {
         describe("Popper Defined - required for Bootstrap", function () {
             it("is JQuery defined", function () {

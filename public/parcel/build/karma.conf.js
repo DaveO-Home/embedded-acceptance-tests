@@ -19,7 +19,7 @@ module.exports = function (config) {
             "parcel/appl/": "/base/" + bundler + "/appl/",
             "/dodex/": "/base/" + bundler + "/appl/dodex/",
             "/images/": "/base/dist_test/" + bundler + "/images/",
-            "/": "/base/dist_test/parcel/appl/"
+            "": "/base/dist_test/parcel/appl/"
         },
         files: [
             //Webcomponents for Firefox - used for link tag with import attribute.

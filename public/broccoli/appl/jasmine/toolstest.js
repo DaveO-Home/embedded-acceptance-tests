@@ -1,3 +1,5 @@
+const { timer } = require("rxjs");
+
 module.exports = {
     toolstest: function (Route, Helpers) {
 
@@ -8,7 +10,7 @@ module.exports = {
             var tools,
                     beforeValue,
                     afterValue,
-                    spyToolsEvent,
+                    spyOnTools,
                     selectorObject;
 
 
@@ -34,11 +36,15 @@ module.exports = {
                 }).then(function () {
 
                     tools = $("#tools");
-                    beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
+//                    beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
+                    const jqueryTools = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)");
+                    beforeValue = jqueryTools.text();
+                    spyOnTools =
+                        spyOn(jqueryTools,"text").and.callThrough().and.returnValue(beforeValue);
+
+                    beforeValue = jqueryTools.text();
 
                     selectorObject = $(".jobtype-selector");
-                    spyToolsEvent = spyOnEvent(selectorObject[0], "change");
-
                     /*
                      *  The can.Component(jobtype-selector) has a change event - we want to test that.
                      */
@@ -47,24 +53,25 @@ module.exports = {
 
                     //Note: if page does not refresh, increase the Timeout time.
                     //Using setTimeout instead of Promise.
-                    setTimeout(function () {
+                    const numbers = timer(50, 50);
+                    const observable = numbers.subscribe(timer => {
                         afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                        done();
-                    }, 750);
+                        spyOnTools.and.callThrough().and.returnValue(afterValue);
+                        afterValue = jqueryTools.text();
+                        if (spyOnTools.calls.first().returnValue !==
+                                spyOnTools.calls.mostRecent().returnValue || timer === 15) {
+                            observable.unsubscribe();
+                            done();
+                        }
+                    });
 
                 });
             });
 
             it("setup and change event executed.", function (done) {
-
-                //jasmine-jquery matchers
-                expect("change").toHaveBeenTriggeredOn(selectorObject[0]);
-                expect(spyToolsEvent).toHaveBeenTriggered();
-
                 expect(tools[0]).toBeInDOM();
                 expect(".disabled").toBeDisabled();
 
-//                expect(selectorObject.focus()).toBeFocused();
                 //Required for Firefox
                 selectorObject[0] = document.activeElement;
                 expect(selectorObject).toBeFocused();
@@ -75,11 +82,14 @@ module.exports = {
 
             it("new page loaded on change.", function (done) {
                 //Verify that new page was loaded.
-                expect(beforeValue).not.toBe(afterValue);
+                expect(spyOnTools.calls.first().returnValue.length > 0).toBe(true);
+                expect(spyOnTools.calls.mostRecent().returnValue.length > 0).toBe(true);
+                expect(spyOnTools).toHaveBeenCalled();
+                expect(spyOnTools.calls.count() > 1).toBe(true);
+                expect(spyOnTools.calls.first().returnValue).not.toBe(spyOnTools.calls.mostRecent().returnValue);
                 
                 done();
             });
-
         });
     }
 };

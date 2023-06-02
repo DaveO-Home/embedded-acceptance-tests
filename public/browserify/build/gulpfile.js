@@ -21,7 +21,6 @@ const watchify = require("watchify");
 const removeCode = require("gulp-remove-code");
 const stripCode = require("gulp-strip-code");
 const browserSync = require("browser-sync").create("devl");
-const del = require("del");
 const chalk = require("chalk");
 
 const startComment = "steal-remove-start",
@@ -156,9 +155,12 @@ function clean() {
     isWatchify = false;
     isProduction = true;
     dist = prodDist;
-    return del([
-        "../../" + prodDist + "/**/*"
-    ], { dryRun: false, force: true });
+
+    return import("del").then(del => {
+         del.deleteSync([
+                  "../../" + prodDist + "/**/*"
+              ], { dryRun: false, force: true });
+     });
 }
 /**
  * Resources and content copied to dist directory - for production

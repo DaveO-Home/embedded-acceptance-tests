@@ -10,13 +10,12 @@
  const csslint = require("gulp-csslint");
  const exec = require("child_process").exec;
  const copy = require("gulp-copy");
- const del = require("del");
  const log = require("fancy-log");
  const flatten = require("gulp-flatten");
  const chalk = require("chalk");
  const browserSync = require("browser-sync");
  const path = require("path");
- 
+
  let lintCount = 0;
  let isProduction = process.env.NODE_ENV == "production";
  let browsers = process.env.USE_BROWSERS;
@@ -24,7 +23,7 @@
  let testDist = "dist_test/esbuild";
  let prodDist = "dist/esbuild";
  let dist = isProduction ? prodDist : testDist;
- 
+
  if (browsers) {
      global.whichBrowsers = browsers.split(",");
  }
@@ -107,9 +106,12 @@
  const clean = function (done) {
      isProduction = true;
      dist = prodDist;
-     return del([
-         "../../" + prodDist + "/**/*"
-     ], { dryRun: false, force: true }, done);
+     return import("del").then(del => {
+         del.deleteSync([
+                  "../../" + prodDist + "/**/*"
+              ], { dryRun: false, force: true });
+         done();
+     });
  };
  
  const cleant = function (done) {
@@ -119,9 +121,12 @@
      }
      isProduction = false;
      dist = testDist;
-     return del([
-         "../../" + testDist + "/**/*"
-     ], { dryRun: dryRun, force: true }, done);
+     return import("del").then(del => {
+        del.deleteSync([
+                 "../../" + testDist + "/**/*"
+             ], { dryRun: dryRun, force: true });
+        done();
+     });
  };
  /**
   * Resources and content copied to dist directory - for production
@@ -233,30 +238,37 @@
  exports.devlserver = devlServer;
  
  // this is basically worthless - use the hmr task
- function devlServer() {
-     const port = 3080;
-     return esbuild.serve({ port: port }, {
-         entryPoints: ["../appl/index"],
-         bundle: true,
-         outfile: path.join("../../", dist, "/appl/index.js"),
-         define: {
-             "process.env.NODE_ENV": isProduction ? "\"production\"" : "\"development\"",
-         },
-         loader: {
-             ".png": "file",
-             ".svg": "file",
-             ".jpg": "file",
-             ".eot": "dataurl",
-             ".woff": "dataurl",
-             ".woff2": "dataurl",
-             ".tff": "dataurl"
-         },
-         external: ["fsevents", "fs"],
-     }).then(server => {
-         log("On port: " + port);
-         // Call "stop" on the web server when you're done
-         server.wait;
-     });
+ async function devlServer() {
+     runTestCopy();
+
+     let ctx = await esbuild.context({
+       entryPoints: ["../appl/index"],
+       outdir: path.join("../../", dist, ""),
+       bundle: true,
+       define: {
+            "process.env.NODE_ENV": isProduction ? "\"production\"" : "\"development\"",
+       },
+       loader: {
+           ".png": "file",
+           ".svg": "file",
+           ".jpg": "file",
+           ".eot": "dataurl",
+           ".woff": "dataurl",
+           ".woff2": "dataurl",
+           ".tff": "dataurl",
+           ".html": "file"
+       },
+       external: ["fsevents", "fs"],
+     })
+
+     await ctx.rebuild();
+     await ctx.watch();
+
+     let { host, port } = await ctx.serve({
+       servedir: "../../" + dist,
+     })
+
+     console.log("Development Server On:", host+":"+port, "--",dist)
  }
  
  const startComment = "develblock:start",
@@ -308,7 +320,7 @@
          },
          external: ["fsevents", "fs"],
          sourcemap: isProduction? true: false,
-        //  minify: isProduction ? true : false, // this corrupts canjs??
+         minify: isProduction ? false : false, // this corrupts canjs??
      };
      if (isProduction) {
          options.plugins = [stripCodePlugin];

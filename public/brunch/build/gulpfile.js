@@ -8,7 +8,6 @@ const eslint = require("gulp-eslint");
 const exec = require("child_process").exec;
 const log = require("fancy-log");
 const chalk = require("chalk");
-const del = require("del");
 
 let lintCount = 0;
 let dist = "dist_test/brunch";
@@ -56,10 +55,12 @@ const pat = function (done) {
 
 const clean_test = function (cb) {
     log(chalk.cyan("Cleaning dist_test/brunch......"));
-    del.sync([
-        dist + "/**/*",
-    ], { dryRun: false, force: true });
-    cb();
+    return import("del").then(del => {
+        del.deleteSync([
+                 dist + "/**/*"
+             ], { dryRun: false, force: true });
+        cb();
+     });
 };
 /*
  * javascript linter

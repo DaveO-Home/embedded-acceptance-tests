@@ -1,19 +1,18 @@
 const { timer } = require("rxjs");
 
 module.exports = {
-    toolstest: function (Route, Helpers) {
+    toolstest: (Route, Helpers) => {
         /* 
          * Test that new data are loaded when the select value changes.
          */
-        describe("Load new tools page", function () {
+        describe("Load new tools page", () => {
             var tools;
             var beforeValue;
             var afterValue;
-            var spyToolsEvent;
             var selectorObject;
             var selectorItem;
 
-            beforeAll(function (done) {
+            beforeAll((done) => {
                 //Loading Application Web Page(Treat as a Fixture)
                 Route.data.attr("base", true);
                 Route.data.attr("controller", "table");
@@ -21,9 +20,9 @@ module.exports = {
 
                 //Wait for Web Page to be loaded
                 Helpers.getResource("container", 0, 1)
-                    .catch(function (rejected) {
+                    .catch((rejected) => {
                         fail("The Tools Page did not load within limited time: " + rejected);
-                    }).then(function () {
+                    }).then(() => {
                         tools = $("#tools");
                         beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                         // Opens the dropdown
@@ -31,12 +30,12 @@ module.exports = {
                         Helpers.fireEvent(selectorObject[0], "click");
 
                         selectorItem = $("a.dropdown-item.smallerfont");
-                        spyToolsEvent = spyOnEvent(selectorItem[1], "click");
+
                         done();
                     });
             });
 
-            it("setup and click events executed.", function (done) {
+            it("setup and click events executed.", (done) => {
                 Helpers.fireEvent(selectorItem[1], "click");
 
                 // Note: if page does not refresh, increase the timer time.
@@ -45,9 +44,6 @@ module.exports = {
                 const observable = numbers.subscribe(timer => {
                     afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                     if (afterValue !== beforeValue || timer === 20) {
-                        expect("click").toHaveBeenTriggeredOn(selectorItem[1]);
-                        expect(spyToolsEvent).toHaveBeenTriggered();
-
                         expect(tools[0]).toBeInDOM();
                         expect(".disabled").toBeDisabled();
                         expect("#dropdown1 a").toHaveLength(3);
@@ -57,11 +53,11 @@ module.exports = {
                     }
                 });
             });
-            // Not Working for rollup
-            // it("new page loaded on change.", function () {
-            //     //Verify that new page was loaded. 
-            //     expect(beforeValue).not.toBe(afterValue);
-            // });
+
+            it("new page loaded on change.", () => {
+                //Verify that new page was loaded.
+                expect(beforeValue).not.toBe(afterValue);
+            });
         });
     }
 };

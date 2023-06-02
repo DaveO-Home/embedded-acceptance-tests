@@ -67,7 +67,7 @@ const cssLint = function (cb) {
         process.exit(1);
     });
     return stream.on("end", function () {
-        log("# javascript files linted: " + lintCount);
+        log(chalk.blue.bold("# css files linted: " + lintCount));
         cb();
     });
 };

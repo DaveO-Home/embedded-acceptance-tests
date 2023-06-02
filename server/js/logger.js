@@ -6,7 +6,7 @@ require("winston-daily-rotate-file");
 const fs = require("fs");
 const path = require("path");
 const env = process.env.NODE_ENV || "development";
-const logDir = "log";
+const logDir = "logs";
 const serverFile = path.join(logDir, "server.log");
 const accessFile = path.join(logDir, "access.log");
 global.currentFilename = __filename;

@@ -125,7 +125,7 @@ define("start", ["app",
                 finish: function (options) {
                     var marked = require("marked");
                     var mdFunction = function (data) {
-                        $(".markdown").append(marked.parse(data));
+                        $(".markdown").append(marked.parse(data, {mangle: false, headerIds: false}));
                     };
                     $.get(options.urlMd, mdFunction, "text");
                 }

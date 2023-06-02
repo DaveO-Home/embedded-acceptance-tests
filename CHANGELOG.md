@@ -1,5 +1,16 @@
 # Changelog
 
+## [v2.0.2](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.0.2) (2023-06-05)
+
+[Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.0.0...v2.0.2)
+
+* Upgraded dependencies
+* Fixed deprecations
+* Removed Jasmine-jquery Event spies and added property and object jasmine spies in toolstest.
+* Upgrade of `del` module changed code in **gulpfile.js** files.
+* Upgrade of `marked` module changed code in **start.js** files.
+* Converted `Bookshelf` to `Objection.js` for koa server to remove need for --legacy-peer-deps.
+
 ## [v2.0.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.0.0) (2022-02-15)
 
 [Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v1.0.0...v2.0.0)

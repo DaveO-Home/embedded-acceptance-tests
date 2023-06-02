@@ -34,7 +34,7 @@ const tables = {
 			table.string("name");
 			table.string("password");
 			table.string("ip");
-			table.datetime("last_login");
+			table.datetime("last_login").defaultTo(knex.fn.now());
 			table.unique("name");
 			table.unique("password");
 		});
@@ -56,6 +56,7 @@ const tables = {
 		});
 	}
 };
+
 /** Bookshelf Models
  * User - stores registered users
  */

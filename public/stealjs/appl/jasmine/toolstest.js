@@ -4,14 +4,14 @@ steal("rxjs", function (Rx) {
         /* 
          * Test that new data are loaded when the select value changes.
          */
-        describe("Load new tools page", function () {
+        describe("Load new tools page", () => {
             var tools;
             var beforeValue;
             var afterValue;
-            var spyToolsEvent;
+            var spyOnTools;
             var selectorObject;
 
-            beforeAll(function (done) {
+            beforeAll((done) => {
                 if (!$("#main_container").length) {
                     $("body").append("<div id=\"main_container\"></div>");
                 }
@@ -22,15 +22,19 @@ steal("rxjs", function (Rx) {
 
                 //Wait for Web Page to be loaded
                 Helpers.getResource("container", 0)
-                    .catch(function (rejected) {
+                    .catch((rejected) => {
                         fail("The Tools Page did not load within limited time: " + rejected);
-                    }).then(function () {
+                    }).then(() => {
                         tools = $("#tools");
 
-                        beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
+                        const jqueryTools = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)");
+                        beforeValue = jqueryTools.text();
+                        spyOnTools =
+                            spyOn(jqueryTools,"text").and.callThrough().and.returnValue(beforeValue);
 
+                        beforeValue = jqueryTools.text();
                         selectorObject = $(".jobtype-selector");
-                        spyToolsEvent = spyOnEvent(selectorObject[0], "change");
+
                         /*
                          *  The can.Component(jobtype-selector) has a change event - we want to test that.
                          */
@@ -42,7 +46,10 @@ steal("rxjs", function (Rx) {
                         var numbers = timer(50, 50);
                         var observable = numbers.subscribe(timer => {
                             afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
-                            if (afterValue !== beforeValue || timer === 20) {
+                            spyOnTools.and.callThrough().and.returnValue(afterValue);
+                            afterValue = jqueryTools.text();
+                            if (spyOnTools.calls.first().returnValue !==
+                                    spyOnTools.calls.mostRecent().returnValue || timer === 25) {
                                 observable.unsubscribe();
                                 done();
                             }
@@ -50,11 +57,7 @@ steal("rxjs", function (Rx) {
                     });
             });
 
-            it("setup and change event executed.", function () {
-                //jasmine-jquery matchers
-                expect("change").toHaveBeenTriggeredOn(selectorObject[0]);
-                expect(spyToolsEvent).toHaveBeenTriggered();
-
+            it("setup and change event executed.", () => {
                 expect(tools[0]).toBeInDOM();
                 expect(".disabled").not.toBeDisabled();  //Because of can-event warning, removed all disabled classes for testing
                 expect(".jobtype-selector > option").toHaveLength(4);
@@ -63,9 +66,13 @@ steal("rxjs", function (Rx) {
                 expect(selectorObject).toBeFocused();
             });
 
-            it("new page loaded on change.", function () {
+            it("new page loaded on change.", () => {
                 //Verify that new page was loaded.
-                expect(beforeValue).not.toBe(afterValue);
+                expect(spyOnTools.calls.first().returnValue.length > 0).toBe(true);
+                expect(spyOnTools.calls.mostRecent().returnValue.length > 0).toBe(true);
+                expect(spyOnTools).toHaveBeenCalled();
+                expect(spyOnTools.calls.count() > 1).toBe(true);
+                expect(spyOnTools.calls.first().returnValue).not.toBe(spyOnTools.calls.mostRecent().returnValue);
             });
         });
     };

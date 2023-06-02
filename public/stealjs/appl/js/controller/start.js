@@ -125,7 +125,7 @@ steal("app",
                 },
                 finish: function (options) {
                     var mdFunction = function (data) {                        
-                        $(".markdown").append(window.marked.parse(data));
+                        $(".markdown").append(window.marked.parse(data, {mangle: false, headerIds: false}));
                     };
                     $.get(options.urlMd, mdFunction, "text");
                 }

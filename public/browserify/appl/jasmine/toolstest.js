@@ -10,8 +10,10 @@ module.exports = {
             var tools,
                 beforeValue,
                 afterValue,
-                spyToolsEvent,
-                selectorObject;
+                spyBefore,
+                spyAfter,
+                selectorObject,
+                toolsObject;
 
             beforeAll(function (done) {
                 if (!$("#main_container").length) {
@@ -30,8 +32,23 @@ module.exports = {
                         tools = $("#tools");
                         beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
 
+                        toolsObject = {
+                          beforeValue: "",
+                          afterValue: "",
+                          get before() {
+                            return this.beforeValue;
+                          },
+                          get after() {
+                            return this.afterValue;
+                          },
+                          set after(value) {
+                            return this.afterValue = value;
+                          }
+                        };
+
                         selectorObject = $(".jobtype-selector");
-                        spyToolsEvent = spyOnEvent(selectorObject[0], "change");
+                        spyBefore = spyOnProperty(toolsObject, "before", "get");
+                        spyAfter = spyOnProperty(toolsObject, "after", "get");
                         /*
                          *  The can.Component(jobtype-selector) has a change event - we want to test that.
                          */
@@ -44,6 +61,8 @@ module.exports = {
                         const observable = numbers.subscribe(timer => {
                             afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                             if (afterValue !== beforeValue || timer === 15) {
+                                spyBefore.and.returnValue(beforeValue);
+                                spyAfter.and.returnValue(afterValue);
                                 observable.unsubscribe();
                                 done();
                             }
@@ -52,11 +71,6 @@ module.exports = {
             });
 
             it("setup and change event executed.", function () {
-
-                //jasmine-jquery matchers
-                expect("change").toHaveBeenTriggeredOn(selectorObject[0]);
-                expect(spyToolsEvent).toHaveBeenTriggered();
-
                 expect(tools[0]).toBeInDOM();
                 expect(".disabled").toBeDisabled();  //Because of can-event warning, removed all disabled classes for testing
                 expect(".jobtype-selector > option").toHaveLength(4);
@@ -67,6 +81,13 @@ module.exports = {
 
             it("new page loaded on change.", function () {
                 //Verify that new page was loaded.
+                expect(toolsObject.before.length > 0).toBe(true);
+                expect(toolsObject.after.length > 0).toBe(true);
+                expect(spyBefore).toHaveBeenCalled();
+                expect(spyBefore.calls.count()).toEqual(1);
+                expect(spyAfter).toHaveBeenCalled();
+                expect(spyAfter.calls.count()).toEqual(1);
+                expect(toolsObject.before).not.toBe(toolsObject.after);
                 expect(beforeValue).not.toBe(afterValue);
             });
         });

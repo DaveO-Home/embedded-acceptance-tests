@@ -32,5 +32,6 @@ module.exports = {
         "__karma__": true,
         "spyOnEvent": true,
         "Popper": true
-    }
+    },
+    "plugins": ["promise", "html"]
 };

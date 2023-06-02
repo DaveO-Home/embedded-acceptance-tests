@@ -11,7 +11,6 @@ const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
 const copy = require("gulp-copy");
-const del = require("del");
 const log = require("fancy-log");
 const flatten = require("gulp-flatten");
 const chalk = require("chalk");
@@ -110,9 +109,12 @@ task("bootlint", function (cb) {
 task("clean", function (done) {
     isProduction = true;
     dist = prodDist;
-    return del([
-        "../../" + prodDist + "/**/*"
-    ], { dryRun: false, force: true }, done);
+    return import("del").then(del => {
+         del.deleteSync([
+                  "../../" + prodDist + "/**/*"
+              ], { dryRun: false, force: true });
+         done();
+     });
 });
 
 task("cleant", function (done) {
@@ -122,9 +124,12 @@ task("cleant", function (done) {
     }
     isProduction = false;
     dist = testDist;
-    return del([
-        "../../" + testDist + "/**/*"
-    ], { dryRun: dryRun, force: true }, done);
+    return import("del").then(del => {
+        del.deleteSync([
+                 "../../" + testDist + "/**/*"
+             ], { dryRun: dryRun, force: true });
+        done();
+     });
 });
 /**
  * Resources and content copied to dist directory - for production

@@ -1,18 +1,20 @@
 const { timer } = require("rxjs");
 
 module.exports = {
-    toolstest: function (Route, Helpers) {
+    toolstest: (Route, Helpers) => {
         /* 
          * Test that new data are loaded when the select value changes.
          */
-        describe("Load new tools page", function () {
+        describe("Load new tools page", () => {
             var tools,
                 beforeValue,
                 afterValue,
-                spyToolsEvent,
-                selectorObject;
+                spyBefore,
+                spyAfter,
+                selectorObject,
+                toolsObject;
 
-            beforeAll(function (done) {
+            beforeAll((done) => {
                 if (!$("#main_container").length) {
                     $("body").append("<div id=\"main_container\"></div>");
                 }
@@ -23,15 +25,30 @@ module.exports = {
 
                 // Wait for Web Page to be loaded
                 Helpers.getResource("container", 0, 1)
-                    .catch(function (rejected) {
+                    .catch((rejected) => {
                         fail("The Tools Page did not load within limited time: " + rejected);
-                    }).then(function () {
+                    }).then(() => {
                         tools = $("#tools");
                         beforeValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
 
-                        selectorObject = $(".jobtype-selector");
-                        spyToolsEvent = spyOnEvent(selectorObject[0], "change");
+                        toolsObject = {
+                          beforeValue: "",
+                          afterValue: "",
+                          get before() {
+                            return this.beforeValue;
+                          },
+                          get after() {
+                            return this.afterValue;
+                          },
+                          set after(value) {
+                            return this.afterValue = value;
+                          }
+                        };
 
+                        selectorObject = $(".jobtype-selector");
+
+                        spyBefore = spyOnProperty(toolsObject, "before", "get");
+                        spyAfter = spyOnProperty(toolsObject, "after", "get");
                         /*
                          *  The can.Component(jobtype-selector) has a change event - we want to test that.
                          */
@@ -44,22 +61,21 @@ module.exports = {
                         const observable = numbers.subscribe(timer => {
                             afterValue = tools.find("tbody").find("tr:nth-child(1)").find("td:nth-child(2)").text();
                             if (afterValue !== beforeValue || timer === 15) {
+                                spyBefore.and.returnValue(beforeValue);
+                                spyAfter.and.returnValue(afterValue);
+
                                 observable.unsubscribe();
                                 done();
                             }
                         });
                     });
+
             });
 
-            it("setup and change event executed.", function (done) {
-                // jasmine-jquery matchers
-                expect("change").toHaveBeenTriggeredOn(selectorObject[0]);
-                expect(spyToolsEvent).toHaveBeenTriggered();
-
+            it("setup and change event executed.", (done) => {
                 expect(tools[0]).toBeInDOM();
                 expect(".disabled").toBeDisabled();
 
-                // expect(selectorObject.focus()).toBeFocused();
                 // Required for Firefox
                 selectorObject[0] = document.activeElement;
                 expect(selectorObject).toBeFocused();
@@ -68,8 +84,15 @@ module.exports = {
                 done();
             });
 
-            it("new page loaded on change.", function (done) {
+            it("new page loaded on change.", (done) => {
                 // Verify that new page was loaded.
+                expect(toolsObject.before.length > 0).toBe(true);
+                expect(toolsObject.after.length > 0).toBe(true);
+                expect(spyBefore).toHaveBeenCalled();
+                expect(spyBefore.calls.count()).toEqual(1);
+                expect(spyAfter).toHaveBeenCalled();
+                expect(spyAfter.calls.count()).toEqual(1);
+                expect(toolsObject.before).not.toBe(toolsObject.after);
                 expect(beforeValue).not.toBe(afterValue);
 
                 done();

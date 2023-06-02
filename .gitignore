@@ -2,7 +2,7 @@ deploy
 .cache
 audit-vul
 dodex.sqlite3
-log
+logs
 public/broccoli/build/outdated.dat
 public/fusebox/es*
 /.*/**/*

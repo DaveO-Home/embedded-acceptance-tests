@@ -15,7 +15,6 @@ const removeCode = require("gulp-remove-code");
 const stripCode = require("gulp-strip-code");
 const chalk = require("chalk");
 const uglify = require("gulp-uglify");
-const del = require("del");
 const noop = require("gulp-noop");
 const log = require("fancy-log");
 
@@ -127,10 +126,12 @@ const bootLint = function (cb) {
 const clean = function (done) {
     isProduction = true;
     dist = prodDist;
-    del.sync([
-        "../../" + prodDist + "/**/*"
-    ], { dryRun: false, force: true });
-    done();
+    return import("del").then(del => {
+         del.deleteSync([
+                  "../../" + prodDist + "/**/*"
+              ], { dryRun: false, force: true });
+         done();
+     });
 };
 /**
  * Remove previous test build
@@ -138,10 +139,12 @@ const clean = function (done) {
 const cleant = function (done) {
     isProduction = false;
     dist = testDist;
-    del.sync([
-        "../../" + testDist + "/**/*"
-    ], { dryRun: false, force: true });
-    done();
+    return import("del").then(del => {
+        del.deleteSync([
+                 "../../" + testDist + "/**/*"
+             ], { dryRun: false, force: true });
+        done();
+     });
 };
 /**
  * Resources and content copied to dist directory - for production
@@ -309,54 +312,54 @@ exports.tcopy = testCopy;
 exports.lint = lintRun;
 
 async function rollupBuild(cb) {
-        await rollup.rollup({
-            input: "../appl/index.js",
-            treeshake: isProduction,           
-            plugins: [
-                alias(aliases()),
-                nodeResolve({
-                    extensions: [".js", ".ts"],
-                    browser: true
-                }),
-                css({output: "bundle.css"}),
-                progress({
-                    clearLine: isProduction ? true : true
-                }),
-                commonjs({}),
-                // buble(),
-                
-
-            ],
-        }).then(async bundle => {
-            await bundle.write({
-                file: `../../${dist}/bundle_temp.js`,
-                format: "iife",
-                name: "bundle_temp",
-                sourcemap: isProduction === false
-            }).then(async () => {
-                src([`../../${dist}/bundle_temp.js`])
-                    .pipe(removeCode({ production: isProduction }))
-                    .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
-                    .pipe(isProduction ? uglify() : noop())
-                    .pipe(rename("bundle.js"))
-                    .pipe(dest(`../../${dist}`))
-                    .on("error", log)
-                    .on("end", function () {
-                        del.sync([
-                            `../../${dist}/bundle_temp.js`
-                        ], { dryRun: false, force: true });
+    await rollup.rollup({
+        input: "../appl/index.js",
+        treeshake: isProduction,
+        plugins: [
+            alias(aliases()),
+            nodeResolve({
+                extensions: [".js", ".ts"],
+                browser: true
+            }),
+            css({output: "bundle.css"}),
+            progress({
+                clearLine: isProduction ? true : true
+            }),
+            commonjs({}),
+            // buble(),
+        ],
+    }).then(async bundle => {
+        await bundle.write({
+            file: `../../${dist}/bundle_temp.js`,
+            format: "iife",
+            name: "bundle_temp",
+            sourcemap: isProduction === false
+        }).then(async () => {
+            src([`../../${dist}/bundle_temp.js`])
+                .pipe(removeCode({ production: isProduction }))
+                .pipe(isProduction ? stripCode({ pattern: regexPattern }) : noop())
+                .pipe(isProduction ? uglify() : noop())
+                .pipe(rename("bundle.js"))
+                .pipe(dest(`../../${dist}`))
+                .on("error", log)
+                .on("end", function () {
+                    import("del").then(del => {
+                         del.deleteSync([
+                                  `../../${dist}/bundle_temp.js`
+                              ], { dryRun: false, force: true });
                     });
                 });
-        });
-        return new Promise((resolve, reject) => {
-                checkFile(resolve, reject);
-            }).then(() => {
-                cb();
-            }).catch(rejected => {
-                log(chalk.red.bold(`Failed: ${rejected}`));
-                cb();
-                process.exit(1);
             });
+    });
+    return new Promise((resolve, reject) => {
+            checkFile(resolve, reject);
+        }).then(() => {
+            cb();
+        }).catch(rejected => {
+            log(chalk.red.bold(`Failed: ${rejected}`));
+            cb();
+            process.exit(1);
+        });
 }
 let count = 0;
 function checkFile(resolve, reject) {

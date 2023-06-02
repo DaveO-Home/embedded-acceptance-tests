@@ -12,7 +12,6 @@ const eslint = require("gulp-eslint");
 const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
 const log = require("fancy-log");
-const del = require("del");
 const chalk = require("chalk");
 
 var lintCount = 0;
@@ -203,12 +202,14 @@ const bootLint = function (cb) {
 const clean = function (done) {
     const isProduction = true;
     const dist = "../../dist/";
-    del.sync([
-        dist + "stealjs/**/*",
-        dist + "bundles/**/*",
-        dist + "../../dist/steal.production.js"
-    ], { dryRun: false, force: true });
-    done();
+    import("del").then(del => {
+         del.deleteSync([
+              dist + "stealjs/**/*",
+              dist + "bundles/**/*",
+              dist + "../../dist/steal.production.js"
+          ], { dryRun: false, force: true });
+         done();
+     });
 };
 /**
  * Run karma/jasmine tests using FirefoxHeadless 

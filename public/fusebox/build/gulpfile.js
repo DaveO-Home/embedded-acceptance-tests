@@ -13,7 +13,6 @@ const csslint = require("gulp-csslint");
 const exec = require("child_process").exec;
 const log = require("fancy-log");
 const chalk = require("chalk");
-const del = require("del");
 
 let lintCount = 0;
 let dist = "dist_test/fusebox";
@@ -234,9 +233,15 @@ const copy = async function (cb) {
 const clean = function (done) {
     isProduction = true;
     dist = "../../dist/";
-    return del([
-        dist + "fusebox/**/*",
-    ], { dryRun: false, force: true }, done);
+    return import("del").then(del => {
+         del.deleteSync([
+                  dist + "fusebox/**/*"
+              ], { dryRun: false, force: true });
+         done();
+     });
+//    return del([
+//        dist + "fusebox/**/*",
+//    ], { dryRun: false, force: true }, done);
 };
 /**
  * Remove previous build - only
@@ -244,9 +249,15 @@ const clean = function (done) {
 const cleanOnly = function (done) {
     isProduction = true;
     dist = "../../dist/";
-    return del([
-        dist + "fusebox/**/*",
-    ], { dryRun: false, force: true }, done);
+    return import("del").then(del => {
+         del.deleteSync([
+                  dist + "fusebox/**/*"
+              ], { dryRun: false, force: true });
+         done();
+     });
+//    return del([
+//        dist + "fusebox/**/*",
+//    ], { dryRun: false, force: true }, done);
 };
 
 /**
