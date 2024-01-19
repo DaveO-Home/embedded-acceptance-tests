@@ -1,5 +1,17 @@
 # Changelog
 
+## [v2.1.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.1.0) (2024-01-18)
+
+[Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.0.2...v2.1.0)
+
+* Updated dependencies
+
+## [v2.0.3](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.0.3) (2023-06-05)
+
+[Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.0.2...v2.0.3)
+
+* Updated parcel to 2.9.1 by fixing the production compression problem with canjs. Added .terserrc file in public directory.
+
 ## [v2.0.2](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.0.2) (2023-06-05)
 
 [Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.0.0...v2.0.2)

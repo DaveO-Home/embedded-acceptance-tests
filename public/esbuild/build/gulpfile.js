@@ -341,7 +341,7 @@
          "../appl/css/site.css",
          isProduction ? "../appl/testapp.html" : "../appl/testapp_dev.html"])
          .pipe(flatten({ includeParents: -2 })
-             .pipe(dest("../../" + dist + "/appl")));
+         .pipe(dest("../../" + dist + "/appl")));
  }
  
  function copyImages() {
