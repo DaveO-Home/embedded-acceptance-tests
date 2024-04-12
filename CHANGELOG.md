@@ -1,5 +1,12 @@
 # Changelog
 
+## [v2.2.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.2.0) (2024-04-12)
+
+[Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.1.0...v2.2.0)
+
+* Updated dependencies
+* Upgraded to gulp 5.0
+
 ## [v2.1.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.1.0) (2024-01-18)
 
 [Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.0.2...v2.1.0)

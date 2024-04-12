@@ -337,7 +337,6 @@
  function copySrc() {
      return src(["../appl/view*/**/*",
          "../appl/temp*/**/*",
-         "../appl/assets/**/*",
          "../appl/css/site.css",
          isProduction ? "../appl/testapp.html" : "../appl/testapp_dev.html"])
          .pipe(flatten({ includeParents: -2 })
@@ -351,7 +350,7 @@
      }
      src(["../images/*"])
          .pipe(copy("../../" + dist + "../"));
-     return src(["../images/*", "../../README.m*", "../appl/assets/**/*", "../appl/dodex/**/*"])
+     return src(["../images/*", "../../README.m*",  "../appl/dodex/**/*"])
          .pipe(copy("../../" + dist + "/appl"));
  }
  

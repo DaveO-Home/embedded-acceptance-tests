@@ -167,11 +167,6 @@ const copyprod_css = function () {
     return copyCss();
 };
 
-const copyprod_fonts = function () {
-    isProduction = true;
-    dist = prodDist;
-    return copyFonts();
-};
 /**
  * Resources and content copied to dist_test directory - for development
  */
@@ -193,11 +188,6 @@ const copy_css = function () {
     return copyCss();
 };
 
-const copy_fonts = function () {
-    isProduction = false;
-    dist = testDist;
-    return copyFonts();
-};
 /**
  * Run karma/jasmine tests once and exit without rebuilding(requires a previous build)
  */
@@ -291,17 +281,17 @@ const watch_rollup = function () {
     });
 };
 
-const testCopy = series(cleant, parallel(copy_fonts, copy_css, copy_node_css, copy_images, copy_src));
+const testCopy = series(cleant, parallel(copy_css, copy_node_css, copy_images, copy_src));
 const testRun = series(testCopy, buildDevelopment, pat);
 const lintRun = parallel(esLint, cssLint/*, bootLint*/);
-const prodRun = series(testRun, lintRun, clean, parallel(copyprod_fonts, copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
+const prodRun = series(testRun, lintRun, clean, parallel(copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
 const tddRun = series(testCopy, buildDevelopment, tdd_rollup);
 
 prodRun.displayName = "prod";
 
 task(prodRun);
 exports.default = prodRun;
-exports.prd = series(clean, parallel(copyprod_fonts, copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
+exports.prd = series(clean, parallel(copyprod_css, copyprod_node_css, copyprod_images, copyprod), build);
 exports.test = testRun;
 exports.acceptance = pat;
 exports.rebuild = series(testCopy, buildDevelopment);
@@ -442,11 +432,6 @@ function copyCss() {
 function copyNodeCss() {
         return src(["../../node_modules/jsoneditor/dist/img/jsoneditor-icons.svg"])
             .pipe(dest("../../" + dist + "/img"));
-}
-
-function copyFonts() {
-    return src(["../../node_modules/font-awesome/fonts/*"])
-        .pipe(copy("../../" + dist + "/appl/data/data"));
 }
 
 function karmaServer(done, singleRun = false, watch = true) {
