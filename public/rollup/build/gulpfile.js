@@ -20,7 +20,7 @@ const log = require("fancy-log");
 
 const rollup = require("rollup");
 const livereload = require("rollup-plugin-livereload");
-const serve = require("rollup-plugin-serve");
+const serve = require("./serv")
 const commonjs = require("@rollup/plugin-commonjs");
 const alias = require("@rollup/plugin-alias");
 const { nodeResolve } = require("@rollup/plugin-node-resolve");
@@ -216,8 +216,9 @@ const tddo = function (done) {
     karmaServer(done, false, true);
 };
 
-const watch_rollup = function () {
-    const watchOptions = {
+const watch_rollup = async function () {
+    const serv = await serve.srv
+    watchOptions = {
         // allowRealFiles: true,
         input: "../appl/index.js",
         plugins: [
@@ -230,7 +231,7 @@ const watch_rollup = function () {
             progress({
                 clearLine: true
             }),
-            serve({
+            serv.default({
                 open: false,
                 verbose: true,
                 contentBase: "../../",

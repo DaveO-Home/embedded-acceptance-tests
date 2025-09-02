@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.3.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.3.0) (2025-09-02)
+
+[Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.2.0...v2.3.0)
+
+* Updated dependencies
+
 ## [v2.2.0](https://github.com/DaveO-Home/embedded-acceptance-tests/tree/v2.2.0) (2024-04-12)
 
 [Full Changelog](https://github.com/DaveO-Home/embedded-acceptance-tests/compare/v2.1.0...v2.2.0)

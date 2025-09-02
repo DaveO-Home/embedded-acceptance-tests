@@ -44,7 +44,7 @@ The basic idea is to build a production application ensuring consistent and stab
 
   1. OS Linux or Windows(Tested on Windows10)
   2. Node and npm
-  3. Gulp4 is default - If your global Gulp is version 3, you can  execute `npx gulp` from the build directories.
+  3. Gulp5 is default - If your global Gulp is version 3, you can  execute `npx gulp` from the build directories.
   4. Google Chrome
   5. Firefox
 
@@ -55,6 +55,7 @@ The basic idea is to build a production application ensuring consistent and stab
 ```bash
   npm install 
 ```
+**Important** You may need **`node`** version v18.20.8 to install. For **`nvm`** users this is **lts/hydrogen**.
 
   This will install a small Node/Express setup to view the results of a production build.
 
@@ -82,7 +83,7 @@ To generate a build "cd to `public/<bundler>/build` and type `npx gulp test` or 
   cd public/fusebox/build or from the "public" directory execute "bm fusebox test"
   gulp test or "npx gulp test"
 ```
-__Note:__ All gulp tasks can be run from the `.../public` directory by using the `bm` script. Simply execute `bm <bundler> <tast>`.
+__Note:__ All gulp tasks can be run from the `.../public` directory by using the `bm` script. Simply execute `bm <bundler> <task>`.
 
 If the tests succeed then the build should complete.
 
@@ -179,7 +180,7 @@ SUMMARY:
 
 [Top](#embedded-acceptance-testing-with-karma-and-jasmine)
 
-__Note;__ All gulp tasks can be run from the `../public` directory by using the `bm` script. Simply execute `bm <bundler> <tast>`. Also, when modifying project assets(.stache, .html, etc.) you can execute `gulp copy` from the `public/<bundler>/build` directory or use the `bm` script to preview changes. This is not required for __StealJs__.
+__Note;__ All gulp tasks can be run from the `../public` directory by using the `bm` script. Simply execute `bm <bundler> <task>`. Also, when modifying project assets(.stache, .html, etc.) you can execute `gulp copy` from the `public/<bundler>/build` directory or use the `bm` script to preview changes. This is not required for __StealJs__.
 
 __A word on developing tests__; You can write and execute tests quicker by using the rebuild process of a given bundler and running the `acceptance` gulp task after the auto-rebuild, e.g. with __Rollup__ you can;
 

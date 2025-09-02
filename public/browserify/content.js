@@ -98,7 +98,7 @@
 								<ul class="list-inline" style="width:345px;">
 									<li class="list-inline-item"><a class="btn-social btn-outline" href="https://www.facebook.com/" target="_"><i class="fa fa-fw fa-facebook"></i></a></li>
 									<li class="list-inline-item"><a class="btn-social btn-outline" href="https://news.google.com/" target="_"><i class="fa fa-fw fa-google"></i></a></li>
-									<li class="list-inline-item"><a class="btn-social btn-outline" href="https://twitter.com/Twitter" target="_"><i class="fa fa-fw fa-twitter"></i></a></li>
+								  <li class="list-inline-item"><a class="btn-social btn-outline" href="https://bsky.app" target="_"><i class="fab fa-fw fa-bluesky"></i></a></li>
 									<li class="list-inline-item"><a class="btn-social btn-outline" href="https://www.linkedin.com/" target="_"><i class="fa fa-fw fa-linkedin"></i></a></li>
 									<li class="list-inline-item"><a class="btn-social btn-outline" href="https://dribbble.com/" target="_"><i class="fa fa-fw fa-dribbble"></i></a></li>
 									<li class="float-right mr-2">doDex &copy; 2019</li>
